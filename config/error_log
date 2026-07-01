@@ -1,0 +1,36 @@
+[19-Jul-2025 17:13:41 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/database.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/database.php on line 18
+[19-Jul-2025 17:13:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/mail.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/mail.php on line 16
+[19-Jul-2025 17:14:18 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/services.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/services.php on line 18
+[30-Jan-2026 03:17:05 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/database.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/database.php on line 18
+[30-Jan-2026 03:17:06 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/mail.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/mail.php on line 16
+[30-Jan-2026 03:17:07 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/app.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/app.php on line 16
+[30-Jan-2026 03:17:07 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/services.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/services.php on line 18
+[30-Jan-2026 03:18:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/cache.php:18
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/cache.php on line 18
+[21-Mar-2026 11:14:27 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function env() in /home/koq7w7i7b0y1/public_html/wwc/config/mail.php:16
+Stack trace:
+#0 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/config/mail.php on line 16

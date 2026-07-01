@@ -1,0 +1,752 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\LessonWizardsRequest;
+use App\Models\LessonsTranslationsModel;
+use Illuminate\Support\Str;
+use App\Models\ActivitiesModel;
+use App\Models\ActivitiesOptionsTranslations;
+use App\Models\ActivitiesTranslationsModel;
+use App\Models\ActivityTypesModel;
+use App\Models\ActivityMedia;
+use App\Models\ActivityOptions;
+use App\Models\ActivityWithMedia;
+use App\Models\ActivityWizardAssignment;
+use App\Models\LessonModules;
+use App\Models\LessonsModel;
+use App\Models\LessonsWizardsModel;
+use App\Models\LessonWizardsMediaModel;
+use App\Models\LessonWizardTranslations;
+use App\Models\VideoLinks;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Mockery\CountValidator\AtMost;
+use PhpParser\Node\Stmt\Foreach_;
+
+class WizardsController extends Controller
+{
+    protected $stepMapping = [
+        'create lesson' => 2,
+        'learn it' => 3,
+        'Transation after learn it' => 4,
+        'do it' => 5,
+        'Transation after do it' => 6,
+        'practise it' => 7,
+        'Transation after practise it' => 8,
+        'lesson summary' => 9,
+        'Transation after lesson summary' => 9,
+    ];
+    protected $stepBackMapping = [
+        'create lesson' => 1,
+        'learn it' => 2,
+        'Transation after learn it' => 3,
+        'do it' => 4,
+        'Transation after do it' => 5,
+        'practise it' => 6,
+        'Transation after practise it' => 7,
+        'lesson summary' => 8,
+        'Transation after lesson summary' => 9,
+    ];
+    protected $stepTitleMapping = [
+        1 => 'Lesson',
+        2 => 'Learn IT',
+        3 => 'Transation After Learn IT',
+        4 => 'Do IT',
+        5 => 'Transation After Do IT',
+        6 => 'Practise IT',
+        7 => 'Transation After Practise IT',
+        8 => 'Lesson Summary',
+        9 => 'Transation After Lesson Summary',
+    ];
+    protected $setWizardMapping = [
+        'create lesson' => 'learn it',
+        'learn it' => 'Transation after learn it',
+        'Transation after learn it' => 'do it',
+        'do it' => 'Transation after do it',
+        'Transation after do it' => 'practise it',
+        'practise it' => 'Transation after practise it',
+        'Transation after practise it' => 'lesson summary',
+        'lesson summary' => 'Transation after lesson summary',
+        'Transation after lesson summary' => 'Transation after lesson summary',
+    ];
+    protected $stepLabelMapping = [
+        'create lesson' => 'step1',
+        'learn it' => 'step2',
+        'Transation after learn it' => 'step3',
+        'do it' => 'step4',
+        'Transation after do it' => 'step5',
+        'practise it' => 'step6',
+        'Transation after practise it' => 'step7',
+        'lesson summary' => 'step8',
+        'Transation after lesson summary' => 'step9',
+    ];
+    protected $prevlabel = [
+        'step1' => 'step1',
+        'step2' => 'step1',
+        'step3' => 'step2',
+        'step4' => 'step3',
+        'step5' => 'step4',
+        'step6' => 'step5',
+        'step7' => 'step6',
+        'step8' => 'step7',
+        'step9' => 'step8',
+    ];
+    protected $nextLabel = [
+        'step1' => 'step2',
+        'step2' => 'step3',
+        'step3' => 'step4',
+        'step4' => 'step5',
+        'step5' => 'step6',
+        'step6' => 'step7',
+        'step7' => 'step8',
+        'step8' => 'step9',
+        'step9' => 'step9',
+    ];
+    protected $fromLabelStepMapping = [
+        'step1' => 'create lesson',
+        'step2' => 'learn it',
+        'step3' => 'Transation after learn it',
+        'step4' => 'do it',
+        'step5' => 'Transation after do it',
+        'step6' => 'practise it',
+        'step7' => 'Transation after practise it',
+        'step8' => 'lesson summary',
+        'step9' => 'Transation after lesson summary',
+    ];
+    protected $setWizardLabelMappingForBack = [
+        'step1' => 'create lesson',
+        'step2' => 'create lesson',
+        'step3' => 'learn it',
+        'step4' => 'Transation after learn it',
+        'step5' => 'do it',
+        'step6' => 'Transation after do it',
+        'step7' => 'practise it',
+        'step8' => 'Transation after practise it',
+        'step9' => 'lesson summary',
+    ];
+    public function index()
+    {
+        $lessons = $this->getlessons();
+        return view('admin.wizards.index', compact('lessons'));
+    }
+    public function get_activities()
+    {
+        $activities = ActivitiesModel::select('id', 'title')->orderBy('id', 'desc')->get();
+        return response()->json([
+            'status' => 'success',
+            'msg' => "Activities Fetched",
+            'data' => $activities
+        ]);
+    }
+    public function getlessons()
+    {
+        $lessons = DB::select("
+        SELECT  
+            lessons.title as lesson_title,
+            lessons.id as lesson_id,  
+            lesson_modules.module_title
+        FROM 
+            lessons
+        LEFT JOIN 
+            lesson_modules ON lessons.module_id = lesson_modules.id
+        WHERE 
+        lessons.deleted_at IS NULL
+    ");
+        return $lessons;
+    }
+    public function insertPhraseCollection(Request $request)
+    {
+        $phrases = ActivitiesModel::select('id as phrase_id', 'assosiate_collections')->get();
+        foreach ($phrases as $phrase) {
+        }
+    }
+    function generateCustomUniqueId()
+    {
+        return date('YmdHis') . '-' . Str::random(4);
+    }
+
+    public function create($lesson_id = null, $currentWizard = null, $translation = null)
+    {    
+        $steps = ['step1', 'step2', 'step3', 'step4', 'step5', 'step6', 'step7', 'step8', 'step9'];
+        if ($currentWizard != null && !in_array($currentWizard, $steps)) {
+            session()->flash('error', "Invalid step! Only 9 steps are in this process.");
+            return redirect()->back();
+        }
+        $activityAssignments = [];
+        $copy                = ''; 
+        $modules             = LessonModules::select('id', 'module_title')->get();
+        $unique_id           = $this->generateCustomUniqueId();
+        $wizard              = 'create lesson';
+        $main_wizard_id      = '';
+        $stepLabel           = 'step1';
+        $stepLabelPrev       = 'step9';
+        $module_id           = '';
+        $step_no             = 1;
+        $activity_types      = $activities = [];
+        $tbl                 = "";
+        $model               = "";
+        $lessonModel         = "";
+        $added_step_record   = '';
+        $activity_types      = ActivityTypesModel::select('id', 'type')->where('id', '!=', 1)->get();
+        $activities          = ActivitiesModel::select('id', 'title')->get();
+        if ($lesson_id != null) {
+            $isLessonExist = LessonsModel::where('id', $lesson_id)->exists();
+            if (!$isLessonExist) {
+                session()->flash('error', "Oops! You are trying to access a lesson that is not available.");
+                return redirect()->route('create.lesson-wizard');
+            }
+        }
+        if ($lesson_id != null && $currentWizard == null) {
+            $wizard = LessonsWizardsModel::where('lesson_id', $lesson_id)->orderBy('id', 'desc')->first();
+            $step_no = $this->stepMapping[$wizard->wizard ?? ''] ?? 1;
+            $stepLabel = $this->stepLabelMapping[$wizard->wizard ?? ''] ?? 'step1';
+            $stepLabel = $this->nextLabel[$stepLabel ?? ''] ?? '';
+            $stepLabelPrev = $this->prevlabel[$stepLabel ?? ''] ?? '';
+            if ($wizard) {
+                $lesson_id = $wizard->lesson_id ?? '';
+                $module_id = $wizard->module_id ?? '';
+            }
+            if ($step_no > 1) {
+                $wizard = $this->setWizardMapping[$wizard->wizard ?? ''] ?? 'create lesson';
+            }
+        } else if ($currentWizard != null) {
+
+            $currentWizardSearch = $this->fromLabelStepMapping[$currentWizard ?? ''] ?? 'create lesson';
+            $model = $translation && $translation != 'translation' ? "App\\Models\\LessonWizardTranslations" : "App\\Models\\LessonsWizardsModel";
+
+            $wizard = $model::where('lesson_id', $lesson_id)->where('wizard', $currentWizardSearch)->first();
+            $isCreate = false;
+            if (!$wizard) {
+                $isCreate = true;
+                $wizard = $model::where('lesson_id', $lesson_id)->orderBy('id', 'desc')->first();
+
+            }
+            if ($wizard) {
+                $lesson_id = $wizard->lesson_id ?? '';
+                $module_id = $wizard->module_id ?? '';
+            }
+            if ($isCreate) {
+                $step_no = $this->stepMapping[$wizard->wizard ?? ''] ?? 1;
+                $wizard = $this->setWizardMapping[$wizard->wizard ?? ''] ?? '';
+                $stepLabel = $this->stepLabelMapping[$wizard ?? ''] ?? 'step1';
+                $stepLabelPrev = $this->prevlabel[$stepLabel ?? ''] ?? '';
+            } else {
+                $step_no = $this->stepBackMapping[$wizard->wizard ?? ''] ?? 1;
+                $wizard = $wizard->wizard ?? '';
+                $stepLabel = $this->stepLabelMapping[$wizard ?? ''] ?? 'step1';
+                $stepLabelPrev = $this->prevlabel[$stepLabel ?? ''] ?? '';
+            }
+
+            if ($currentWizard != $stepLabel) {
+                session()->flash('error', "Please save Step {$step_no} first !");
+                return redirect()->route('create.lesson-wizard', [
+                    'lesson_id' => $lesson_id,
+                    'currentWizard' => $stepLabel,
+                ]);
+            }
+        }
+        $form_title = $this->stepTitleMapping[$step_no] ?? ' ';
+        $media_array = [];
+        $language = DB::table('languages')->where('language_title', $translation ?? 'English')->first();
+        if ($translation == 'translation' ) { 
+            $lesson_id = intval($lesson_id);
+            $languages = DB::select("
+                SELECT * FROM languages 
+                WHERE status = 1 
+                AND language_id NOT IN (
+                SELECT language_id 
+                FROM lesson_wizards_translation 
+                WHERE lesson_id = ? 
+                AND deleted_at IS NULL
+            ) 
+             
+            ", [$lesson_id]);
+        } else {
+            $languages = DB::table('languages')->where('is_default', 1)->first();
+        } 
+        
+        $actual_content = LessonsWizardsModel::where('lesson_id', $lesson_id)->where('wizard', $wizard)->first();
+        $where = "1=1";
+        if ($language) {
+            $where .= " AND language_id = $language->language_id";
+        }
+        if ($lesson_id) {
+            $where .= "  AND lesson_id = $lesson_id";
+        }
+        if ($wizard) {
+            $where .= "  AND wizard = '$wizard'";
+        }
+        if ($translation && $translation != 'translation') {
+
+            $lessonModel = "App\\Models\\LessonWizardTranslations";
+            $where .= " AND main_wizard_id = $actual_content->id";
+            $tbl = "lesson_wizards_translation";
+        } else if (!$translation) {
+            $lessonModel = "App\\Models\\LessonsWizardsModel";
+            $tbl = "lesson_wizards";
+        } 
+        if ($lessonModel && $lesson_id) {
+            $added_step_record = $lessonModel::whereRaw("$where")->selectRaw("$tbl.* , 
+                                                (SELECT image_source FROM lessons_wizard_medias WHERE lessons_wizard_medias.content_id = $tbl.id 
+                                                AND lessons_wizard_medias.model = '$wizard' AND lessons_wizard_medias.deleted_at IS NULL LIMIT 1) as wizard_image, 
+                                                  (  SELECT slug 
+                                                    FROM lessons 
+                                                    WHERE lessons.id = $lesson_id 
+                                                    LIMIT 1
+                                                ) as slug")->first();
+           
+        }
+
+        if ($added_step_record) {
+            $media = collect();
+            $media_for_wizards = LessonWizardsMediaModel::where('content_id', $added_step_record->id)
+                ->where('model', $added_step_record->wizard)
+                ->where('lesson_id', $added_step_record->lesson_id)
+                ->where('language_id', $added_step_record->language_id)
+                ->whereNotNull('video_source')
+                ->get();
+            $media = $media->concat($media_for_wizards);
+            $base_url = config('filesystems.disks.spaces.url');
+            $media_array = $media->map(function ($item) use ($base_url) {
+                return [
+                    'language_id' => $item->language_id,
+                    'content_id' => $item->content_id,
+                    'unique_id' => $item->unique_id,
+                    'model' => $item->model,
+                    'type' => 'video/mp4',
+                    'file_name' => $item->file_name,
+                    'video_view' => $item->video_view,
+                    'video_source' => $item->video_source,
+                    'size' => $item->video_quality,
+                    'src' => rtrim($base_url, '/') . '/' . ltrim($item->video_source, '/'),
+                ];
+            })->toArray();
+
+            $activityAssignments = ActivityWizardAssignment::where('lesson_wizard_id', $added_step_record->id ?? '')
+                ->pluck('activity_id')->toArray();
+        }
+         
+        if ($step_no == 2 || $step_no == 6) {
+
+            if ($added_step_record) {
+                $activityAssignments = ActivityWizardAssignment::where('lesson_wizard_id', $added_step_record->id ?? '')->pluck('activity_id')->toArray();
+            }
+        }
+        return view('admin.wizards.create', compact('stepLabel', 'stepLabelPrev', 'languages', 'activity_types', 'lesson_id', 'module_id', 'wizard', 'modules', 'unique_id', 'form_title', 'step_no', 'copy', 'main_wizard_id', 'activities', 'added_step_record', 'activityAssignments', 'media_array', 'translation', 'actual_content'));
+    }
+
+    public function store(LessonWizardsRequest $request)
+    {    
+        $language_title = DB::table('languages')->where('language_id', $request->language_id)->value('language_title');
+        $wizard = '';
+        $label = $request->stepLabel;
+        $stepLabelNext = $this->nextLabel[$label] ?? '';
+        $is_translation = $request->translation ? true : false;
+        
+        if ($is_translation) {
+            if ($request->stepLabel == 'step1') {
+                $data = $this->saveLesson($request, $is_translation);
+                $request->merge(['lesson_id' => $data->id]);
+                $wizard = $this->saveWizards($is_translation, $request);
+            } else {
+                $wizard = $this->saveWizards($is_translation, $request);
+            
+               
+                if ($label == 'step9') {
+                    session()->flash('success', "Lesson wizard saved successfully!");
+                    if ($request->copy == 1) {
+                        return redirect()->route('create.lesson-wizard', [
+                            'lesson_id' => $wizard->lesson_id,
+                            'currentWizard' => 'step1',
+                            'translation' => 'translation'
+                        ]);
+                    } else {
+                        return redirect()->route('lessons-wizards');
+                    }
+                }
+            }
+
+            return redirect()->route('create.lesson-wizard', [
+                'lesson_id' => $wizard->lesson_id,
+                'currentWizard' => $stepLabelNext,
+                'translation' => $language_title
+            ]);
+        } else { 
+            if ($request->stepLabel == 'step1') {
+                $data = $this->saveLesson($request, $is_translation);
+                $request->merge(['lesson_id' => $data->id]);
+                $wizard = $this->saveWizards($is_translation, $request);
+            } else { 
+                $wizard = $this->saveWizards($is_translation, $request);
+            }
+        }
+
+        session()->flash('success', "Step {$request->step} saved successfully!");
+        $label = $request->stepLabel;
+        if ($label == 'step9') {
+            session()->flash('success', "Lesson wizard saved successfully!");
+            if ($request->copy == 1) {
+                return redirect()->route('create.lesson-wizard', [
+                    'lesson_id' => $wizard->lesson_id,
+                    'currentWizard' => 'step1',
+                    'translation' => 'translation'
+                ]);
+            } else {
+                return redirect()->route('lessons-wizards');
+            }
+        } else {
+            $stepLabelNext = $this->nextLabel[$label] ?? '';
+            return redirect()->route('create.lesson-wizard', [
+                'lesson_id' => $wizard->lesson_id,
+                'currentWizard' => $stepLabelNext,
+            ]);
+        }
+    }
+    public function saveLesson($request, $is_translation)
+    {    
+        $model = $is_translation ? "App\\Models\\LessonsTranslationsModel" : "App\\Models\\LessonsModel";
+        $data = $request->lesson_id ? $model::find($request->lesson_id)->where('language_id',$request->language_id)->first() : new $model(); 
+     
+        if(!$data){
+        $data =new $model();
+        }
+        $data->title = $request->title;
+        $this->assignCommonFields($data, $request);
+        if ($is_translation) {
+            $data->main_lesson_id = $request->lesson_id;
+        } else {
+            $data->slug = $request->slug;
+            $data->module_id = $request->lesson_module;
+        }
+         
+        $data->save();
+        if (!$is_translation) {
+            $this->saveLessonTranslation($data, $request);
+        }
+        return $data;
+    }
+    public function saveLessonTranslation($parentLesson, $request)
+    {
+        
+        $data                   = $request->lesson_id ? LessonsTranslationsModel::where('main_lesson_id', $request->lesson_id)->where('language_id', 1)->first() : new LessonsTranslationsModel();
+        $data->title            = $request->title;
+        $this->assignCommonFields($data, $request);
+        $data->main_lesson_id   = $parentLesson->id;
+        $data->language_id      = $parentLesson->language_id; 
+        $data->short_description      = $request->description; 
+        $data->save();
+    }
+    public function saveWizards($is_translation, $request)
+    {
+        // dd($request->step_unique_id);
+        $created_at = Carbon::now();
+        $created_by = Auth::user()->id;
+
+        $model              =  $is_translation ? "App\\Models\\LessonWizardTranslations" : "App\\Models\\LessonsWizardsModel";
+        $wizard             =  $request->wizard_id ? $model::find($request->wizard_id) : new $model();
+       
+        if ($request->lesson_module) {
+          
+            $module                  =     LessonModules::find($wizard->module_id);
+            $is_sensitive            =     $module ? $module->value('is_sensitive') : 0; 
+            $wizard->is_sensitive    =     $is_sensitive;
+        }
+        if ($is_translation) {
+          
+            $wizard->main_wizard_id = $request->main_wizard_id;
+        }else{
+            $wizard->module_id  =  $request->lesson_module ?? $request->module_id ?? '';
+        }
+        $wizard->lesson_id          =   $request->lesson_id;
+        $wizard->title              =   $request->title;
+        $wizard->text               =   $request->text;
+        $wizard->media_type         =   $request->TransationMediaType ?? $request->media_type ?? 0;
+        $wizard->learning_points    =   $request->learning_points;
+        $wizard->description        =   $request->description;
+        $wizard->wizard             =   $request->wizard;
+        $this->assignCommonFields($wizard, $request);
+        $wizard->save();
+        if(!$is_translation){
+            $this->saveWizardTranslations($is_translation,$request,$wizard);
+        }
+        if ($request->step == 6 || $request->step == 4) {
+            DB::table('activity_wizard_assignments')->where('lesson_wizard_id', $wizard->id)->where('language_id', $wizard->language_id)->delete();
+            foreach ($request->activityType as $key => $value) {
+                $assignment                     =   new ActivityWizardAssignment();
+                $assignment->lesson_wizard_id   =   $wizard->id;
+                $assignment->language_id        =   $wizard->language_id;
+                $assignment->activity_id        =   $value;
+                $assignment->created_at         =   $created_at;
+                $assignment->created_by         =   $created_by;
+                $assignment->updated_by         =   $created_by;
+                $assignment->updated_at         =   $created_at;
+                $assignment->save();
+            }
+        }
+        LessonWizardsMediaModel::where('unique_id', $request->step_unique_id)->update([
+            'content_id' => $wizard->id,
+            'model'      => $request->wizard,
+            'lesson_id'  => $wizard->lesson_id
+        ]);
+
+        if ($request->hasFile('image_transaction')) {
+            $completeFileName   =   $request->file('image_transaction')->getClientOriginalName();
+            $fileNameOnly       =   pathinfo($completeFileName, PATHINFO_FILENAME);
+            $extension          =   $request->file('image_transaction')->getClientOriginalExtension();
+            $image              =   str_replace(' ', '_', $fileNameOnly) . '.' . $extension;
+            $request->file('image_transaction')->storeAs('public/lesson/images', $image);
+
+            $image              =   'storage/lesson/images/' . $image;
+            $LessonWizardsMediaModel = LessonWizardsMediaModel::where('lesson_id', $wizard->lesson_id)->where('model', $request->wizard)->where('content_id', $wizard->id)->first();
+            if (!$LessonWizardsMediaModel) {
+                $LessonWizardsMediaModel = new LessonWizardsMediaModel();
+            }
+            $LessonWizardsMediaModel->image_source =   $image;
+            $LessonWizardsMediaModel->lesson_id    =   $wizard->lesson_id;
+            $LessonWizardsMediaModel->model        =   $wizard->wizard;
+            $LessonWizardsMediaModel->content_id   =   $wizard->id;
+            $LessonWizardsMediaModel->created_at   =   $created_by;
+            $LessonWizardsMediaModel->created_by   =   $created_at;
+            $LessonWizardsMediaModel->save();
+        }
+        // else {
+        //     if ($wizard->media_type != 2) {
+        //         LessonWizardsMediaModel::where('lesson_id', $wizard->lesson_id)->where('model',  $request->wizard)->where('content_id', $wizard->id)->delete();
+        //     }
+        // }
+
+        return $wizard;
+    }
+    public function saveWizardTranslations($is_translation,$request,$parentWizard){
+  
+            $wizard = LessonWizardTranslations::where('lesson_id',$request->lesson_id)->where('main_wizard_id',$parentWizard->id)->where('language_id',1)->first(); 
+        if(!$wizard){
+            $wizard = new LessonWizardTranslations(); 
+        }
+       
+        $wizard->main_wizard_id  = $parentWizard->id; 
+        $wizard->lesson_id       = $request->lesson_id;
+        $wizard->title           = $request->title;
+        $wizard->text            = $request->text;
+        $wizard->media_type      = $request->TransationMediaType ?? $request->media_type ?? 0;
+        $wizard->learning_points = $request->learning_points;
+        $wizard->description     = $request->description;
+        $wizard->wizard          = $request->wizard;
+        $this->assignCommonFields($wizard, $request);
+        $wizard->save();
+    }
+    protected function assignCommonFields($data, $request)
+    {
+
+        if ($request->wizard_id) {
+            $data->updated_at   = Carbon::now();
+            $data->updated_by   = Auth::user()->id;
+        } else {
+            $data->created_at   = Carbon::now();
+            $data->created_by   = Auth::user()->id;
+            $data->language_id  = $request->language_id;
+            $data->updated_at   = null;
+            $data->updated_by   = null;
+        }
+    }
+
+    protected function assignNonTranslationFields($activity, $request)
+    {
+        $activity->content_type  = $request->activity_content_type == 0 ? 1 : $request->activity_content_type;
+        $activity->is_true       = $request->true_false;
+        $activity->activity_type = $request->activity_type;
+        $activity->no_of_attempts= $request->no_of_attempts;
+        $activity->show_feedback = $request->show_feedback;
+        $activity->time_limit    = $request->duration ?? 0;
+    }
+    protected function saveTranslation($wizard, $request)
+    {
+
+        $translation = LessonWizardTranslations::firstOrNew([
+            'main_lesson_id' => $wizard->id,
+            'language_id' => $wizard->language_id
+        ]);
+        $translationAttributes = $wizard->getAttributes();
+        unset($translationAttributes['id']);
+        $translation->fill($translationAttributes);
+        $translation->save();
+        // $this->saveActivityMedia($wizard, $request);
+    }
+    public function saveActivityMedia($activity, $request)
+    {
+        if (isset($request->activityImages) && is_array($request->activityImages)) {
+            $existingMediaIds = [];
+            // Process each activity image data
+            foreach ($request->activityImages as $index => $data) {
+                $activityMedia = null;
+                if (isset($data['media_id']) && !empty($data['media_id'])) {
+                    // Update existing media
+                    $activityMedia = ActivityMedia::where('id', $data['media_id'])
+                        ->where('model', 'activity')
+                        ->where('content_id', $activity->id)
+                        ->first();
+                }
+                if (!$activityMedia) {
+                    // Create new media entry
+                    $activityMedia = new ActivityMedia();
+                    $activityMedia->created_by = Auth::user()->id;
+                    $activityMedia->model = 'activity';
+                    $activityMedia->content_id = $activity->id;
+                    $activityMedia->language_id = $activity->language_id;
+                } else {
+                    // Update existing media entry
+                    $activityMedia->updated_by = Auth::user()->id;
+                }
+                if (!empty($data['file']) && $data['file'] instanceof \Illuminate\Http\UploadedFile) {
+                    $file = $data['file'];
+                    $completeFileName = $file->getClientOriginalName();
+                    $fileNameOnly = pathinfo($completeFileName, PATHINFO_FILENAME);
+                    $extension = $file->getClientOriginalExtension();
+                    $empPicture = str_replace(' ', '_', $fileNameOnly) . '_' . time() . '.' . $extension;
+                    $file->storeAs('public/activity-images', $empPicture);
+                    $image = '/storage/activity-images/' . $empPicture;
+                    $activityMedia->image_source = $image;
+                } elseif (!empty($data['hiddenFile'])) {
+                    // Handle hidden file
+                    $activityMedia->image_source = $data['hiddenFile'];
+                }
+                $activityMedia->save();
+                $existingMediaIds[] = $activityMedia->id;
+            }
+            ActivityMedia::where('model', 'activity')
+                ->where('content_id', $activity->id)
+                ->whereNotIn('id', $existingMediaIds)
+                ->delete();
+        }
+    }
+
+
+
+    public function videos($id)
+    {
+        $content_type = 2; //Pharase;
+        $content_id = $id;
+        $parent = ActivitiesModel::where('id', $id)->select('content_accessibility', 'title', 'language_id', 'id')->with('translations')->first();
+
+        $languageIds = [$parent->language_id];
+        foreach ($parent->translations as $translation) {
+            $languageIds[] = $translation->language_id;
+        }
+
+        $languages = DB::table('languages')->whereIn('language_id', $languageIds)
+            ->where('status', 1)
+            ->get();
+        $videos = VideoLinks::where('content_type', $content_type)->where('content_id', $id)->get();
+        return view('admin.video.list', compact('languages', 'content_type', 'content_id', 'videos', 'parent'));
+    }
+    public function changeStatus(Request $request)
+    {
+        $dictionary = changeStatus('App\Models\ActivitiesModel', $request->id, $request->status == 0 ? 1 : 0);
+        return response()->json(['status' => 'success', 'msg' => 'Status Changed Successfully!']);
+    }
+    public function wizardUploadChunk(Request $request)
+    {
+        // dd($request->all());
+        // $files = Storage::disk('spaces')->allFiles('activites');
+
+        // foreach ($files as $file) {
+        //     Storage::disk('spaces')->delete($file); 
+        // } 
+        // dd( Storage::disk('spaces')->allFiles('activites')); 
+        $response = videoUploadChunkForWizard($request);
+        return response()->json($response);
+    }
+    public function destroy($id)
+    {
+        $activity = ActivitiesModel::with('translations')->findOrFail($id);
+        foreach ($activity->translations as $translation) {
+            $translation->update([
+                'deleted_at' => now(),
+                'deleted_by' => auth()->id(),
+            ]);
+            $optionIds = ActivityOptions::where('activity_id', $translation->main_activity_id)->pluck('id')->toArray();
+
+            ActivityOptions::whereIn('id', $optionIds)->update([
+                'deleted_at' => now(),
+                'deleted_by' => auth()->id(),
+            ]);
+            ActivitiesOptionsTranslations::whereIn('main_option_id', $optionIds)->update([
+                'deleted_at' => now(),
+                'deleted_by' => auth()->id(),
+            ]);
+            ActivityMedia::where('model', 'option')
+                ->whereIn('content_id', $optionIds)
+                ->update([
+                    'deleted_at' => now(),
+                    'deleted_by' => auth()->id(),
+                ]);
+        }
+        ActivityMedia::where('model', 'activity')
+            ->where('content_id', $id)
+            ->update([
+                'deleted_at' => now(),
+                'deleted_by' => auth()->id(),
+            ]);
+        $activity->update([
+            'deleted_at' => now(),
+            'deleted_by' => auth()->id(),
+        ]);
+
+        return response()->json(['status' => 'success', 'msg' => 'Activity Deleted Successfully!']);
+    }
+
+
+    public function validateWizardVideos(Request $request)
+    {
+
+        $exisiting_videos = [];
+        $video_to_be_replace = [];
+        $requestedFiles = $request->input('files');
+        $msg = 'All Videos are unique!';
+        $status = 'success';
+        foreach ($requestedFiles as $file) {
+            $fileInfo = extractFilebyPart($file);
+            $is_video = '';
+            $query = LessonWizardsMediaModel::where('video_view', $fileInfo['view_text'])->where('language_id', $request->language_id)->where('video_quality', $fileInfo['resolution']);
+            if ($request->wizard_id) {  //FOR  Edit
+                $is_video = $query->where('lesson_id', $request->lesson_id)
+                    ->where('content_id', $request->wizard_id)
+                    ->first();
+            } else if ($request->step_unique_id) {   //FOR  CREATE
+                $is_video = $query->where('content_id', '=', null)
+                    ->where('unique_id', $request->step_unique_id)
+                    ->first();
+            }
+            if ($is_video) {
+                $exisiting_videos[] = $file;
+                $video_to_be_replace[] = $is_video->file_name;
+                $msg = 'Video with same quailty already Exist';
+                $status = 'exisit';
+            }
+        }
+        return response()->json(['status' => $status, 'files' => $exisiting_videos, 'videos_to_be_replace' => $video_to_be_replace, 'message' => $msg]);
+    }
+    public function deleteWizardVideo(Request $request, $id)
+    {
+        $query = LessonWizardsMediaModel::where('model', $request->model);
+        if ($id != 'null' && $id > 0 && $id != 'undefined') {
+            $query = $query->where('content_id', $id)->first();
+        } else if ($request->unid) {
+            $query = $query->where('unique_id', $request->unid)->first();
+        }
+        if ($query) {
+            Storage::disk('spaces')->delete($query->video_source);
+            $query->delete();
+            return response()->json([
+                'status' => 'success'
+            ]);
+        }
+        return response()->json([
+            'status' => 'failed'
+        ]);
+    }
+}

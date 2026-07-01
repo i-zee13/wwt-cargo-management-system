@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^(www\.)?wwcsys\.worldwidecommerce\.us$ [NC]
+RewriteRule ^(.*)$ https://wwcsys.worldwidecommerce.us/$1 [L,R=301]
+</IfModule>
+
+RewriteEngine On
+php_value extension zip.so
+
+# Force HTTPS
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# Redirect everything to the public folder
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]

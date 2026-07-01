@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; 
+            background-color: #ffffff; /* White background for print */
+        }
+
+        h1 {
+            color: #eb973c;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .package-details {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+           
+        }
+
+        .barcode {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .barcode img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            width: 35%; 
+            font-weight: bold;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+
+        td {
+            width: 65%;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: #ffffff;
+            }
+
+            h1 {
+                font-size: 22px;
+                color: #000;
+                margin-bottom: 20px;
+            }
+
+            .package-details {
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .barcode img {
+                max-width: 150px;
+                margin-bottom: 20px;
+            }
+
+            table {
+                border: none;
+            }
+
+            th, td {
+                padding: 10px 10px;
+                border-bottom: 1px solid #000;
+            }
+
+            th {
+                background-color: transparent;
+                color: #000; 
+            }
+
+            td {
+                color: #000;
+            }
+        }
+    </style>
+</head>
+<body>
+
+     
+    <div class="package-details">
+        <div class="barcode">
+            <img src="{{ $package->barcodeImageBase64 }}" alt="Barcode Image">
+        </div>
+
+        <table>
+            <tr>
+                <th>Package WAYBILL:</th>
+                <td>{{ $package->waybill ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Client Suite:</th>
+                <td>{{ $package->client_suite ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Client Name:</th>
+                <td>{{ trim($package->first_name . ' ' . $package->last_name) ?: 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Package Description:</th>
+                <td>{{ $package->description ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Weight:</th>
+                <td>{{ $package->kg ?? '0 kg' }}</td>
+            </tr>
+            <tr>
+                <th>Grand Total:</th>
+                <td>{{ $package->grand_total ?? '0' }}</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Package Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        
+            background-color: #ffffff; /* White background for print */
+        }
+
+         
+
+        .package-details {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px; 
+        }
+
+        .barcode {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .barcode img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            width: 35%; 
+            font-weight: bold;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+        }
+
+        td {
+            width: 65%;
+            color: #555;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: #ffffff;
+            }
+
+            h1 {
+                font-size: 22px;
+                color: #000;
+                margin-bottom: 20px;
+            }
+
+            .package-details {
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+
+            .barcode img {
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+
+            table {
+                border: none;
+            }
+
+            th, td {
+                padding: 10px 10px;
+                border-bottom: 1px solid #000;
+            }
+
+            th {
+                background-color: transparent;
+                color: #000; 
+            }
+
+            td {
+                color: #000;
+            }
+        }
+    </style>
+</head>
+<body>
+
+ 
+
+    <div class="package-details">
+        <div class="barcode">
+            <img src="{{ $package->barcodeImageBase64 }}" alt="Barcode Image">
+        </div>
+
+        <table>
+            <tr>
+                <th>Package WAYBILL:</th>
+                <td>{{ $package->waybill ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Client Suite:</th>
+                <td>{{ $package->client_suite ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Client Name:</th>
+                <td>{{ trim($package->first_name . ' ' . $package->last_name) ?: 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Package Description:</th>
+                <td>{{ $package->description ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Weight:</th>
+                <td>{{ $package->kg ?? '0 kg' }}</td>
+            </tr>
+            <tr>
+                <th>Grand Total:</th>
+                <td>{{ $package->grand_total ?? '0' }}</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+</html>

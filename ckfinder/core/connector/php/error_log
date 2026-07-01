@@ -1,0 +1,90 @@
+[02-Dec-2024 15:03:13 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[02-Dec-2024 15:03:13 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[02-Dec-2024 15:03:13 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[02-Dec-2024 15:03:19 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[02-Dec-2024 15:03:19 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[02-Dec-2024 15:03:19 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:53:07 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:53:07 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:53:07 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:53:47 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:53:47 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:53:47 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:54:38 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:54:38 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:54:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:54:46 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:54:46 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[10-Dec-2024 16:54:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:12 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:12 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:23 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:23 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:43 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:43 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[14-Mar-2025 13:00:43 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[15-Jan-2026 21:26:15 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[15-Jan-2026 21:26:15 UTC] PHP Warning:  require(/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
+[15-Jan-2026 21:26:15 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.:/opt/alt/php81/usr/share/pear:/opt/alt/php81/usr/share/php:/usr/share/pear:/usr/share/php') in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php(61): composerRequiref62c5d72efa7ef951c181e85a3dd4828()
+#1 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/autoload.php(7): ComposerAutoloaderInitf62c5d72efa7ef951c181e85a3dd4828::getLoader()
+#2 /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/connector.php(14): require_once('/home/koq7w7i7b...')
+#3 {main}
+  thrown in /home/koq7w7i7b0y1/public_html/wwc/ckfinder/core/connector/php/vendor/composer/autoload_real.php on line 71
