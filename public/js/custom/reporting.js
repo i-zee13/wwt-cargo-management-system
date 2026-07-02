@@ -164,7 +164,13 @@ $(document).on('click', '#generate_report', function () {
                             title: '',
                             customize: function (doc) {
                                 // Remove unnecessary content
-                                doc.content = doc.content.filter((item) => item.text !== 'wwc');
+                                const pdfWatermarkLabels = (window.brandPdfWatermarkLabels || ['wwc', 'wwt']).map((label) => label.toLowerCase());
+                                doc.content = doc.content.filter((item) => {
+                                    if (!item.text) {
+                                        return true;
+                                    }
+                                    return !pdfWatermarkLabels.includes(String(item.text).toLowerCase());
+                                });
                 
                                 // Add organization logo
                                 if (organizationLogo) {

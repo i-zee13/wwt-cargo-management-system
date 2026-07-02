@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/*
+  WWT brand palette — aligned with WWT / Khan Law style
+  Navy: #040725 | Gold CTA: #ebb30a | White: #ffffff
+  Typography: Lato (body) + Cinzel (headings) — same as khanllp.com
+*/
+:root {
+  --background: #ffffff;
+  --foreground: #040725;
+
+  --color-brand-50: #f3f3f6;
+  --color-brand-100: #e4e4ea;
+  --color-brand-200: #c8c9d4;
+  --color-brand-300: #9a9cb0;
+  --color-brand-400: #6b6e8c;
+  --color-brand-500: #3d4168;
+  --color-brand-600: #040725;
+  --color-brand-700: #03051c;
+  --color-brand-800: #020414;
+  --color-brand-900: #01020d;
+
+  --color-accent-50: #fef9e8;
+  --color-accent-100: #fdf0c4;
+  --color-accent-200: #fbe49a;
+  --color-accent-300: #f5d56a;
+  --color-accent-400: #f0c43a;
+  --color-accent-500: #ebb30a;
+  --color-accent-600: #d4a109;
+  --color-accent-700: #a67d06;
+
+  --color-navy: #040725;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-lato), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-cinzel), ui-serif, Georgia, serif;
+
+  --color-brand-50: var(--color-brand-50);
+  --color-brand-100: var(--color-brand-100);
+  --color-brand-200: var(--color-brand-200);
+  --color-brand-300: var(--color-brand-300);
+  --color-brand-400: var(--color-brand-400);
+  --color-brand-500: var(--color-brand-500);
+  --color-brand-600: var(--color-brand-600);
+  --color-brand-700: var(--color-brand-700);
+  --color-brand-800: var(--color-brand-800);
+  --color-brand-900: var(--color-brand-900);
+
+  --color-accent-50: var(--color-accent-50);
+  --color-accent-100: var(--color-accent-100);
+  --color-accent-200: var(--color-accent-200);
+  --color-accent-300: var(--color-accent-300);
+  --color-accent-400: var(--color-accent-400);
+  --color-accent-500: var(--color-accent-500);
+  --color-accent-600: var(--color-accent-600);
+  --color-accent-700: var(--color-accent-700);
+
+  --color-navy: var(--color-navy);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -34,4 +34,6 @@ yarn-error.log
 .idea/vcs.xml
 .idea/php.xml
 .idea/workspace.xml
+.claude/
 #
+

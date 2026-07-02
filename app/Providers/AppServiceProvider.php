@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\ControllersList as CL;
-// use App\Correspondence as C;
 use App\Models\ControllerDesignationAssignment;
 use Auth;
 use DB;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,8 +21,12 @@ class AppServiceProvider extends ServiceProvider
      */
 
     public function boot()
-    {   
-        Schema::defaultStringLength('191');
+    {
+        Schema::defaultStringLength(191);
+
+        RateLimiter::for('api', function (Request $request) {
+            return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
         
         app('view')->composer('layouts.master', function ($view) {
           
@@ -123,7 +129,7 @@ class AppServiceProvider extends ServiceProvider
                     $userPermissions        =   ['customer-profile','customer-home','customer-packages','create-customer-package'];
                      
             }   
-            $activeLang = session('locale', 'en');
+            $activeLang = session('locale', config('app.locale'));
              
             $view->with(compact('controller', 'action', 'userPermissions',   'allControllers',   'designation','activeLang'));
         });

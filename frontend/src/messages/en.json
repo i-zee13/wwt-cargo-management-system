@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "siteName": "WWT",
+    "companyName": "World Wide Trading Group",
+    "tagline": "Shop in the USA and China. WWT delivers it to your home or office.",
+    "defaultDescription": "Receive your US and China purchases at your own mailbox address and get them delivered in Paraguay or Argentina. Storage, personal shopper service, repacking, and air and sea shipping."
+  },
+  "nav": {
+    "inicio": "Home",
+    "servicios": "Services",
+    "tarifas": "Rates",
+    "rastreo": "Tracking",
+    "sobreNosotros": "About us",
+    "faq": "FAQ",
+    "contacto": "Contact",
+    "ingresar": "Log in",
+    "registro": "Sign up"
+  },
+  "hero": {
+    "eyebrow": "US mailbox address",
+    "typingWords": [
+      "to your home.",
+      "to your office.",
+      "to Paraguay.",
+      "to Argentina."
+    ],
+    "headlinePrefix": "Shop in the USA and China.",
+    "headlineSuffix": "WWT delivers it",
+    "subheadline": "Get your own US address, shop at any store you like, and we'll store, repack and ship your packages straight to your door in Paraguay or Argentina.",
+    "ctaPrimary": "Create your free mailbox",
+    "ctaSecondary": "See how it works",
+    "trustNote": "Over a decade helping families and businesses shop abroad."
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Four simple steps between your US purchase and delivery at your door.",
+    "steps": [
+      {
+        "title": "Sign up and get your mailbox",
+        "description": "Create your free account and we'll assign you your own US address for your purchases."
+      },
+      {
+        "title": "Shop at any store",
+        "description": "Use your WWT address on Amazon, eBay, Shein, Chinese stores or any retailer you like, with or without your own credit card."
+      },
+      {
+        "title": "We receive and inspect",
+        "description": "Your package arrives at our warehouse, we inspect it and notify you by WhatsApp and email."
+      },
+      {
+        "title": "We repack and ship",
+        "description": "We consolidate your packages to lower the cost and ship them by air or sea straight to your address."
+      }
+    ]
+  },
+  "services": {
+    "title": "Everything you need to shop abroad",
+    "subtitle": "Services designed to make shopping overseas as easy as shopping locally.",
+    "items": [
+      {
+        "title": "US mailbox",
+        "description": "Your own US address to receive purchases from any online store.",
+        "icon": "mailbox"
+      },
+      {
+        "title": "Personal shopper service",
+        "description": "We buy on your behalf, even if you don't have an international credit card.",
+        "icon": "shopping-cart"
+      },
+      {
+        "title": "Secure storage",
+        "description": "We keep your packages in our warehouse while you consolidate your shipment.",
+        "icon": "warehouse"
+      },
+      {
+        "title": "Package inspection",
+        "description": "We check the contents and send photos before shipping, with an optional extra fee.",
+        "icon": "search-check"
+      },
+      {
+        "title": "Repacking and consolidation",
+        "description": "We combine several packages into one to reduce weight, volume and shipping cost.",
+        "icon": "package"
+      },
+      {
+        "title": "Air and sea shipping",
+        "description": "Choose the service that best fits your urgency and budget.",
+        "icon": "plane"
+      },
+      {
+        "title": "Returns management",
+        "description": "We help you return products to the original store whenever you need to.",
+        "icon": "undo"
+      },
+      {
+        "title": "Online tracking",
+        "description": "Follow your package status in real time from the client portal.",
+        "icon": "map-pin"
+      }
+    ]
+  },
+  "stats": {
+    "items": [
+      { "value": "10", "suffix": "+", "label": "years of experience" },
+      { "value": "2", "suffix": "", "label": "countries with direct delivery" },
+      { "value": "3", "suffix": "", "label": "shopping origins: USA, China and Spain" },
+      { "value": "24", "suffix": "/7", "label": "online package tracking" }
+    ]
+  },
+  "trackingTeaser": {
+    "title": "Track your package instantly",
+    "description": "Enter your waybill number and check your shipment status.",
+    "placeholder": "Waybill number",
+    "cta": "Track"
+  },
+  "ctaSection": {
+    "title": "Start shopping abroad today",
+    "description": "Create your free mailbox in minutes and receive your first purchase from the US or China.",
+    "ctaPrimary": "Sign up for free",
+    "ctaSecondary": "Chat on WhatsApp"
+  },
+  "footer": {
+    "about": "WWT helps you shop in the USA and China with your own mailbox, secure storage and direct shipping to Paraguay and Argentina.",
+    "quickLinksTitle": "Quick links",
+    "servicesTitle": "Services",
+    "contactTitle": "Contact",
+    "rights": "All rights reserved."
+  },
+  "servicesPage": {
+    "hero": {
+      "title": "Services built for international shoppers",
+      "subtitle": "From your first purchase to delivery at your door, we're with you every step of the way."
+    }
+  },
+  "ratesPage": {
+    "hero": {
+      "title": "Clear rates, no surprises",
+      "subtitle": "Your shipping cost depends on weight, volume and the type of service you choose."
+    },
+    "factorsTitle": "What determines your rate",
+    "factors": [
+      {
+        "title": "Weight and volume",
+        "description": "We charge based on whichever is greater: the actual weight (kg) or the volumetric weight (cbm) of your package."
+      },
+      {
+        "title": "Purchase origin",
+        "description": "Rates vary depending on whether your purchase comes from the US, China or Spain."
+      },
+      {
+        "title": "Shipping type",
+        "description": "Air shipping is faster; sea shipping is more economical for larger volumes."
+      },
+      {
+        "title": "Extra services",
+        "description": "Inspection, special repacking or personal shopper service may carry an additional cost."
+      }
+    ],
+    "ctaNote": "Log in to the client portal to see the calculator with rates updated for your account.",
+    "cta": "View rates in the portal"
+  },
+  "trackingPage": {
+    "title": "Package tracking",
+    "subtitle": "Enter the waybill number you received by email or WhatsApp to check your shipment status.",
+    "placeholder": "e.g. WWT-000123",
+    "submit": "Track package",
+    "loading": "Looking up your package...",
+    "notFound": "We couldn't find a package with that waybill number. Please check the number and try again.",
+    "error": "Something went wrong while looking up your package. Please try again in a few minutes.",
+    "resultTitle": "Package status",
+    "waybillLabel": "Waybill",
+    "weightLabel": "Weight",
+    "statusLabel": "Status",
+    "statuses": {
+      "received": "Received at warehouse",
+      "in-progress": "In progress",
+      "embarked": "Shipped",
+      "arrived": "Arrived at destination",
+      "retired": "Picked up / Delivered"
+    }
+  },
+  "aboutPage": {
+    "title": "About WWT",
+    "intro": "World Wide Trading Group was created to solve a simple problem: shopping in the US and China from Paraguay and Argentina shouldn't be complicated.",
+    "mission": {
+      "title": "Our mission",
+      "description": "Connect our customers with stores around the world, offering their own mailbox, secure storage and reliable shipping to their door at home or the office."
+    },
+    "values": {
+      "title": "How we work",
+      "items": [
+        {
+          "title": "Transparency",
+          "description": "Clear rates and constant communication about the status of every package."
+        },
+        {
+          "title": "Personal attention",
+          "description": "Direct support over WhatsApp and email at every stage of the shipment."
+        },
+        {
+          "title": "Care",
+          "description": "We inspect and repack carefully so your purchase arrives in good condition."
+        }
+      ]
+    }
+  },
+  "faqPage": {
+    "title": "Frequently asked questions",
+    "subtitle": "Answers to the most common questions about mailboxes, purchases and shipping.",
+    "items": [
+      {
+        "question": "Do I need a credit card to shop in the US?",
+        "answer": "Not necessarily. With our personal shopper service, we can make the purchase on your behalf at the store you choose."
+      },
+      {
+        "question": "How do I get my US address?",
+        "answer": "When you sign up and create your mailbox, we automatically assign you your own address that you can use at any online store."
+      },
+      {
+        "question": "How long does shipping take?",
+        "answer": "Air shipping is usually faster, while sea shipping is more economical but has longer transit times. Exact timing depends on origin and volume."
+      },
+      {
+        "question": "Can I consolidate several packages into one shipment?",
+        "answer": "Yes. You can accumulate your purchases at our warehouse and ask us to repack them together to save on total shipping cost."
+      },
+      {
+        "question": "How do I track my package?",
+        "answer": "You can use the waybill number in the Tracking section of our site, or log in to the client portal for full details."
+      },
+      {
+        "question": "What if I need to return a product?",
+        "answer": "Contact us via WhatsApp or email and we'll coordinate the return to the original store."
+      }
+    ]
+  },
+  "contactPage": {
+    "title": "Let's talk",
+    "subtitle": "Message us on WhatsApp or email and we'll get back to you shortly.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappCta": "Chat now",
+    "emailTitle": "Email",
+    "emailCta": "Send email",
+    "formTitle": "Or leave us your question",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "message": "Your message",
+      "submit": "Send message",
+      "success": "Message sent. We'll get back to you shortly.",
+      "error": "We couldn't send your message. Please try again or reach us on WhatsApp."
+    }
+  },
+  "cta": {
+    "loginPortal": "Client portal",
+    "registerPortal": "Create account"
+  }
+}

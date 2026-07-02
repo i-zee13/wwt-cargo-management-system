@@ -99,9 +99,22 @@ if (!function_exists('getOrganizationData')) {
     function getOrganizationData()
     {
         $organization = DB::table('organizations')->first();
-        if ($organization && $organization->logo) {
-            $organization->logo_base64 = 'data:image/png;base64,' . base64_encode(file_get_contents(public_path($organization->logo)));
+        if (!$organization) {
+            return (object) [
+                'name' => config('brand.name'),
+                'logo' => config('brand.default_logo'),
+                'logo_base64' => null,
+            ];
+        }
+        if ($organization->logo) {
+            $logoPath = public_path($organization->logo);
+            if (is_file($logoPath)) {
+                $organization->logo_base64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+            } else {
+                $organization->logo_base64 = null;
+            }
         } else {
+            $organization->logo = config('brand.default_logo');
             $organization->logo_base64 = null;
         }
         return $organization;
@@ -121,8 +134,8 @@ if (!function_exists('SendInBlue')) {
 
         $data = [
        "sender" => [
-           "name" => "wwc",
-           "email" => "zeeshanuy@gmail.com"
+           "name" => config('brand.short_name'),
+           "email" => config('brand.support_email')
        ],
        "to" => [
            [
@@ -158,4 +171,27 @@ if (!function_exists('hasUnpaidPackages')) {
        return null;
     }   
    }
+
+if (!function_exists('emailFooterText')) {
+    function emailFooterText(?string $footerFromSettings = null): string
+    {
+        if ($footerFromSettings && trim($footerFromSettings) !== '') {
+            return $footerFromSettings;
+        }
+
+        return config('brand.email_signature');
+    }
+}
+
+if (!function_exists('brandLogoUrl')) {
+    function brandLogoUrl(): string
+    {
+        $organization = DB::table('organizations')->first();
+        if ($organization && $organization->logo) {
+            return asset($organization->logo);
+        }
+
+        return asset(config('brand.default_logo'));
+    }
+}
  

@@ -220,8 +220,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <script>
-        var organizationName = "{{ getOrganizationData()->name ?? 'Default Organization' }}";
+        var organizationName = "{{ getOrganizationData()->name ?? config('brand.name') }}";
         var organizationLogo = "{{ getOrganizationData()->logo_base64 ?? '' }}";
+        var brandPdfWatermarkLabels = @json([strtolower(config('brand.short_name')), 'wwc']);
         organizationLogo = organizationLogo.replace(/^data:image\/(png|jpg);base64,/, '')
     </script>
 

@@ -1,8 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteCond %{HTTP_HOST} ^(www\.)?wwcsys\.worldwidecommerce\.us$ [NC]
-RewriteRule ^(.*)$ https://wwcsys.worldwidecommerce.us/$1 [L,R=301]
+# Legacy WWC host redirect removed — configure APP_URL / hosting for WWT domains (e.g. wwt.com.py)
 </IfModule>
 
 RewriteEngine On

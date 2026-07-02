@@ -1,0 +1,13 @@
+# WWT marketing site (Next.js) — deploy only the front-end folder.
+# The Laravel app in the repo root must be hosted separately (VPS, Forge, etc.).
+
+[build]
+  base = "front-end"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Required in Netlify UI → Site configuration → Environment variables:
+#   NEXT_PUBLIC_SITE_URL  = https://wwt.com.py  (or your Netlify URL)
+#   NEXT_PUBLIC_LARAVEL_URL = https://portal.wwt.com.py  (production Laravel URL)

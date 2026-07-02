@@ -57,6 +57,27 @@ class PackageController extends Controller
         return view('packages.waybill', compact('details'));
 
     }
+
+    /**
+     * Public read-only tracking lookup for the marketing website.
+     * Intentionally excludes client name/suite and payment fields.
+     */
+    public function trackApi($waybill)
+    {
+        $waybillWithoutHyphens = str_replace('-', ' ', $waybill);
+        $package = PackageModel::where('waybill', $waybillWithoutHyphens)
+            ->select('waybill', 'status', 'kg', 'cbm', 'created_at')
+            ->first();
+
+        if (!$package) {
+            return response()->json(['status' => 'not_found'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $package,
+        ]);
+    }
     public function packageTracking()
     {
 

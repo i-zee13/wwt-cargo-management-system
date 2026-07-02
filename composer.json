@@ -1,37 +1,36 @@
 {
     "name": "laravel/laravel",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "WWT Cargo Management System",
+    "keywords": ["laravel", "framework", "cargo"],
     "license": "MIT",
     "require": {
-        "php": "^7.3|^8.0",
-        "barryvdh/laravel-dompdf": "^2.2",
+        "php": "^8.2",
+        "barryvdh/laravel-dompdf": "^3.0",
         "carlos-meneses/laravel-mpdf": "^2.1",
-        "codedge/laravel-fpdf": "^1.10",
-        "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
+        "codedge/laravel-fpdf": "^1.12",
+        "guzzlehttp/guzzle": "^7.8",
         "intervention/image": "^2.7",
         "jenssegers/agent": "^2.6",
-        "laravel/framework": "^8.75",
-        "laravel/passport": "^10.4",
-        "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5",
-        "laravel/ui": "^3.4",
-        "league/flysystem-aws-s3-v3": "^1.0",
+        "laravel/framework": "^11.0",
+        "laravel/passport": "^12.0",
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^2.9",
+        "laravel/ui": "^4.6",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "maatwebsite/excel": "^3.1",
-        "nwidart/laravel-modules": "^8.3",
-        "phpoffice/phpspreadsheet": "^1.24",
+        "nwidart/laravel-modules": "^11.0",
+        "phpoffice/phpspreadsheet": "^1.29",
         "picqer/php-barcode-generator": "^2.4",
-        "stripe/stripe-php": "^16.1" 
+        "stripe/stripe-php": "^16.1"
     },
     "require-dev": {
-        "facade/ignition": "^2.5",
-        "fakerphp/faker": "^1.9.1",
-        "laravel/sail": "^1.0.1",
-        "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^5.10",
-        "phpunit/phpunit": "^9.5.10"
+        "fakerphp/faker": "^1.23",
+        "laravel/pint": "^1.13",
+        "laravel/sail": "^1.26",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.1",
+        "phpunit/phpunit": "^11.0"
     },
     "autoload": {
         "psr-4": {
@@ -40,9 +39,8 @@
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\": "Modules/"
         },
-        "files" : [
+        "files": [
             "app/helpers.php"
-           
         ]
     },
     "autoload-dev": {
@@ -73,8 +71,13 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
+        }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

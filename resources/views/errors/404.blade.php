@@ -41,7 +41,7 @@
     }
 
     .error .error-div span {
-        background-image: url(../images/logo.png);
+        background-image: url(../images/wwt-logo.png);
         background-position: center center;
         background-repeat: no-repeat;
         background-size: contain;

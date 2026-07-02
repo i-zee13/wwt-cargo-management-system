@@ -149,7 +149,7 @@ class ClientsLoginController extends Controller
         $subject = emailContentSettings('verification')->subject ?? 'Email Verifications Required';
         $headerContent = emailContentSettings('verification')->header_text ?? 'Welcome, {{ client_name }}!';
         $bodyText = emailContentSettings('verification')->body_text;
-        $footerText = emailContentSettings('verification')->footer_text ?? 'Best regards, The WWC Team';
+        $footerText = emailFooterText(emailContentSettings('verification')->footer_text ?? null);
         $loginUser = Auth::guard('clients')->user();
         $placeholders = [
             '{{ first_name }}' => GetActiveGuardDetail()->first_name,

@@ -125,7 +125,7 @@
 
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script>
-         $(document).find('#languageToggle').prop('checked', "{{ session('locale', 'en') }}" === 'es');
+         $(document).find('#languageToggle').prop('checked', "{{ session('locale', config('app.locale')) }}" === 'es');
          
 $(document).on('change', '#languageToggle', function() {
     let languageToggle = $(this).prop('checked') ? 'es' : 'en';

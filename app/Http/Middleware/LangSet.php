@@ -2,13 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App;
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use DB;
-use Illuminate\Support\Facades\Response;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class LangSet
 {
@@ -24,8 +20,11 @@ class LangSet
         return redirect('/');
     }
         if (Session::has('locale')) {
-            App::setLocale(Session::get('locale'));
+            app()->setLocale(Session::get('locale'));
+        } else {
+            app()->setLocale(config('app.locale'));
         }
+
         return $next($request);
     } 
 }

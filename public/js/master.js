@@ -891,7 +891,10 @@ function actionListeners() {
 
 
 function navItemsScript() { 
-  Lang.setLocale(activeLang);  
+  Lang.setLocale(activeLang);
+  if (typeof fallbackLang !== 'undefined' && fallbackLang) {
+    Lang.setFallback(fallbackLang);
+  }
   const parentModules = [
     ...new Set(
       allControllersData

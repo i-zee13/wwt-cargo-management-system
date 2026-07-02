@@ -50,7 +50,7 @@ class ClientsModel extends Model implements AuthAuthenticatable, CanResetPasswor
         $subject = emailContentSettings('welcome')->subject ?? 'Welcome to Our Service';
         $headerContent = emailContentSettings('welcome')->header_text ?? 'Welcome, {{ first_name }}!';
         $bodyText = emailContentSettings('welcome')->body_text ?? 'We are excited to have you on board, {{ first_name }}! Your registered email is {{ email }}.';
-        $footerText = emailContentSettings('welcome')->footer_text ?? 'Best regards, The WWC Team';
+        $footerText = emailFooterText(emailContentSettings('welcome')->footer_text ?? null);
 
         $placeholders = [
             '{{ first_name }}' => GetActiveGuardDetail()->first_name,

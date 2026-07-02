@@ -127,7 +127,7 @@
 										<tbody>
 											<tr>
 												<td>
-													<img src="{{asset('images/logo-full.png')}}" alt="" width="110">
+													<img src="{{ brandLogoUrl() }}" alt="{{ config('brand.short_name') }}" width="110">
 												</td>
 
 												<td mc:edit="text1203" width="50%" align="right" style="color: #000; font-size:14px;font-weight:normal; font-family:'Open Sans', sans-serif; mso-line-height-rule: exactly;">

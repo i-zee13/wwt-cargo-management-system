@@ -475,7 +475,7 @@
         // Add more translations as needed
     ]);
     $('.select_class').select2();
-       $(document).find('#languageToggle').prop('checked', "{{ session('locale', 'en') }}" === 'es');
+       $(document).find('#languageToggle').prop('checked', "{{ session('locale', config('app.locale')) }}" === 'es');
         const inputField = document.querySelector(".phone_field");
         const iti = window.intlTelInput(inputField, {
             initialCountry: "us",

@@ -19,15 +19,17 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\ReportingController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\TranslationsController;
+use App\Http\Controllers\TranslationAssetController;
+use App\Http\Controllers\Admin;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Http\Controllers\ClientController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Carbon\Carbon;
-use Modules\Import\Http\Controllers\ClientsImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,13 +42,15 @@ use Modules\Import\Http\Controllers\ClientsImportController;
 |
  */
 
+Route::get('/js/messages.js', TranslationAssetController::class)->name('translations.js');
+
 Route::post('/change-language', function (Request $request) {
-    $language = $request->input('languageToggle', 'en');
-    $supportedLanguages = ['en', 'es'];
+    $language = $request->input('languageToggle', config('app.locale'));
+    $supportedLanguages = config('translation.supported_locales', ['en', 'es']);
     if (!in_array($language, $supportedLanguages)) {
         return response()->json(['error' => 'Unsupported language'], 400);
     }
-    App::setLocale($language);
+    app()->setLocale($language);
     Session::put('locale', $language);
     return response()->json(['message' => 'Language changed successfully', 'locale' => $language]);
 })->name('change-language');
@@ -304,7 +308,7 @@ Route::group(['middleware' => ['lang_set']], function () {
                 $subject        = emailContentSettings('verification')->subject ?? 'Email Verifications Required';
                 $headerContent  = emailContentSettings('verification')->header_text ?? 'Welcome, {{ client_name }}!';
                 $bodyText       = emailContentSettings('verification')->body_text;
-                $footerText     = emailContentSettings('verification')->footer_text ?? 'Best regards, The WWC Team'; 
+                $footerText     = emailFooterText(emailContentSettings('verification')->footer_text ?? null); 
                     $loginUser = Auth::user();
                    $placeholders = [
                                     '{{ first_name }}' => $loginUser->first_name,

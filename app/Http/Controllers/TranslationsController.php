@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Artisan;
+use App\Services\JsTranslationService;
 use File;
 use Illuminate\Http\Request;
 
 class TranslationsController extends Controller
 {
+    public function __construct(
+        protected JsTranslationService $jsTranslations
+    ) {
+    }
     public function index(){
         return view('translations.index');
     }
@@ -26,9 +30,10 @@ class TranslationsController extends Controller
         $esTranslations = include $esFilePath; 
         $enTranslations[$key] = $english;
         $esTranslations[$key] = $spanish; 
-        File::put($enFilePath, "<?php\n\nreturn " . var_export($enTranslations, true) . ";");
-        File::put($esFilePath, "<?php\n\nreturn " . var_export($esTranslations, true) . ";");
-        Artisan::call('lang:js');
+        File::put($enFilePath, "<?php\n\nreturn " . var_export($enTranslations, true) . ";\n");
+        File::put($esFilePath, "<?php\n\nreturn " . var_export($esTranslations, true) . ";\n");
+        $this->jsTranslations->clearCache();
+
         return response()->json([
             'status' => 'success',
             'msg' => 'Translations updated Successfully', 

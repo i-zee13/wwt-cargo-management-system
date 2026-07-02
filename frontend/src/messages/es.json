@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "siteName": "WWT",
+    "companyName": "World Wide Trading Group",
+    "tagline": "Compra en USA y China. WWT te lo lleva a tu casa u oficina.",
+    "defaultDescription": "Recibe tus compras de Estados Unidos y China en tu propia casilla y recibelas en Paraguay o Argentina. Almacenaje, compra por encargo, reempaque y envio aereo y maritimo."
+  },
+  "nav": {
+    "inicio": "Inicio",
+    "servicios": "Servicios",
+    "tarifas": "Tarifas",
+    "rastreo": "Rastreo",
+    "sobreNosotros": "Sobre nosotros",
+    "faq": "Preguntas frecuentes",
+    "contacto": "Contacto",
+    "ingresar": "Ingresar",
+    "registro": "Registrate"
+  },
+  "hero": {
+    "eyebrow": "Casillero en Estados Unidos",
+    "typingWords": [
+      "a tu casa.",
+      "a tu oficina.",
+      "a Paraguay.",
+      "a Argentina."
+    ],
+    "headlinePrefix": "Compra en USA y China.",
+    "headlineSuffix": "WWT te lo lleva",
+    "subheadline": "Recibe un domicilio propio en Estados Unidos, compra en las tiendas que quieras y nosotros almacenamos, reempacamos y enviamos tus paquetes hasta tu puerta en Paraguay o Argentina.",
+    "ctaPrimary": "Crea tu casillero gratis",
+    "ctaSecondary": "Ver como funciona",
+    "trustNote": "Mas de una decada ayudando a familias y empresas a comprar en el exterior."
+  },
+  "howItWorks": {
+    "title": "Como funciona",
+    "subtitle": "Cuatro pasos simples entre tu compra en Estados Unidos y la entrega en tu puerta.",
+    "steps": [
+      {
+        "title": "Registrate y obtene tu casilla",
+        "description": "Creas tu cuenta gratis y te asignamos una direccion propia en Estados Unidos para tus compras."
+      },
+      {
+        "title": "Compra en cualquier tienda",
+        "description": "Usa tu direccion de WWT en Amazon, eBay, Shein, tiendas chinas o la que prefieras, con o sin tarjeta de credito propia."
+      },
+      {
+        "title": "Nosotros recibimos y revisamos",
+        "description": "Tu paquete llega a nuestro deposito, lo inspeccionamos y te avisamos por WhatsApp y email."
+      },
+      {
+        "title": "Reempacamos y enviamos",
+        "description": "Consolidamos tus paquetes para reducir el costo y los enviamos por via aerea o maritima hasta tu domicilio."
+      }
+    ]
+  },
+  "services": {
+    "title": "Todo lo que necesitas para comprar en el exterior",
+    "subtitle": "Servicios pensados para que comprar afuera sea tan facil como comprar en tu ciudad.",
+    "items": [
+      {
+        "title": "Casillero en USA",
+        "description": "Tu propia direccion en Estados Unidos para recibir compras de cualquier tienda online.",
+        "icon": "mailbox"
+      },
+      {
+        "title": "Compra por encargo",
+        "description": "Nosotros compramos por vos, incluso si no tenes tarjeta de credito internacional.",
+        "icon": "shopping-cart"
+      },
+      {
+        "title": "Almacenaje seguro",
+        "description": "Guardamos tus paquetes en deposito mientras esperas para consolidar tu envio.",
+        "icon": "warehouse"
+      },
+      {
+        "title": "Inspeccion de paquetes",
+        "description": "Revisamos el contenido y te enviamos fotos antes de despachar, con costo adicional opcional.",
+        "icon": "search-check"
+      },
+      {
+        "title": "Reempaque y consolidacion",
+        "description": "Combinamos varios paquetes en uno solo para reducir peso, volumen y costo de envio.",
+        "icon": "package"
+      },
+      {
+        "title": "Envio aereo y maritimo",
+        "description": "Elegi el servicio que mejor se adapte a tu urgencia y presupuesto.",
+        "icon": "plane"
+      },
+      {
+        "title": "Gestion de devoluciones",
+        "description": "Te ayudamos a devolver productos a la tienda de origen cuando lo necesites.",
+        "icon": "undo"
+      },
+      {
+        "title": "Rastreo en linea",
+        "description": "Segui el estado de tus paquetes en tiempo real desde el portal de clientes.",
+        "icon": "map-pin"
+      }
+    ]
+  },
+  "stats": {
+    "items": [
+      { "value": "10", "suffix": "+", "label": "anos de experiencia" },
+      { "value": "2", "suffix": "", "label": "paises con entrega directa" },
+      { "value": "3", "suffix": "", "label": "origenes de compra: USA, China y Espana" },
+      { "value": "24", "suffix": "/7", "label": "rastreo online de tus paquetes" }
+    ]
+  },
+  "trackingTeaser": {
+    "title": "Segui tu paquete al instante",
+    "description": "Ingresa tu numero de guia y conoce el estado actual de tu envio.",
+    "placeholder": "Numero de guia (waybill)",
+    "cta": "Rastrear"
+  },
+  "ctaSection": {
+    "title": "Empeza a comprar en el exterior hoy mismo",
+    "description": "Crea tu casilla gratis en minutos y recibi tu primera compra de Estados Unidos o China.",
+    "ctaPrimary": "Registrate gratis",
+    "ctaSecondary": "Hablar por WhatsApp"
+  },
+  "footer": {
+    "about": "WWT te ayuda a comprar en Estados Unidos y China con un casillero propio, almacenaje y envio directo a Paraguay y Argentina.",
+    "quickLinksTitle": "Enlaces rapidos",
+    "servicesTitle": "Servicios",
+    "contactTitle": "Contacto",
+    "rights": "Todos los derechos reservados."
+  },
+  "servicesPage": {
+    "hero": {
+      "title": "Servicios pensados para compradores internacionales",
+      "subtitle": "Desde tu primera compra hasta la entrega en tu puerta, te acompanamos en cada paso."
+    }
+  },
+  "ratesPage": {
+    "hero": {
+      "title": "Tarifas claras, sin sorpresas",
+      "subtitle": "El costo de tu envio depende del peso, el volumen y el tipo de servicio elegido."
+    },
+    "factorsTitle": "Que define tu tarifa",
+    "factors": [
+      {
+        "title": "Peso y volumen",
+        "description": "Cobramos por el mayor entre el peso real (kg) y el peso volumetrico (cbm) de tu paquete."
+      },
+      {
+        "title": "Origen de la compra",
+        "description": "Las tarifas varian segun si tu compra proviene de Estados Unidos, China o Espana."
+      },
+      {
+        "title": "Tipo de envio",
+        "description": "El envio aereo es mas rapido; el envio maritimo es mas economico para volumenes grandes."
+      },
+      {
+        "title": "Servicios adicionales",
+        "description": "Inspeccion, reempaque especial o compra por encargo pueden tener un costo adicional."
+      }
+    ],
+    "ctaNote": "Ingresa al portal de clientes para ver el cotizador con tarifas actualizadas para tu cuenta.",
+    "cta": "Ver tarifas en el portal"
+  },
+  "trackingPage": {
+    "title": "Rastreo de paquetes",
+    "subtitle": "Ingresa el numero de guia que recibiste por email o WhatsApp para ver el estado de tu envio.",
+    "placeholder": "Ej: WWT-000123",
+    "submit": "Rastrear paquete",
+    "loading": "Buscando tu paquete...",
+    "notFound": "No encontramos ningun paquete con ese numero de guia. Revisa el numero e intenta de nuevo.",
+    "error": "Ocurrio un error al buscar tu paquete. Intenta nuevamente en unos minutos.",
+    "resultTitle": "Estado de tu paquete",
+    "waybillLabel": "Guia",
+    "weightLabel": "Peso",
+    "statusLabel": "Estado",
+    "statuses": {
+      "received": "Recibido en deposito",
+      "in-progress": "En proceso",
+      "embarked": "Embarcado",
+      "arrived": "Arribado a destino",
+      "retired": "Retirado / Entregado"
+    }
+  },
+  "aboutPage": {
+    "title": "Sobre WWT",
+    "intro": "World Wide Trading Group nacio para resolver un problema simple: comprar en Estados Unidos y China desde Paraguay y Argentina no deberia ser complicado.",
+    "mission": {
+      "title": "Nuestra mision",
+      "description": "Conectar a nuestros clientes con las tiendas del mundo, ofreciendo un casillero propio, almacenaje seguro y envios confiables hasta la puerta de su casa u oficina."
+    },
+    "values": {
+      "title": "Como trabajamos",
+      "items": [
+        {
+          "title": "Transparencia",
+          "description": "Tarifas claras y comunicacion constante sobre el estado de cada paquete."
+        },
+        {
+          "title": "Cercania",
+          "description": "Atencion directa por WhatsApp y email en cada etapa del envio."
+        },
+        {
+          "title": "Cuidado",
+          "description": "Inspeccionamos y reempacamos con cuidado para que tu compra llegue en buen estado."
+        }
+      ]
+    }
+  },
+  "faqPage": {
+    "title": "Preguntas frecuentes",
+    "subtitle": "Resolvemos las dudas mas comunes sobre casillero, compras y envios.",
+    "items": [
+      {
+        "question": "Necesito tarjeta de credito para comprar en Estados Unidos?",
+        "answer": "No necesariamente. Con nuestro servicio de compra por encargo, nosotros realizamos la compra por vos en la tienda que elijas."
+      },
+      {
+        "question": "Como recibo mi direccion en Estados Unidos?",
+        "answer": "Al registrarte y crear tu casilla, te asignamos automaticamente una direccion propia que podes usar en cualquier tienda online."
+      },
+      {
+        "question": "Cuanto tiempo tarda un envio?",
+        "answer": "El envio aereo suele ser mas rapido, mientras que el envio maritimo es mas economico pero con tiempos de transito mas largos. Los plazos exactos dependen del origen y el volumen."
+      },
+      {
+        "question": "Puedo consolidar varios paquetes en un solo envio?",
+        "answer": "Si. Podes acumular tus compras en nuestro deposito y pedir que las reempaquemos juntas para ahorrar en el costo total del envio."
+      },
+      {
+        "question": "Como hago el seguimiento de mi paquete?",
+        "answer": "Podes usar el numero de guia en la seccion de Rastreo de nuestro sitio, o ingresar al portal de clientes para ver el detalle completo."
+      },
+      {
+        "question": "Que hago si necesito devolver un producto?",
+        "answer": "Contactanos por WhatsApp o email y coordinamos la gestion de devolucion hacia la tienda de origen."
+      }
+    ]
+  },
+  "contactPage": {
+    "title": "Hablemos",
+    "subtitle": "Escribinos por WhatsApp o email y te respondemos a la brevedad.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappCta": "Chatear ahora",
+    "emailTitle": "Email",
+    "emailCta": "Enviar email",
+    "formTitle": "O dejanos tu consulta",
+    "form": {
+      "name": "Nombre completo",
+      "email": "Email",
+      "message": "Tu consulta",
+      "submit": "Enviar mensaje",
+      "success": "Mensaje enviado. Te responderemos a la brevedad.",
+      "error": "No pudimos enviar tu mensaje. Intenta nuevamente o escribinos por WhatsApp."
+    }
+  },
+  "cta": {
+    "loginPortal": "Portal de clientes",
+    "registerPortal": "Crear cuenta"
+  }
+}

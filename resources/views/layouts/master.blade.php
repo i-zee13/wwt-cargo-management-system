@@ -247,7 +247,8 @@
         var allControllersData = JSON.parse('{!! json_encode($allControllers) !!}');
         var controller = '{!! @$controller !!}';
         var designation = "{!! isset($empDesignation) ? $empDesignation : '' !!}";
-        var activeLang = "{!! isset($activeLang) ? $activeLang : 'en' !!}";
+        var activeLang = "{!! isset($activeLang) ? $activeLang : config('app.locale') !!}";
+        var fallbackLang = "{!! config('app.fallback_locale') !!}";
         var controllerAction = '{!! @$action !!}';
         var currentSegment = '{!! Request::segment( $auth_seg) !!}';
         var csrfToken = $('[name="csrf_token"]').attr('content');
@@ -262,7 +263,7 @@
         //$(".sortable").sortable();
     </script>
 
-<script src="{{ asset('messages.js') }}"></script>
+<script src="{{ route('translations.js') }}"></script>
     <script src="/js/master.js?v={{ time() }}"></script>
     <script src="/js/specialChar.js?v={{ time() }}"></script>
 

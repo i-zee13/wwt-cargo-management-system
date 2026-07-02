@@ -1,0 +1,681 @@
+{
+  "meta": {
+    "siteName": "WWT",
+    "companyName": "World Wide Trading Group",
+    "tagline": "Shop in the USA and China. WWT delivers it to your home or office.",
+    "defaultDescription": "Receive your US and China purchases at your own mailbox address and get them delivered in Paraguay or Argentina. Storage, personal shopper service, repacking, and air and sea shipping."
+  },
+  "nav": {
+    "inicio": "Home",
+    "servicios": "Services",
+    "tarifas": "Rates",
+    "rastreo": "Tracking",
+    "sobreNosotros": "About us",
+    "faq": "FAQ",
+    "contacto": "Contact",
+    "ingresar": "Log in",
+    "registro": "Sign up"
+  },
+  "hero": {
+    "eyebrow": "US mailbox address",
+    "typingWords": [
+      "to your home.",
+      "to your office.",
+      "to Paraguay.",
+      "to Argentina."
+    ],
+    "headlinePrefix": "Shop in the USA and China.",
+    "headlineSuffix": "WWT delivers it",
+    "subheadline": "Get your own US address, shop at any store you like, and we'll store, repack and ship your packages straight to your door in Paraguay or Argentina.",
+    "ctaPrimary": "Create your free mailbox",
+    "ctaSecondary": "See how it works",
+    "ctaTrack": "Track my package",
+    "ctaQuote": "Request a quote",
+    "ctaServices": "View services",
+    "trustNote": "Over a decade helping families and businesses shop abroad."
+  },
+  "whyChooseUs": {
+    "title": "Why choose WWT",
+    "subtitle": "International logistics with competitive rates, clear tracking, and personal support on every shipment.",
+    "items": [
+      {
+        "title": "Secure parcel handling",
+        "description": "We store and dispatch your goods with warehouse controls and updates at every shipping stage.",
+        "image": "/images/logistics/pallet-jack.jpg",
+        "imageLabel": "Secure warehouse parcel handling"
+      },
+      {
+        "title": "Reliable delivery options",
+        "description": "Air and sea services to balance speed and cost based on how urgent your cargo is.",
+        "image": "/images/logistics/container-ship.jpg",
+        "imageLabel": "International air and sea delivery"
+      },
+      {
+        "title": "Local support",
+        "description": "A Paraguay-based team available via WhatsApp, email, and the client portal.",
+        "image": "/images/logistics/support-agent-f.jpg",
+        "imageLabel": "WWT customer support team"
+      },
+      {
+        "title": "Transparent rates",
+        "description": "Clear quotes by weight and volume with no hidden fees on your shipping solutions.",
+        "image": "/images/logistics/barcode-scan.jpg",
+        "imageLabel": "Transparent shipping rates"
+      }
+    ]
+  },
+  "howItWorks": {
+    "title": "How it works",
+    "subtitle": "Four simple steps between your US purchase and delivery at your door.",
+    "steps": [
+      {
+        "title": "Sign up and get your mailbox",
+        "description": "Create your free account and we'll assign you your own US address for your purchases.",
+        "image": "/images/logistics/door-delivery.jpg",
+        "imageLabel": "Sign up for your US mailbox"
+      },
+      {
+        "title": "Shop at any store",
+        "description": "Use your WWT address on Amazon, eBay, Shein, Chinese stores or any retailer you like, with or without your own credit card.",
+        "image": "/images/logistics/packing-tape.jpg",
+        "imageLabel": "Shop online and ship to WWT"
+      },
+      {
+        "title": "We receive and inspect",
+        "description": "Your package arrives at our warehouse, we inspect it and notify you by WhatsApp and email.",
+        "image": "/images/logistics/barcode-scan.jpg",
+        "imageLabel": "Package receiving and inspection"
+      },
+      {
+        "title": "We repack and ship",
+        "description": "We consolidate your packages to lower the cost and ship them by air or sea straight to your address.",
+        "image": "/images/logistics/van-loading.jpg",
+        "imageLabel": "Repacking and international shipping"
+      }
+    ]
+  },
+  "services": {
+    "title": "Shipping and international logistics solutions",
+    "subtitle": "Cargo, parcel, and freight services for individuals and businesses.",
+    "homeItems": [
+      {
+        "title": "Parcel shipping",
+        "description": "We ship your purchases from the USA and China by air or sea to Paraguay and Argentina.",
+        "icon": "plane",
+        "image": "/images/logistics/truck-highway.jpg",
+        "imageLabel": "International parcel and freight shipping"
+      },
+      {
+        "title": "Cargo and logistics",
+        "description": "Consolidation, documentation, and coordination of your freight from origin to destination.",
+        "icon": "warehouse",
+        "image": "/images/logistics/warehouse-forklift.jpg",
+        "imageLabel": "Warehouse and cargo logistics"
+      },
+      {
+        "title": "Online tracking",
+        "description": "Check your package status in real time with your waybill number on our platform.",
+        "icon": "map-pin",
+        "image": "/images/logistics/tracking-phone.jpg",
+        "imageLabel": "Online package tracking"
+      },
+      {
+        "title": "Business solutions",
+        "description": "Recurring shipping plans, corporate purchases, and dedicated support for importers.",
+        "icon": "building",
+        "image": "/images/logistics/delivery-fleet.jpg",
+        "imageLabel": "Business shipping fleet"
+      },
+      {
+        "title": "Package handling",
+        "description": "Receiving, inspection, repacking, and warehouse consolidation to optimize costs.",
+        "icon": "search-check",
+        "image": "/images/logistics/packing-tape.jpg",
+        "imageLabel": "Package packing and handling"
+      },
+      {
+        "title": "Shipping rates",
+        "description": "Competitive per-kilogram pricing by origin, destination, and transport mode.",
+        "icon": "rates",
+        "image": "/images/logistics/barcode-scan.jpg",
+        "imageLabel": "Shipping rates and quotes"
+      }
+    ],
+    "items": [
+      {
+        "title": "US mailbox",
+        "description": "Your own US address to receive purchases from any online store.",
+        "icon": "mailbox",
+        "image": "/images/logistics/door-delivery.jpg",
+        "imageLabel": "US mailbox address"
+      },
+      {
+        "title": "Personal shopper service",
+        "description": "We buy on your behalf, even if you don't have an international credit card.",
+        "icon": "shopping-cart",
+        "image": "/images/logistics/packing-tape.jpg",
+        "imageLabel": "Personal shopper and online purchases"
+      },
+      {
+        "title": "Secure storage",
+        "description": "We keep your packages in our warehouse while you consolidate your shipment.",
+        "icon": "warehouse",
+        "image": "/images/logistics/warehouse-forklift.jpg",
+        "imageLabel": "Secure warehouse storage"
+      },
+      {
+        "title": "Package inspection",
+        "description": "We check the contents and send photos before shipping, with an optional extra fee.",
+        "icon": "search-check",
+        "image": "/images/logistics/barcode-scan.jpg",
+        "imageLabel": "Package inspection and scanning"
+      },
+      {
+        "title": "Repacking and consolidation",
+        "description": "We combine several packages into one to reduce weight, volume and shipping cost.",
+        "icon": "package",
+        "image": "/images/logistics/pallet-jack.jpg",
+        "imageLabel": "Repacking and package consolidation"
+      },
+      {
+        "title": "Air and sea shipping",
+        "description": "Choose the service that best fits your urgency and budget.",
+        "icon": "plane",
+        "image": "/images/logistics/container-ship.jpg",
+        "imageLabel": "International air and sea shipping"
+      },
+      {
+        "title": "Returns management",
+        "description": "We help you return products to the original store whenever you need to.",
+        "icon": "undo",
+        "image": "/images/logistics/van-loading.jpg",
+        "imageLabel": "Returns and reverse logistics"
+      },
+      {
+        "title": "Online tracking",
+        "description": "Follow your package status in real time from the client portal.",
+        "icon": "map-pin",
+        "image": "/images/logistics/tracking-phone.jpg",
+        "imageLabel": "Online package tracking"
+      }
+    ]
+  },
+  "stats": {
+    "items": [
+      { "value": "10", "suffix": "+", "label": "years of experience" },
+      { "value": "2", "suffix": "", "label": "countries with direct delivery" },
+      { "value": "3", "suffix": "", "label": "shopping origins: USA, China and Spain" },
+      { "value": "24", "suffix": "/7", "label": "online package tracking" }
+    ]
+  },
+  "trackingTeaser": {
+    "title": "Track your package instantly",
+    "description": "Enter your waybill number and check your shipment status.",
+    "placeholder": "Waybill number",
+    "cta": "Track"
+  },
+  "ctaSection": {
+    "title": "Start shopping abroad today",
+    "description": "Create your free mailbox in minutes and receive your first purchase from the US or China.",
+    "ctaPrimary": "Sign up for free",
+    "ctaSecondary": "Chat on WhatsApp"
+  },
+  "footer": {
+    "about": "WWT helps you shop in the USA and China with your own mailbox, secure storage and direct shipping to Paraguay and Argentina.",
+    "quickLinksTitle": "Quick links",
+    "servicesTitle": "Services",
+    "contactTitle": "Contact",
+    "rights": "All rights reserved."
+  },
+  "servicesPage": {
+    "hero": {
+      "title": "Services built for international shoppers",
+      "subtitle": "From your first purchase to delivery at your door, we're with you every step of the way."
+    },
+    "cover": {
+      "image": "/images/hero/distribution-center.jpg",
+      "imageAlt": "WWT international distribution and logistics center"
+    }
+  },
+  "ratesPage": {
+    "hero": {
+      "title": "Clear rates, no surprises",
+      "subtitle": "Your shipping cost depends on weight, volume and the type of service you choose."
+    },
+    "cover": {
+      "image": "/images/hero/delivery-trucks.jpg",
+      "imageAlt": "International freight and delivery fleet"
+    },
+    "factorsTitle": "What determines your rate",
+    "factors": [
+      {
+        "title": "Weight and volume",
+        "description": "We charge based on whichever is greater: the actual weight (kg) or the volumetric weight (cbm) of your package."
+      },
+      {
+        "title": "Purchase origin",
+        "description": "Rates vary depending on whether your purchase comes from the US, China or Spain."
+      },
+      {
+        "title": "Shipping type",
+        "description": "Air shipping is faster; sea shipping is more economical for larger volumes."
+      },
+      {
+        "title": "Extra services",
+        "description": "Inspection, special repacking or personal shopper service may carry an additional cost."
+      }
+    ],
+    "ctaNote": "Log in to the client portal to see the calculator with rates updated for your account.",
+    "cta": "View rates in the portal"
+  },
+  "trackingPage": {
+    "title": "Package tracking",
+    "subtitle": "Enter the waybill number you received by email or WhatsApp to check your shipment status.",
+    "cover": {
+      "image": "/images/hero/air-dispatch.jpg",
+      "imageAlt": "Air cargo dispatch and shipment tracking"
+    },
+    "placeholder": "e.g. WWT-000123",
+    "submit": "Track package",
+    "loading": "Looking up your package...",
+    "notFound": "We couldn't find a package with that waybill number. Please check the number and try again.",
+    "error": "Something went wrong while looking up your package. Please try again in a few minutes.",
+    "resultTitle": "Package status",
+    "waybillLabel": "Waybill",
+    "weightLabel": "Weight",
+    "statusLabel": "Status",
+    "statuses": {
+      "received": "Received at warehouse",
+      "in-progress": "In progress",
+      "embarked": "Shipped",
+      "arrived": "Arrived at destination",
+      "retired": "Picked up / Delivered"
+    }
+  },
+  "aboutPage": {
+    "title": "About WWT",
+    "intro": "World Wide Trading Group was created to solve a simple problem: shopping in the US and China from Paraguay and Argentina shouldn't be complicated.",
+    "cover": {
+      "image": "/images/hero/logistics-port.jpg",
+      "imageAlt": "Global logistics port and international trade"
+    },
+    "mission": {
+      "title": "Our mission",
+      "description": "Connect our customers with stores around the world, offering their own mailbox, secure storage and reliable shipping to their door at home or the office."
+    },
+    "values": {
+      "title": "How we work",
+      "items": [
+        {
+          "title": "Transparency",
+          "description": "Clear rates and constant communication about the status of every package."
+        },
+        {
+          "title": "Personal attention",
+          "description": "Direct support over WhatsApp and email at every stage of the shipment."
+        },
+        {
+          "title": "Care",
+          "description": "We inspect and repack carefully so your purchase arrives in good condition."
+        }
+      ]
+    }
+  },
+  "faqPage": {
+    "title": "Frequently asked questions",
+    "subtitle": "Answers to the most common questions about mailboxes, purchases and shipping.",
+    "cover": {
+      "image": "/images/logistics/support-agent-f.jpg",
+      "imageAlt": "WWT customer support team"
+    },
+    "items": [
+      {
+        "question": "Do I need a credit card to shop in the US?",
+        "answer": "Not necessarily. With our personal shopper service, we can make the purchase on your behalf at the store you choose."
+      },
+      {
+        "question": "How do I get my US address?",
+        "answer": "When you sign up and create your mailbox, we automatically assign you your own address that you can use at any online store."
+      },
+      {
+        "question": "How long does shipping take?",
+        "answer": "Air shipping is usually faster, while sea shipping is more economical but has longer transit times. Exact timing depends on origin and volume."
+      },
+      {
+        "question": "Can I consolidate several packages into one shipment?",
+        "answer": "Yes. You can accumulate your purchases at our warehouse and ask us to repack them together to save on total shipping cost."
+      },
+      {
+        "question": "How do I track my package?",
+        "answer": "You can use the waybill number in the Tracking section of our site, or log in to the client portal for full details."
+      },
+      {
+        "question": "What if I need to return a product?",
+        "answer": "Contact us via WhatsApp or email and we'll coordinate the return to the original store."
+      }
+    ]
+  },
+  "contactPage": {
+    "title": "Let's talk",
+    "subtitle": "Message us on WhatsApp or email and we'll get back to you shortly.",
+    "cover": {
+      "image": "/images/hero/warehouse-modern.jpg",
+      "imageAlt": "WWT logistics operations center"
+    },
+    "whatsappTitle": "WhatsApp",
+    "whatsappCta": "Chat now",
+    "emailTitle": "Email",
+    "emailCta": "Send email",
+    "formTitle": "Or leave us your question",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "message": "Your message",
+      "submit": "Send message",
+      "success": "Message sent. We'll get back to you shortly.",
+      "error": "We couldn't send your message. Please try again or reach us on WhatsApp."
+    }
+  },
+  "cta": {
+    "loginPortal": "Client portal",
+    "registerPortal": "Create account"
+  },
+  "logo": {
+    "ocrLine1": "WWT",
+    "ocrLine2": "Group",
+    "tagline": "World Wide Trading Group"
+  },
+  "trustedPartner": {
+    "title": "Your trusted logistics partner",
+    "description": "At WWT Group we provide international shipping and logistics solutions to support your purchases abroad. Whether you shop in the USA or China, need your own mailbox, want to consolidate packages or track a shipment, we guide you with a personal, transparent and results-driven service."
+  },
+  "serviceCategories": {
+    "title": "Service areas",
+    "subtitle": "Everything you need to shop, store and receive your packages in Paraguay and Argentina.",
+    "categories": [
+      {
+        "title": "Parcel shipping",
+        "visual": "shipping",
+        "image": "/images/logistics/truck-highway.jpg",
+        "visualLabel": "International air and sea shipping",
+        "links": [
+          { "label": "Air freight", "href": "/servicios" },
+          { "label": "Sea freight", "href": "/servicios" },
+          { "label": "Home delivery", "href": "/tarifas" },
+          { "label": "Package consolidation", "href": "/servicios" }
+        ]
+      },
+      {
+        "title": "Mailbox & shopping",
+        "visual": "packages",
+        "image": "/images/logistics/door-delivery.jpg",
+        "visualLabel": "US mailbox and personal shopper",
+        "links": [
+          { "label": "US mailbox address", "href": "/servicios" },
+          { "label": "Personal shopper service", "href": "/servicios" },
+          { "label": "Sign up free", "href": "/contacto" },
+          { "label": "Client portal", "href": "/contacto" }
+        ]
+      },
+      {
+        "title": "Logistics & warehouse",
+        "visual": "warehouse",
+        "image": "/images/logistics/warehouse-forklift.jpg",
+        "visualLabel": "Storage and cargo handling",
+        "links": [
+          { "label": "Secure storage", "href": "/servicios" },
+          { "label": "Package inspection", "href": "/servicios" },
+          { "label": "Special repacking", "href": "/servicios" },
+          { "label": "Returns management", "href": "/servicios" }
+        ]
+      },
+      {
+        "title": "Tracking & updates",
+        "visual": "tracking",
+        "image": "/images/logistics/tracking-phone.jpg",
+        "visualLabel": "Online package tracking",
+        "links": [
+          { "label": "Track my package", "href": "/rastreo" },
+          { "label": "Shipment status", "href": "/rastreo" },
+          { "label": "WhatsApp enquiries", "href": "/contacto" },
+          { "label": "FAQ", "href": "/preguntas-frecuentes" }
+        ]
+      },
+      {
+        "title": "Rates & quotes",
+        "visual": "rates",
+        "image": "/images/logistics/barcode-scan.jpg",
+        "visualLabel": "International shipping rates",
+        "links": [
+          { "label": "View rates", "href": "/tarifas" },
+          { "label": "Request a quote", "href": "/contacto" },
+          { "label": "Shipping to Paraguay", "href": "/tarifas" },
+          { "label": "Shipping to Argentina", "href": "/tarifas" }
+        ]
+      },
+      {
+        "title": "Business solutions",
+        "visual": "global",
+        "image": "/images/logistics/delivery-fleet.jpg",
+        "visualLabel": "Logistics for companies and importers",
+        "links": [
+          { "label": "Corporate shipping", "href": "/servicios" },
+          { "label": "Recurring purchases", "href": "/servicios" },
+          { "label": "About WWT Group", "href": "/sobre-nosotros" },
+          { "label": "Business contact", "href": "/contacto" }
+        ]
+      }
+    ]
+  },
+  "consultationSection": {
+    "title": "Online consultation",
+    "description": "Use our contact form to tell us about your shipment, quote request or logistics enquiry. We'll get back to you shortly by email or WhatsApp.",
+    "note": "Typical response time: one business day.",
+    "cta": "Request a quote",
+    "ctaSecondary": "Track package"
+  },
+  "imageBlocks": {
+    "home": [
+      {
+        "title": "Your goods, managed in our warehouse",
+        "description": "We receive, store and prepare every package with clear processes. From arrival at our warehouse to dispatch, you always know where your shipment stands.",
+        "bullets": [
+          "Receiving and logging every package",
+          "Secure storage until you're ready to ship",
+          "Repacking and consolidation to cut costs"
+        ],
+        "layout": "collage",
+        "images": [
+          "/images/hero/warehouse-operations.jpg",
+          "/images/hero/warehouse-modern.jpg",
+          "/images/logistics/warehouse-forklift.jpg"
+        ],
+        "visualLabel": "WWT warehouse and package storage",
+        "reversed": false,
+        "ctaLabel": "View services",
+        "ctaHref": "/servicios"
+      },
+      {
+        "title": "International shipping with real-time tracking",
+        "description": "We dispatch by air or sea to Paraguay and Argentina. Check your waybill status anytime on our tracking platform.",
+        "bullets": [
+          "Online tracking with your waybill number",
+          "Air and sea options",
+          "Home or office delivery"
+        ],
+        "layout": "mosaic",
+        "images": [
+          "/images/logistics/container-ship.jpg",
+          "/images/hero/air-freight.jpg",
+          "/images/hero/logistics-port.jpg"
+        ],
+        "visualLabel": "Package tracking and international shipping",
+        "reversed": true,
+        "ctaLabel": "Track my package",
+        "ctaHref": "/rastreo"
+      }
+    ],
+    "servicesPage": [
+      {
+        "title": "End-to-end logistics for shoppers and businesses",
+        "description": "We combine a US mailbox, personal shopper service, package handling and international freight in one workflow — ideal for frequent cross-border buyers.",
+        "layout": "collage",
+        "images": [
+          "/images/hero/distribution-center.jpg",
+          "/images/hero/warehouse-operations.jpg",
+          "/images/hero/warehouse-modern.jpg"
+        ],
+        "visualLabel": "WWT Group international logistics",
+        "reversed": false
+      },
+      {
+        "title": "Air, sea and ground — every mode covered",
+        "description": "From cargo planes and container ships to our delivery fleet, we choose the right transport for your timeline and budget.",
+        "bullets": [
+          "Air freight for urgent shipments",
+          "Sea freight for larger volumes",
+          "Last-mile delivery to your door"
+        ],
+        "layout": "mosaic",
+        "images": [
+          "/images/hero/air-freight.jpg",
+          "/images/logistics/truck-highway.jpg",
+          "/images/hero/delivery-vans.jpg"
+        ],
+        "visualLabel": "Multimodal international freight",
+        "reversed": true,
+        "ctaLabel": "Request a quote",
+        "ctaHref": "/contacto"
+      }
+    ],
+    "ratesPage": [
+      {
+        "title": "Competitive rates by weight and destination",
+        "description": "We charge the greater of actual weight or volumetric weight. Rates vary by origin, shipping mode and final destination in Paraguay or Argentina.",
+        "bullets": [
+          "Transparent per-kilogram quotes",
+          "Fast air or economical sea freight",
+          "No hidden fees in the process"
+        ],
+        "layout": "collage",
+        "images": [
+          "/images/hero/delivery-trucks.jpg",
+          "/images/logistics/truck-highway.jpg",
+          "/images/hero/air-freight.jpg"
+        ],
+        "visualLabel": "International shipping rates",
+        "reversed": false,
+        "ctaLabel": "Request a quote",
+        "ctaHref": "/contacto"
+      },
+      {
+        "title": "Global routes, local delivery",
+        "description": "Your package travels through international hubs and arrives at your address in Paraguay or Argentina with full traceability.",
+        "layout": "split",
+        "image": "/images/hero/logistics-port.jpg",
+        "visualLabel": "Global shipping routes to South America",
+        "reversed": true
+      }
+    ],
+    "trackingPage": [
+      {
+        "title": "Clear visibility at every shipping stage",
+        "description": "From warehouse receipt to final delivery, every status change is recorded. Enter your waybill and see your shipment progress.",
+        "layout": "collage",
+        "images": [
+          "/images/hero/air-dispatch.jpg",
+          "/images/logistics/tracking-phone.jpg",
+          "/images/hero/air-freight.jpg"
+        ],
+        "visualLabel": "Package tracking dashboard",
+        "reversed": false
+      },
+      {
+        "title": "From port to your doorstep",
+        "description": "Follow your shipment as it moves through customs, transit and final delivery — with updates at every milestone.",
+        "layout": "mosaic",
+        "images": [
+          "/images/logistics/container-ship.jpg",
+          "/images/hero/delivery-vans.jpg",
+          "/images/logistics/door-delivery.jpg"
+        ],
+        "visualLabel": "Shipment journey from origin to delivery",
+        "reversed": true
+      }
+    ],
+    "aboutPage": [
+      {
+        "title": "Over a decade connecting buyers with the world",
+        "description": "WWT Group started in Paraguay to make international shopping simple. Today we support families and businesses with a close, transparent and reliable service.",
+        "layout": "collage",
+        "images": [
+          "/images/hero/logistics-port.jpg",
+          "/images/hero/distribution-center.jpg",
+          "/images/logistics/container-ship.jpg"
+        ],
+        "visualLabel": "World Wide Trading Group — global logistics",
+        "reversed": false
+      },
+      {
+        "title": "People first, logistics always",
+        "description": "Behind every shipment is a team that cares about your purchase arriving safely, on time and without surprises.",
+        "layout": "mosaic",
+        "images": [
+          "/images/logistics/support-agent-f.jpg",
+          "/images/logistics/warehouse-forklift.jpg",
+          "/images/hero/delivery-trucks.jpg"
+        ],
+        "visualLabel": "WWT team and operations",
+        "reversed": true,
+        "ctaLabel": "Contact us",
+        "ctaHref": "/contacto"
+      }
+    ],
+    "faqPage": [
+      {
+        "title": "We answer your questions before you buy",
+        "description": "Shopping abroad raises questions about rates, timelines and paperwork. Our team is available to guide you through every step.",
+        "layout": "split",
+        "image": "/images/logistics/support-agent-f.jpg",
+        "visualLabel": "WWT customer support",
+        "reversed": false,
+        "ctaLabel": "Contact us",
+        "ctaHref": "/contacto"
+      },
+      {
+        "title": "Your package journey, explained",
+        "description": "From warehouse receiving to international transit and home delivery — we make every stage easy to understand.",
+        "layout": "mosaic",
+        "images": [
+          "/images/logistics/support-agent-m.jpg",
+          "/images/hero/air-dispatch.jpg",
+          "/images/hero/delivery-vans.jpg"
+        ],
+        "visualLabel": "Packages and international shipping",
+        "reversed": true
+      }
+    ],
+    "contactPage": [
+      {
+        "title": "We're here when you need us",
+        "description": "Reach us on WhatsApp or email and a WWT Group advisor will help with shipping, rates or your account status.",
+        "layout": "collage",
+        "images": [
+          "/images/logistics/support-agent-f.jpg",
+          "/images/logistics/support-agent-m.jpg",
+          "/images/hero/air-dispatch.jpg"
+        ],
+        "visualLabel": "WWT Group customer support",
+        "reversed": false
+      },
+      {
+        "title": "Operations you can trust",
+        "description": "Our warehouses and logistics network are built to handle your purchases with care — from the moment they arrive to the day they're delivered.",
+        "layout": "split",
+        "image": "/images/hero/warehouse-modern.jpg",
+        "visualLabel": "WWT logistics operations",
+        "reversed": true
+      }
+    ]
+  }
+}

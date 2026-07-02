@@ -60,7 +60,7 @@ class ForgotPasswordController extends Controller
             $subject = emailContentSettings('reset')->subject ?? 'Password Reset Request';
             $headerContent = emailContentSettings('reset')->header_text ?? 'Hello, {{ first_name }}!';
             $bodyText = emailContentSettings('reset')->body_text ?? 'Click the link below to reset your password, {{ first_name }}.';
-            $footerText = emailContentSettings('reset')->footer_text ?? 'Best regards, The WWC Team';
+            $footerText = emailFooterText(emailContentSettings('reset')->footer_text ?? null);
             $loginUser = $user;
             $token = Password::broker()->createToken($user);
             $placeholders = [
