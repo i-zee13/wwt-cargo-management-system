@@ -156,6 +156,8 @@
         </div>
     </div>
 </div>
+{{-- DEMO: Quick Actions hidden — uncomment block below after demo --}}
+{{--
 <div class="row d-flex justify-content-center mt-3">
     <div class="col-11 text-start">
         <div class="card shadow-lg p-4 text-white"
@@ -176,6 +178,7 @@
         </div>
     </div>
 </div>
+--}}
 
 @endsection
 <link rel="stylesheet"
