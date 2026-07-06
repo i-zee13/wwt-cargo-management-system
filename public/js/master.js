@@ -895,6 +895,11 @@ function navItemsScript() {
   if (typeof fallbackLang !== 'undefined' && fallbackLang) {
     Lang.setFallback(fallbackLang);
   }
+
+  if (!Array.isArray(allControllersData)) {
+    allControllersData = [];
+  }
+
   const parentModules = [
     ...new Set(
       allControllersData

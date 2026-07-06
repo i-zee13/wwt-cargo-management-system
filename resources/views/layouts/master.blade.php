@@ -240,25 +240,21 @@
     
 @endphp
     <script>
-        var is_web = JSON.parse('{!! json_encode([
-                    'is_web' => GetActiveGuardDetail()->is_web, 
-                ]) !!}'); 
-        var rightsGiven = JSON.parse('{!! json_encode($userPermissions) !!}'); 
-        var allControllersData = JSON.parse('{!! json_encode($allControllers) !!}');
-        var controller = '{!! @$controller !!}';
-        var designation = "{!! isset($empDesignation) ? $empDesignation : '' !!}";
-        var activeLang = "{!! isset($activeLang) ? $activeLang : config('app.locale') !!}";
-        var fallbackLang = "{!! config('app.fallback_locale') !!}";
-        var controllerAction = '{!! @$action !!}';
-        var currentSegment = '{!! Request::segment( $auth_seg) !!}';
+        var is_web = @json(['is_web' => GetActiveGuardDetail()->is_web]);
+        var rightsGiven = @json($userPermissions ?? []);
+        var allControllersData = @json($allControllers ?? []);
+        var controller = @json($controller ?? '');
+        var designation = @json(isset($empDesignation) ? $empDesignation : '');
+        var activeLang = @json(isset($activeLang) ? $activeLang : config('app.locale'));
+        var fallbackLang = @json(config('app.fallback_locale'));
+        var controllerAction = @json($action ?? '');
+        var currentSegment = @json(Request::segment($auth_seg));
         var csrfToken = $('[name="csrf_token"]').attr('content');
-           var loggedInUser =
-                '{!! json_encode([
-                    'user_id' => GetActiveGuardDetail()->id,
-                    'name' => GetActiveGuardDetail()->first_name,
-                    'picture' => GetActiveGuardDetail()->picture,
-                ]) !!}';
-        loggedInUser = JSON.parse(loggedInUser);
+        var loggedInUser = @json([
+            'user_id' => GetActiveGuardDetail()->id,
+            'name' => GetActiveGuardDetail()->first_name,
+            'picture' => GetActiveGuardDetail()->picture,
+        ]);
         
         //$(".sortable").sortable();
     </script>

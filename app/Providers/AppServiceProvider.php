@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
             $designation = '';
             list($controller, $action) = explode('@', $controller);
             $userPermissions    =   array(); 
-            $allControllers ='';
+            $allControllers = [];
 
          
             if(Auth::guard('web')->check()){
@@ -43,9 +43,9 @@ class AppServiceProvider extends ServiceProvider
             
                 $allControllers     =   CL::orderBy('parent_module_priority')->get();
                 $allControllers     =   $allControllers->filter(function($item){
-                    $item->designation_ids  =   JSON_encode(DB::table("controller_designation_assignments")->whereRaw("controller_id = $item->id")->pluck("designation_id")->toArray());
+                    $item->designation_ids  =   json_encode(DB::table("controller_designation_assignments")->whereRaw("controller_id = $item->id")->pluck("designation_id")->toArray());
                     return $item; 
-                });  
+                })->values();  
                 if(Auth::user()->super){
                     $controllers            =   CL::get();
                     foreach($controllers as $obj)
