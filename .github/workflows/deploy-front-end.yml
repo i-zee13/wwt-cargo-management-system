@@ -1,0 +1,48 @@
+# Auto-deploy WWT marketing site (front-end/) to Netlify on push to main.
+# Laravel backend is NOT deployed by this workflow — host that on your PHP server.
+
+name: Deploy front-end to Netlify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "front-end/**"
+      - "netlify.toml"
+      - ".github/workflows/deploy-front-end.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: netlify-front-end
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: front-end/package-lock.json
+
+      - name: Install dependencies
+        working-directory: front-end
+        run: npm ci
+
+      - name: Build static site
+        working-directory: front-end
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_LARAVEL_URL: ${{ vars.NEXT_PUBLIC_LARAVEL_URL }}
+        run: npm run build
+
+      - name: Deploy to Netlify
+        run: npx netlify-cli@17 deploy --prod --dir=front-end/out --no-build --message "GitHub Actions ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

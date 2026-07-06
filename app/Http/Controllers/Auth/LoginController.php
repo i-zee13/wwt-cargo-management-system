@@ -104,7 +104,7 @@ class LoginController extends Controller
             $loginLog->username     = $user->username;
             $loginLog->login_time   =  Carbon::now();
             $loginLog->ip_address   = $request->ip();
-            $loginLog->mac_address  = substr(exec('getmac'), 0, 17);
+            $loginLog->mac_address  = clientMacAddressForLoginLog();
             $loginLog->save();
         }
     }

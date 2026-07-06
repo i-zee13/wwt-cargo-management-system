@@ -95,6 +95,69 @@ if (!function_exists('getStateCites')) {
         return DB::table('cities')->where('state_id', '=', $state_id)->get();
     }
 }
+if (!function_exists('clientMacAddressForLoginLog')) {
+    /**
+     * MAC address is only available on some Windows CLI setups; never crash login when exec is disabled.
+     */
+    function clientMacAddressForLoginLog(): ?string
+    {
+        if (! function_exists('exec')) {
+            return null;
+        }
+
+        $disabled = array_filter(array_map('trim', explode(',', (string) ini_get('disable_functions'))));
+        if (in_array('exec', $disabled, true)) {
+            return null;
+        }
+
+        $output = @exec('getmac 2>&1');
+
+        if (! is_string($output) || trim($output) === '') {
+            return null;
+        }
+
+        return substr(trim($output), 0, 17) ?: null;
+    }
+}
+
+if (!function_exists('isLegacyOrganizationLogo')) {
+    function isLegacyOrganizationLogo(?string $logo): bool
+    {
+        if (! $logo || trim($logo) === '') {
+            return true;
+        }
+
+        $lower = strtolower($logo);
+
+        foreach (['wwc', 'commerce', 'worldwidecommerce'] as $marker) {
+            if (str_contains($lower, $marker)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}
+
+if (!function_exists('organizationLogoPath')) {
+    function organizationLogoPath(?string $storedLogo = null): string
+    {
+        $default = ltrim(config('brand.default_logo', 'images/wwt-logo.png'), '/');
+
+        if (isLegacyOrganizationLogo($storedLogo)) {
+            $storedLogo = $default;
+        } else {
+            $storedLogo = ltrim((string) $storedLogo, '/');
+        }
+
+        if (! is_file(public_path($storedLogo))) {
+            $storedLogo = $default;
+        }
+
+        return '/'.$storedLogo;
+    }
+}
+
 if (!function_exists('getOrganizationData')) {
     function getOrganizationData()
     {
@@ -102,21 +165,21 @@ if (!function_exists('getOrganizationData')) {
         if (!$organization) {
             return (object) [
                 'name' => config('brand.name'),
-                'logo' => config('brand.default_logo'),
+                'logo' => organizationLogoPath(null),
                 'logo_base64' => null,
             ];
         }
-        if ($organization->logo) {
-            $logoPath = public_path($organization->logo);
-            if (is_file($logoPath)) {
-                $organization->logo_base64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
-            } else {
-                $organization->logo_base64 = null;
-            }
+
+        $organization->name = $organization->name ?: config('brand.name');
+        $organization->logo = organizationLogoPath($organization->logo ?? null);
+
+        $logoPath = public_path(ltrim($organization->logo, '/'));
+        if (is_file($logoPath)) {
+            $organization->logo_base64 = 'data:image/png;base64,'.base64_encode(file_get_contents($logoPath));
         } else {
-            $organization->logo = config('brand.default_logo');
             $organization->logo_base64 = null;
         }
+
         return $organization;
     }
 }
@@ -187,11 +250,7 @@ if (!function_exists('brandLogoUrl')) {
     function brandLogoUrl(): string
     {
         $organization = DB::table('organizations')->first();
-        if ($organization && $organization->logo) {
-            return asset($organization->logo);
-        }
-
-        return asset(config('brand.default_logo'));
+        return asset(organizationLogoPath($organization->logo ?? null));
     }
 }
  
