@@ -22,72 +22,70 @@
 </head>
 <style>
     .logo_name {
-        z-index: 99999999
+        z-index: 99999999;
     }
-</style>
 
+    .flash-message {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1050;
+        padding: 15px 30px;
+        border-radius: 1px solid black;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(135deg, black, #333);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: bounce-in 1s ease, fade-out 1s ease 9s forwards;
+        transition: transform 0.3s ease;
+    }
 
-.flash-message {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1050;
-    padding: 15px 30px;
-    border-radius: 1px solid black;
-    font-size: 1rem;
-    font-weight: bold;
-    color: white;
-    background: linear-gradient(135deg, black, #333); 
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    animation: bounce-in 1s ease, fade-out 1s ease 9s forwards;
-    transition: transform 0.3s ease;
-}
+    .flash-message i {
+        font-size: 1.5rem;
+        animation: pulse 1.5s infinite;
+    }
 
-.flash-message i {
-    font-size: 1.5rem;
-    animation: pulse 1.5s infinite; /* Pulsating icon */
-}
+    .flash-message span {
+        font-size: 1.2rem;
+    }
 
-.flash-message span {
-    font-size: 1.2rem;
-}
+    @keyframes bounce-in {
+        0% {
+            transform: translateX(-50%) translateY(-100px) scale(0.5);
+            opacity: 0;
+        }
+        50% {
+            transform: translateX(-50%) translateY(20px) scale(1.2);
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+    }
 
-@keyframes bounce-in {
-    0% {
-        transform: translateX(-50%) translateY(-100px) scale(0.5);
-        opacity: 0;
+    @keyframes fade-out {
+        from {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px) scale(0.8);
+        }
     }
-    50% {
-        transform: translateX(-50%) translateY(20px) scale(1.2);
-        opacity: 1;
-    }
-    100% {
-        transform: translateX(-50%) translateY(0) scale(1);
-    }
-}
 
-@keyframes fade-out {
-    from {
-        opacity: 1;
-        transform: translateX(-50%) scale(1);
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.2);
+        }
     }
-    to {
-        opacity: 0;
-        transform: translateX(-50%) translateY(-20px) scale(0.8);
-    }
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2);
-    }
-}
 </style>
 
 <body>
