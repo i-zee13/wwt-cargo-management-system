@@ -76,6 +76,21 @@ Route::group(['middleware' => ['lang_set']], function () {
         return 'Caches cleared and optimized successfully.';
     });
 
+    Route::get('/migrate', function () {
+        Artisan::call('migrate', ['--force' => true]);
+        $migrateOutput = Artisan::output();
+
+        Artisan::call('config:clear');
+        Artisan::call('cache:clear');
+        Artisan::call('view:clear');
+
+        return response(
+            "Migrations completed.\n\n{$migrateOutput}\n\nCaches cleared.",
+            200,
+            ['Content-Type' => 'text/plain; charset=UTF-8']
+        );
+    });
+
     Route::prefix('client')->group(function () {
         Auth::routes();
         Route::get('password/reset', [ClientForgotPasswordController::class, 'showLinkRequestForm'])->name('client.request');
