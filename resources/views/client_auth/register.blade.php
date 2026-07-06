@@ -157,10 +157,10 @@
         } 
         }
     </style>
-    <div class="register-page__topbar">
-        <div class="auth-page__lang">
-            @include('includes.language-toggle')
-        </div>
+    <div class="row">
+    <div class="col-lg-12 col-md-12 toggle_div">
+                    @include('includes.language-toggle')
+                </div> 
     </div>
     <div class="row top-left-logo ">
     <div class=" col-md-12">

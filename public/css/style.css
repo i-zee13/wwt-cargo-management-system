@@ -633,28 +633,6 @@ table.dataTable > tbody > tr.child ul.dtr-details > li {
   font-weight: 600;
 }
 
-.login-page__topbar {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.875rem 0 0 1.875rem;
-  position: relative;
-  z-index: 100;
-}
-
-.login-page__topbar .logo_name {
-  position: static;
-  top: auto;
-  left: auto;
-}
-
-.auth-page__lang {
-  flex-shrink: 0;
-  margin-left: auto;
-  margin-right: calc(50% + 3rem);
-}
-
 .login-form {
   width: 25rem;
   margin: auto;
@@ -3385,79 +3363,49 @@ input:checked + .slider:before {
   background-color: transparent !important;
 }
 
-@media (max-width: 1199.98px) {
-  .auth-page__lang {
-    margin-right: calc(50% + 2rem);
+.toggle_div {
+  color: #333333;
+  position: absolute;
+  top: 3rem;
+  right: 4rem;
+  z-index: 99999999;
+  text-align: right;
+}
+
+.login-page .toggle_div {
+  right: 9rem;
+}
+
+@media (max-width: 1199px) {
+  .login-page .toggle_div {
+    right: 7.5rem;
+  }
+
+  .toggle_div {
+    right: 3.5rem;
   }
 }
 
-@media (max-width: 991.98px) {
-  .login-page__topbar {
-    padding: 1.25rem 1rem 0;
-  }
-
-  .auth-page__lang {
-    margin-right: 1.25rem;
+@media (max-width: 991px) {
+  .login-page .toggle_div,
+  .toggle_div {
+    top: 2.75rem;
+    right: 5rem;
   }
 }
 
-@media (max-width: 767.98px) {
-  .login-page__topbar {
-    padding: 1rem 0.75rem 0;
-    align-items: center;
-  }
-
-  .auth-page__lang {
-    margin-right: 0.5rem;
-  }
-
-  .auth-page__lang .lang-switch__option {
-    font-size: 0.6875rem;
-    padding: 0.375rem 0.5rem;
+@media (max-width: 768px) {
+  .login-page .toggle_div,
+  .toggle_div {
+    top: 2rem;
+    right: 1.25rem;
   }
 }
 
-@media (max-width: 575.98px) {
-  .login-page__topbar {
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .login-page__topbar .logo_name img {
-    height: 2.75rem;
-  }
-
-  .auth-page__lang {
-    margin-right: 0;
-    margin-left: auto;
-  }
-}
-
-.register-page__topbar {
-  display: flex;
-  justify-content: flex-end;
-  padding: 1.5rem 2.5rem 0;
-  position: relative;
-  z-index: 100;
-}
-
-.register-page__topbar .auth-page__lang {
-  margin-right: 0;
-}
-
-@media (max-width: 991.98px) {
-  .register-page__topbar {
-    padding: 1.25rem 1.5rem 0;
-  }
-}
-
-@media (max-width: 767.98px) {
-  .register-page__topbar {
-    padding: 1rem 1rem 0;
-  }
-
-  .register-page__topbar .lang-switch__option {
-    font-size: 0.6875rem;
-    padding: 0.375rem 0.5rem;
+@media (max-width: 480px) {
+  .login-page .toggle_div,
+  .toggle_div {
+    top: 1.5rem;
+    right: 1rem;
   }
 }

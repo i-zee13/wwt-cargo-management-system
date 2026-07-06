@@ -21,16 +21,23 @@
     <link href="/css/style.css" rel="stylesheet">
     {{-- <link href="/css/login-style.css" rel="stylesheet"> --}}
 </head>
+<style>
+.logo_name{
+    z-index: 99999999
+}
+</style>
 <body>
     <div class="login-page">
         <div class="container-fluid">
-            <div class="login-page__topbar">
-                <span class="logo_name">
-                    <img src="{{getOrganizationData()->logo}}" alt="">
-                </span>
-                <div class="auth-page__lang">
-                    @include('includes.language-toggle')
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <span class="logo_name">
+                        <img src="{{getOrganizationData()->logo}}" alt="">
+                    </span>
                 </div>
+                  <div class="col-lg-6 col-md-12 toggle_div">
+                    @include('includes.language-toggle')
+                </div> 
             </div>
             <div class="row">
                 <div class="col-6 leftside" style="background-color:#edf1f2;">
