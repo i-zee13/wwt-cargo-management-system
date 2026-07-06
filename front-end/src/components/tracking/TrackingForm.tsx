@@ -36,6 +36,13 @@ export function TrackingForm({ initialWaybill }: { initialWaybill?: string }) {
   }
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = params.get("w")?.trim();
+    if (fromUrl) {
+      setWaybill(fromUrl);
+      runSearch(fromUrl);
+      return;
+    }
     if (initialWaybill) {
       runSearch(initialWaybill);
     }

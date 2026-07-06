@@ -21,15 +21,12 @@ export async function generateMetadata({
 
 export default async function RastreoPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ w?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const { w } = await searchParams;
   const t = await getTranslations({ locale, namespace: "trackingPage" });
   const tBlocks = await getTranslations({ locale, namespace: "imageBlocks" });
   const spotlight = parseImageBlocks(tBlocks.raw("trackingPage"));
@@ -47,7 +44,7 @@ export default async function RastreoPage({
       )}
       <section className="py-16 sm:py-20">
         <Container>
-          <TrackingForm initialWaybill={w} />
+          <TrackingForm />
         </Container>
       </section>
       <ImageTextSections items={spotlight} alternateBg />

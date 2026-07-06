@@ -42,7 +42,7 @@ export async function generateMetadata({
     description: t("defaultDescription"),
     alternates: {
       languages: {
-        es: "/",
+        es: "/es",
         en: "/en",
       },
     },

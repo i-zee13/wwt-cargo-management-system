@@ -1,13 +1,50 @@
-# WWT marketing site (Next.js) — deploy only the front-end folder.
-# The Laravel app in the repo root must be hosted separately (VPS, Forge, etc.).
+# WWT marketing site — static Next.js export from front-end/ only.
+# Laravel (admin, portal, MySQL, API) stays on your PHP server — never on Netlify.
 
 [build]
   base = "front-end"
   command = "npm run build"
+  publish = "front-end/out"
 
 [build.environment]
   NODE_VERSION = "20"
 
-# Required in Netlify UI → Site configuration → Environment variables:
-#   NEXT_PUBLIC_SITE_URL  = https://wwt.com.py  (or your Netlify URL)
-#   NEXT_PUBLIC_LARAVEL_URL = https://portal.wwt.com.py  (production Laravel URL)
+# Spanish default + legacy paths without locale prefix
+[[redirects]]
+  from = "/"
+  to = "/es"
+  status = 302
+
+[[redirects]]
+  from = "/servicios"
+  to = "/es/servicios"
+  status = 302
+
+[[redirects]]
+  from = "/rastreo"
+  to = "/es/rastreo"
+  status = 302
+
+[[redirects]]
+  from = "/tarifas"
+  to = "/es/tarifas"
+  status = 302
+
+[[redirects]]
+  from = "/sobre-nosotros"
+  to = "/es/sobre-nosotros"
+  status = 302
+
+[[redirects]]
+  from = "/preguntas-frecuentes"
+  to = "/es/preguntas-frecuentes"
+  status = 302
+
+[[redirects]]
+  from = "/contacto"
+  to = "/es/contacto"
+  status = 302
+
+# Required Netlify env vars (build time):
+#   NEXT_PUBLIC_SITE_URL    = https://wwt-cargo-marketing.netlify.app  (or https://wwt.com.py)
+#   NEXT_PUBLIC_LARAVEL_URL = https://wwcsys.worldwidecommerce.us

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>http://localhost:3001/en</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/en/contacto</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/en/preguntas-frecuentes</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/en/servicios</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/en/sobre-nosotros</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/en/tarifas</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/es</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/es/contacto</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/es/preguntas-frecuentes</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/es/servicios</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/es/sobre-nosotros</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>http://localhost:3001/es/tarifas</loc><lastmod>2026-07-01T15:44:35.256Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/en</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/en/contacto</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/en/preguntas-frecuentes</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/en/rastreo</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/en/servicios</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/en/sobre-nosotros</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/en/tarifas</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/es</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/es/contacto</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/es/preguntas-frecuentes</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/es/rastreo</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/es/servicios</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/es/sobre-nosotros</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://wwt-cargo-marketing.netlify.app/es/tarifas</loc><lastmod>2026-07-06T06:55:31.717Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

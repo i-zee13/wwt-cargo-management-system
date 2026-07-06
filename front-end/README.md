@@ -43,41 +43,51 @@ See `.env.example`:
 
 ## Deploy on Netlify
 
-The repo includes [`netlify.toml`](../netlify.toml) at the project root. Connect the **full Git repository** to Netlify (do not upload only the build folder).
+**Live site:** https://wwt-cargo-marketing.netlify.app
 
-Netlify will automatically:
+The repo includes [`netlify.toml`](../netlify.toml) at the project root. Netlify deploys **only** the static export from `front-end/out`. The Laravel app is **not** deployed to Netlify.
 
-1. Use `front-end` as the base directory
-2. Run `npm install` and `npm run build`
-3. Deploy with the built-in Next.js 16 runtime (no extra plugin required)
+### What goes where
+
+| Component | Host | Folder |
+|-----------|------|--------|
+| Marketing website (Next.js) | **Netlify** | `/front-end` |
+| Admin panel, client portal, API, MySQL | **Your PHP server** | Laravel repo root |
 
 ### Netlify site settings
 
 | Setting | Value |
 |---------|--------|
-| Base directory | `front-end` *(auto from `netlify.toml`)* |
+| Base directory | `front-end` |
 | Build command | `npm run build` |
-| Publish directory | *(leave empty — Netlify sets this for Next.js)* |
+| Publish directory | `front-end/out` |
 | Node version | `20` |
 
-### Environment variables (Netlify UI)
+### Environment variables (Netlify UI — required at build time)
 
-Set these under **Site configuration → Environment variables**:
-
-| Variable | Example |
-|----------|---------|
-| `NEXT_PUBLIC_SITE_URL` | `https://wwt.com.py` |
-| `NEXT_PUBLIC_LARAVEL_URL` | `https://portal.wwt.com.py` |
+| Variable | Current production value |
+|----------|--------------------------|
+| `NEXT_PUBLIC_SITE_URL` | `https://wwt-cargo-marketing.netlify.app` (change to `https://wwt.com.py` when DNS is ready) |
+| `NEXT_PUBLIC_LARAVEL_URL` | `https://wwcsys.worldwidecommerce.us` |
 
 Redeploy after changing env vars so they are baked into the client bundle.
 
+### Connect GitHub for auto-deploy
+
+In Netlify → **wwt-cargo-marketing** → **Build & deploy** → **Link repository** → select `i-zee13/wwt-cargo-management-system`, branch `main`. Netlify reads `netlify.toml` automatically.
+
 ### Custom domain
 
-Point `wwt.com.py` (or `www`) to Netlify in DNS. Update `NEXT_PUBLIC_SITE_URL` to match the live domain.
+Point `wwt.com.py` DNS to Netlify, then update `NEXT_PUBLIC_SITE_URL` and redeploy.
 
-### Laravel backend
+### Laravel backend (not on Netlify)
 
-Netlify hosts **only** the marketing site. Keep Laravel on your PHP server and ensure the tracking API (`GET /api/track/{waybill}`) allows requests from your Netlify domain (CORS if needed).
+Keep Laravel on your PHP/MySQL server. The marketing site calls:
+
+- `GET {LARAVEL_URL}/api/track/{waybill}` — package tracking
+- `{LARAVEL_URL}/customer-login` / `customer-register` — client portal
+
+CORS is already open for `api/*` in Laravel `config/cors.php`.
 
 ## Pages
 
