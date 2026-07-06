@@ -120,64 +120,36 @@ if (!function_exists('clientMacAddressForLoginLog')) {
     }
 }
 
-if (!function_exists('isLegacyOrganizationLogo')) {
-    function isLegacyOrganizationLogo(?string $logo): bool
-    {
-        if (! $logo || trim($logo) === '') {
-            return true;
-        }
-
-        $lower = strtolower($logo);
-
-        foreach (['wwc', 'commerce', 'worldwidecommerce'] as $marker) {
-            if (str_contains($lower, $marker)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-}
-
-if (!function_exists('organizationLogoPath')) {
-    function organizationLogoPath(?string $storedLogo = null): string
-    {
-        $default = ltrim(config('brand.default_logo', 'images/wwt-logo.png'), '/');
-
-        if (isLegacyOrganizationLogo($storedLogo)) {
-            $storedLogo = $default;
-        } else {
-            $storedLogo = ltrim((string) $storedLogo, '/');
-        }
-
-        if (! is_file(public_path($storedLogo))) {
-            $storedLogo = $default;
-        }
-
-        return '/'.$storedLogo;
-    }
-}
-
 if (!function_exists('getOrganizationData')) {
     function getOrganizationData()
     {
+        $defaultLogo = '/'.ltrim(config('brand.default_logo', 'images/wwt-logo.png'), '/');
         $organization = DB::table('organizations')->first();
-        if (!$organization) {
+
+        if (! $organization) {
             return (object) [
                 'name' => config('brand.name'),
-                'logo' => organizationLogoPath(null),
+                'logo' => $defaultLogo,
                 'logo_base64' => null,
             ];
         }
 
-        $organization->name = $organization->name ?: config('brand.name');
-        $organization->logo = organizationLogoPath($organization->logo ?? null);
+        if (empty($organization->name)) {
+            $organization->name = config('brand.name');
+        }
 
-        $logoPath = public_path(ltrim($organization->logo, '/'));
-        if (is_file($logoPath)) {
-            $organization->logo_base64 = 'data:image/png;base64,'.base64_encode(file_get_contents($logoPath));
+        $storedLogo = trim((string) ($organization->logo ?? ''));
+        $relativeLogo = ltrim($storedLogo, '/');
+
+        if ($relativeLogo !== '' && is_file(public_path($relativeLogo))) {
+            $organization->logo = '/'.$relativeLogo;
+            $organization->logo_base64 = 'data:image/png;base64,'.base64_encode(file_get_contents(public_path($relativeLogo)));
         } else {
-            $organization->logo_base64 = null;
+            $organization->logo = $defaultLogo;
+            $defaultRelative = ltrim($defaultLogo, '/');
+            $organization->logo_base64 = is_file(public_path($defaultRelative))
+                ? 'data:image/png;base64,'.base64_encode(file_get_contents(public_path($defaultRelative)))
+                : null;
         }
 
         return $organization;
@@ -249,8 +221,7 @@ if (!function_exists('emailFooterText')) {
 if (!function_exists('brandLogoUrl')) {
     function brandLogoUrl(): string
     {
-        $organization = DB::table('organizations')->first();
-        return asset(organizationLogoPath($organization->logo ?? null));
+        return asset(ltrim(getOrganizationData()->logo, '/'));
     }
 }
  

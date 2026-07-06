@@ -29,7 +29,7 @@ return new class extends Migration
                         $updates[$column] = $replaced;
                     }
                 }
-                if (empty($organization->logo) || str_contains((string) $organization->logo, 'wwc')) {
+                if (empty($organization->logo)) {
                     $updates['logo'] = config('brand.default_logo', 'images/wwt-logo.png');
                 }
                 if ($updates !== []) {

@@ -12,9 +12,7 @@ return new class extends Migration
             return;
         }
 
-        $defaultLogo = config('brand.default_logo', 'images/wwt-logo.png');
         $defaultName = config('brand.name', 'World Wide Trading Group');
-
         $organizations = DB::table('organizations')->get();
 
         foreach ($organizations as $organization) {
@@ -25,10 +23,11 @@ return new class extends Migration
                 $name
             );
 
-            DB::table('organizations')->where('id', $organization->id)->update([
-                'name' => $name,
-                'logo' => $defaultLogo,
-            ]);
+            if ($name !== $organization->name) {
+                DB::table('organizations')->where('id', $organization->id)->update([
+                    'name' => $name,
+                ]);
+            }
         }
     }
 

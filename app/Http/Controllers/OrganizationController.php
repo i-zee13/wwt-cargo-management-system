@@ -73,8 +73,8 @@ class OrganizationController extends Controller
         
              $request->file('organization_logo')->move(public_path('organization'), $empPicture);
          
-            if (!empty($save_organization->image) && file_exists(public_path(str_replace('./storage/organization/', 'organization/', $save_organization->image)))) {
-                unlink(public_path(str_replace('./storage/organization/', 'organization/', $save_organization->image)));
+            if (! empty($save_organization->logo) && file_exists(public_path(ltrim($save_organization->logo, '/')))) {
+                @unlink(public_path(ltrim($save_organization->logo, '/')));
             }
          
             $logo = '/organization/' . $empPicture;
