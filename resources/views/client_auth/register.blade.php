@@ -156,31 +156,11 @@
             margin-bottom: 20px;
         } 
         }
-        .toggle_div {
-    color: #333333;
-    position: absolute;
-    top: 3rem;
-    right: 3rem;
-    text-align: right;
-    z-index: 99999999;
-        }
-
-@media (max-width: 768px) {
-    .toggle_div {
-        top: 2rem;
-        right: 0rem;
-        font-size: 0.9rem; 
-        text-align: right;
-        font-size: 12px;
-    }
-
-  
-}
     </style>
-    <div class="row">
-    <div class="col-lg-12 col-md-12 toggle_div">
-                    @include('includes.language-toggle')
-                </div> 
+    <div class="register-page__topbar">
+        <div class="auth-page__lang">
+            @include('includes.language-toggle')
+        </div>
     </div>
     <div class="row top-left-logo ">
     <div class=" col-md-12">
