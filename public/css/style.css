@@ -759,16 +759,14 @@ table.dataTable > tbody > tr.child ul.dtr-details > li {
 }
 
 .sidebar .logo-details .logo_name img {
-   
-  width: 189px;
-    height: 63px;
-    /* object-fit: contain; */
-    border-radius: 8px;
-    display: block;
-    position: absolute; 
-    top: 4px;
-    left: 62px;
-
+  width: 155px;
+  height: 50px;
+  /* object-fit: contain; */
+  border-radius: 8px;
+  display: block;
+  position: absolute;
+  top: 8px;
+  left: 75px;
 }
 
 .sidebar.close .logo-details .logo_name {
@@ -2782,10 +2780,10 @@ select.is-valid ~ .select2-container--bootstrap4 .select2-selection {
   }
 
   .sidebar .logo-details .logo_name img {
-    width: 201px;
-    height: 46px;
-    top: 7px;
-    left: 58px;
+    width: 155px;
+    height: 50px;
+    top: 8px;
+    left: 75px;
   }
 
   .login-page .logo_name img {
