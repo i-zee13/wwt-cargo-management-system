@@ -237,10 +237,17 @@
             $auth_seg = 2;
         } 
     }
+
+    $isWebPayload = ['is_web' => GetActiveGuardDetail()->is_web];
+    $loggedInUserPayload = [
+        'user_id' => GetActiveGuardDetail()->id,
+        'name' => GetActiveGuardDetail()->first_name,
+        'picture' => GetActiveGuardDetail()->picture,
+    ];
     
 @endphp
     <script>
-        var is_web = @json(['is_web' => GetActiveGuardDetail()->is_web]);
+        var is_web = @json($isWebPayload);
         var rightsGiven = @json($userPermissions ?? []);
         var allControllersData = @json($allControllers ?? []);
         var controller = @json($controller ?? '');
@@ -250,11 +257,7 @@
         var controllerAction = @json($action ?? '');
         var currentSegment = @json(Request::segment($auth_seg));
         var csrfToken = $('[name="csrf_token"]').attr('content');
-        var loggedInUser = @json([
-            'user_id' => GetActiveGuardDetail()->id,
-            'name' => GetActiveGuardDetail()->first_name,
-            'picture' => GetActiveGuardDetail()->picture,
-        ]);
+        var loggedInUser = @json($loggedInUserPayload);
         
         //$(".sortable").sortable();
     </script>
