@@ -606,13 +606,13 @@ table.dataTable > tbody > tr.child ul.dtr-details > li {
   position: relative;
   justify-content: left;
   align-items: center;
-  padding: 1.5625rem;
+  padding: 0;
   display: flex;
   background-image: url(../images/login-bg.jpg);
   background-repeat: no-repeat;
-  background-position: top center;
+  background-position: center center;
   background-size: cover;
-  background-color: var(--bs-primary);
+  background-color: #edf1f2;
 }
 
 .login-page .logo_name {
