@@ -6,6 +6,11 @@
 *.pdf
 /public/*.pdf
 /public/storage
+
+# Deploy archives — do not commit (GitHub 100MB limit)
+/public.zip
+/vendor.zip
+
 /storage/*.key
 /storage/*.docx
 /storage/framework/laravel-excel/*

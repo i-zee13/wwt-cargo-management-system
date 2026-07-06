@@ -73,6 +73,7 @@ Route::group(['middleware' => ['lang_set']], function () {
     Route::get('/clear', function () {
         Artisan::call('cache:clear');
         Artisan::call('config:clear');
+        Artisan::call('storage:link');
         return 'Caches cleared and optimized successfully.';
     });
 
