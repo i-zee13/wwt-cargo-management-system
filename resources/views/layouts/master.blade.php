@@ -263,6 +263,7 @@
     </script>
 
 <script src="{{ route('translations.js') }}"></script>
+    <script src="/js/lang-toggle.js"></script>
     <script src="/js/master.js?v={{ time() }}"></script>
     <script src="/js/specialChar.js?v={{ time() }}"></script>
 

@@ -479,6 +479,9 @@ function deleteOnConfirmation(localRef, parentRef, url, module) {
 
 function renderPage() { 
   $(document).find('#languageToggle').prop('checked', activeLang === 'es');
+  if (typeof syncLangSwitch === 'function') {
+    syncLangSwitch();
+  }
   var segments = location.href;
   segments = $.trim(segments.replace("#", ""));
   segments = segments.split("/");
@@ -2841,25 +2844,3 @@ $(document).on("click", ".confirm_delete_sub_record", function () {
     }, 1500);
   }
 });
-$(document).on('change', '#languageToggle', function() {
-  let languageToggle = $(this).prop('checked') ? 'es' : 'en';
-  $.ajax({
-      type: "POST",
-      url: "/change-language",
-      data: { 
-          languageToggle: languageToggle
-      },
-      headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      cache: false,
-      success: function (response) {
-          console.log("Language changed successfully:", response);
-          location.reload();
-      },
-      error: function (xhr) {
-          console.log("Error:", xhr.responseText); 
-      }
-  });
-});
-

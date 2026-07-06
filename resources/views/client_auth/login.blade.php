@@ -123,11 +123,9 @@
                         <img src="{{getOrganizationData()->logo}}" alt="">
                     </span>
                 </div> 
-                <!-- <div class="col-lg-6 col-md-12 toggle_div">        
-                <input class="form-check-input" type="checkbox" id="languageToggle"
-                      >
-                    <label class="form-check-label" for="languageToggle" id="toggleLabel"> {{__('fields.spanish')}}</label> 
-                </div>  -->
+                <div class="col-lg-6 col-md-12 toggle_div">
+                    @include('includes.language-toggle')
+                </div>
             </div>
            
             <div class="row">
@@ -202,35 +200,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-    <script> 
-       $(document).ready(function() {
-        $('#languageToggle').prop('checked', "{{ session('locale', config('app.locale')) }}" === 'es');
-    });
-    $(document).on('change', '#languageToggle', function() {
-    let languageToggle = $(this).prop('checked') ? 'es' : 'en';
-    $.ajax({
-        type: "POST",
-        url: "/change-language",
-        data: { 
-            languageToggle: languageToggle
-        },
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        cache: false,
-        success: function (response) {
-            console.log("Language changed successfully:", response);
-    
-        },
-        error: function (xhr) {
-            console.log("Error:", xhr.responseText);
-            // Handle errors if needed
-        }
-    });
-});
-
- 
-    </script>
+    <script src="/js/lang-toggle.js"></script>
 
 </body>
 

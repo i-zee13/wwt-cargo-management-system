@@ -178,10 +178,8 @@
 }
     </style>
     <div class="row">
-    <div class="col-lg-12 col-md-12 toggle_div">        
-                    <input class="form-check-input" type="checkbox" id="languageToggle"
-                      >
-                    <label class="form-check-label" for="languageToggle" id="toggleLabel"> {{__('fields.spanish')}}</label> 
+    <div class="col-lg-12 col-md-12 toggle_div">
+                    @include('includes.language-toggle')
                 </div> 
     </div>
     <div class="row top-left-logo ">
@@ -465,6 +463,7 @@
     <script src="/js/jquery-3.3.1.min.js"></script>
 
     <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/lang-toggle.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.1.0/build/js/intlTelInput.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -475,7 +474,6 @@
         // Add more translations as needed
     ]);
     $('.select_class').select2();
-       $(document).find('#languageToggle').prop('checked', "{{ session('locale', config('app.locale')) }}" === 'es');
         const inputField = document.querySelector(".phone_field");
         const iti = window.intlTelInput(inputField, {
             initialCountry: "us",
@@ -530,28 +528,6 @@ $(document).on('change', '#country', function() {
 
 
     });
-$(document).on('change', '#languageToggle', function() {
-    let languageToggle = $(this).prop('checked') ? 'es' : 'en';
-    $.ajax({
-        type: "POST",
-        url: "/change-language",
-        data: { 
-            languageToggle: languageToggle
-        },
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        cache: false,
-        success: function (response) {
-            console.log("Language changed successfully:", response);
-            location.reload();
-        },
-        error: function (xhr) {
-            console.log("Error:", xhr.responseText);
-            // Handle errors if needed
-        }
-    });
-});
 
 
     </script>

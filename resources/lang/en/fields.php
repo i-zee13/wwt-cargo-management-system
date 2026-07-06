@@ -37,6 +37,7 @@ return array (
   'sign_up' => 'Sign Up',
   'signing_up' => 'Signing Up',
   'enter_phone' => 'Enter Phone',
+  'english' => 'English',
   'spanish' => 'Spanish',
   'customers_today' => 'Customers Today',
   'package_today' => 'Package Created Today',

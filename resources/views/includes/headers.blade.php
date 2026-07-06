@@ -79,24 +79,15 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu">
+                        <li>
+                            <div class="dropdown-item lang-switch-dropdown">
+                                @include('includes.language-toggle', ['compact' => true])
+                            </div>
+                        </li>
                         @if (GetActiveGuardDetail()->is_web)
-                            <li>
-                                <a class="dropdown-item" href="javascript:void(0)">
-                                <input class="form-check-input" type="checkbox" id="languageToggle" >
-                                <label class="form-check-label" for="languageToggle" id="toggleLabel"> {{__('fields.spanish')}}</label> 
-                                </a>
-                            </li>
-
                             <li><a class="dropdown-item" href="/admin/Profile/{{Auth::user()->id}}"> {{__('fields.view_profile')}}</a></li>
                             <li><a class="dropdown-item" href="{{ route('logout') }}">{{__('fields.sign_out')}}</a></li>
                         @else
-                        <li>
-                                <a class="dropdown-item" href="javascript:void(0)">
-                                    <input class="form-check-input" type="checkbox" id="languageToggle"
-                                        onchange="toggleLanguage()">
-                                    <label class="form-check-label" for="languageToggle" id="toggleLabel"> {{__('fields.spanish')}}</label>
-                                </a>
-                            </li>
                             <li><a class="dropdown-item" href="/customer-profile/{{Auth::user()->id}}"> {{__('fields.view_profile')}}</a>
                             </li>
                             <li><a class="dropdown-item" href="{{ route('customer-logout') }}">{{__('fields.sign_out')}}</a></li>
