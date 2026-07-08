@@ -99,24 +99,24 @@ if (!function_exists('clientMacAddressForLoginLog')) {
     /**
      * MAC address is only available on some Windows CLI setups; never crash login when exec is disabled.
      */
-    function clientMacAddressForLoginLog(): ?string
+    function clientMacAddressForLoginLog(): string
     {
         if (! function_exists('exec')) {
-            return null;
+            return 'NA';
         }
 
         $disabled = array_filter(array_map('trim', explode(',', (string) ini_get('disable_functions'))));
         if (in_array('exec', $disabled, true)) {
-            return null;
+            return 'NA';
         }
 
         $output = @exec('getmac 2>&1');
 
         if (! is_string($output) || trim($output) === '') {
-            return null;
+            return 'NA';
         }
 
-        return substr(trim($output), 0, 17) ?: null;
+        return substr(trim($output), 0, 17) ?: 'NA';
     }
 }
 
