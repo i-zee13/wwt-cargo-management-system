@@ -3,6 +3,7 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CustomMiddleware;
 use App\Http\Middleware\CustomMiddlewareForRoutes;
+use App\Http\Middleware\ForceHttps;
 use App\Http\Middleware\LangSet;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\RedirectIfNotAuthenticatedClients;
@@ -19,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->trustProxies(at: '*');
+
+        $middleware->web(prepend: [
+            ForceHttps::class,
+        ]);
 
         $middleware->alias([
             'auth' => Authenticate::class,

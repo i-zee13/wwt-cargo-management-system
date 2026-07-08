@@ -56,6 +56,8 @@ return [
 
     'home' => env('APP_HOME', '/admin/home'),
 
+    'force_https' => env('FORCE_HTTPS', false),
+
     'asset_url' => env('ASSET_URL', null),
 
     /*
