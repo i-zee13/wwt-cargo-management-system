@@ -45,6 +45,7 @@ return array (
   'create_package' => 'Create Package',
   'create_origin' => 'Create Origin',
   'create_rate' => 'Create Freight Rates',
+  'express' => 'Express',
   'print_label' => 'Print Label',
   'update_package_status' => 'Update Package Status',
   'quick_actions' => 'Quick Actions',

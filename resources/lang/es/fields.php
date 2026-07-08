@@ -45,6 +45,7 @@ return array(
   'create_package' => 'Crear Paquete',
   'create_origin' => 'Crear Origen',
   'create_rate' => 'Crear Tarifas de Flete',
+  'express' => 'Exprés',
   'print_label' => 'Imprimir Etiqueta',
   'update_package_status' => 'Actualizar Estado del Paquete',
   'quick_actions' => 'Acciones Rápidas',
