@@ -101,6 +101,31 @@ Route::group(['middleware' => ['lang_set']], function () {
         );
     });
 
+    // Remove after SMTP debugging on production.
+    Route::get('/smtp-test', function () {
+        $host = config('mail.mailers.smtp.host', 'smtp.gmail.com');
+        $results = ["Testing SMTP from: ".gethostname(), "MAIL_HOST: {$host}", ''];
+
+        foreach ([587, 465] as $port) {
+            $errno = 0;
+            $errstr = '';
+            $fp = @fsockopen($host, $port, $errno, $errstr, 10);
+
+            if (! $fp) {
+                $results[] = "Port {$port}: Failed [{$errno}] {$errstr}";
+            } else {
+                fclose($fp);
+                $results[] = "Port {$port}: SMTP connection successful";
+            }
+        }
+
+        return response(
+            implode("\n", $results),
+            200,
+            ['Content-Type' => 'text/plain; charset=UTF-8']
+        );
+    });
+
     Route::prefix('client')->group(function () {
         // Auth::routes() omitted here — it duplicated names (logout, register, password.*).
         // Client login uses customer-login; password reset uses client.* routes below.
