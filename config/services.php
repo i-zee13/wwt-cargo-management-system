@@ -34,5 +34,10 @@ return [
         'public' => env('STRIPE_PUBLIC_KEY'),
     ],
 
+    'brevo' => [
+        'key' => env('BREVO_API_KEY'),
+        'sender_email' => env('BREVO_SENDER_EMAIL', env('MAIL_FROM_ADDRESS', 'consultas@wwt.com.py')),
+        'sender_name' => env('BREVO_SENDER_NAME', env('MAIL_FROM_NAME', 'WWT')),
+    ],
 
 ];

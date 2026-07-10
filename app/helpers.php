@@ -163,37 +163,27 @@ if (!function_exists('emailContentSettings')) {
 }
  
 if (!function_exists('SendInBlue')) {
-    function SendInBlue($reciver_email,$recever_name,$subject,$htmlContent)
+    /**
+     * Sends HTML email using Laravel mail config (MAIL_* in .env).
+     * Kept as SendInBlue() for backward compatibility with existing controllers.
+     */
+    function SendInBlue($reciver_email, $recever_name, $subject, $htmlContent)
     {
-        $ch = curl_init();
+        try {
+            \Illuminate\Support\Facades\Mail::html($htmlContent, function ($message) use ($reciver_email, $recever_name, $subject) {
+                $message->to($reciver_email, $recever_name)->subject($subject);
+            });
 
-        $data = [
-       "sender" => [
-           "name" => config('brand.short_name'),
-           "email" => config('brand.support_email')
-       ],
-       "to" => [
-           [
-               "name"  => $recever_name,
-               "email" => $reciver_email
-           ]
-       ],
-       "subject"    => $subject,
-       "htmlContent" => $htmlContent
-   ];
-   
-   curl_setopt($ch, CURLOPT_URL, "https://api.sendinblue.com/v3/smtp/email");
-   curl_setopt($ch, CURLOPT_HTTPHEADER, [
-       "api-key: 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",   
-       "Content-Type: application/json"
-   ]);
-   curl_setopt($ch, CURLOPT_POST, 1);
-   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-   
-   $response = curl_exec($ch);
-   curl_close($ch);
-   return ;
+            return true;
+        } catch (\Throwable $exception) {
+            \Illuminate\Support\Facades\Log::error('Email send failed', [
+                'to' => $reciver_email,
+                'subject' => $subject,
+                'error' => $exception->getMessage(),
+            ]);
+
+            return false;
+        }
     }
 }
 if (!function_exists('hasUnpaidPackages')) {
