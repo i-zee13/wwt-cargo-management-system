@@ -421,9 +421,9 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-between align-items-center">
                                     <button type="submit" class="btn btn-primary submitBtn">{{__('fields.sign_up')}}</button>
-                                    @if (Route::has('customer.request'))
+                                    @if (Route::has('client.request'))
                                         <a style="text-decoration: none; opacity: 0.75; color: var(--bs-body-color);"
-                                            class="forgot-password-link" href="{{ route('customer.request') }}"
+                                            class="forgot-password-link" href="{{ route('client.request') }}"
                                             title="Forgot Password?">
                                             Forgot password?
                                         </a>

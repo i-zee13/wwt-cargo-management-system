@@ -93,7 +93,8 @@ Route::group(['middleware' => ['lang_set']], function () {
     });
 
     Route::prefix('client')->group(function () {
-        Auth::routes();
+        // Auth::routes() omitted here — it duplicated names (logout, register, password.*).
+        // Client login uses customer-login; password reset uses client.* routes below.
         Route::get('password/reset', [ClientForgotPasswordController::class, 'showLinkRequestForm'])->name('client.request');
         Route::post('password/email', [ClientForgotPasswordController::class, 'sendResetLinkEmail'])->name('client.email');
         Route::get('password/reset/{token}', [ClientResetPasswordController::class, 'showResetForm'])->name('client.reset');
@@ -115,7 +116,7 @@ Route::group(['middleware' => ['lang_set']], function () {
     });
 
     Route::prefix('admin')->group(function () {
-        Auth::routes();
+        // Auth::routes() omitted here — it duplicated password.* and logout with routes below / at root.
         Route::get('/change_password', [App\Http\Controllers\Auth\LoginController::class, 'change_password'])->name('change_password');
         Route::post('/ChangeUserPassword', [App\Http\Controllers\Auth\LoginController::class, 'ChangeUserPassword'])->name('ChangeUserPassword');
         Route::get('/reset-password-first', [App\Http\Controllers\HomeController::class, 'ResetPasswordFirst'])->name('reset-password-first');
@@ -166,7 +167,6 @@ Route::group(['middleware' => ['lang_set']], function () {
         Route::get('/GetDepartmentData', [SettingsController::class, 'GetDepartmentData'])->name('GetDepartmentData');
         Route::get('/GetLanguageData', [SettingsController::class, 'GetLanguageData'])->name('GetLanguageData');
         Route::get('/GetDesignation/{id}', [SettingsController::class, 'GetDesignation'])->name('GetDesignation');
-        Route::get('/GetBranchData/{id?}', [SettingsController::class, 'GetBranchData'])->name('GetBranchData');
         Route::get('/GetBranchData/{id?}', [SettingsController::class, 'GetBranchData'])->name('GetBranchData');
         Route::get('/GetDocumentTypes/{id?}', [SettingsController::class, 'GetDocumentTypes'])->name('GetDocumentTypes');
         Route::get('/getLanguage/{id}', [SettingsController::class, 'getLanguage'])->name('getLanguage');
@@ -226,8 +226,8 @@ Route::group(['middleware' => ['lang_set']], function () {
         Route::get('/getOrigins', [OriginController::class, 'getOrigins'])->name('getOrigins');
 
         //freight rates
-        Route::post('/save-rate', [FreightRateController::class, 'store'])->name('save-client');
-        Route::post('/delete-rate', [FreightRateController::class, 'destroy'])->name('delete-client');
+        Route::post('/save-rate', [FreightRateController::class, 'store'])->name('save-rate');
+        Route::post('/delete-rate', [FreightRateController::class, 'destroy'])->name('delete-rate');
         Route::get('/freight-rates', [FreightRateController::class, 'index'])->name('freight-rates');
         Route::get('/getRates', [FreightRateController::class, 'getRates'])->name('getRates');
 
