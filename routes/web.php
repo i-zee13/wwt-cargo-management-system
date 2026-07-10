@@ -71,11 +71,20 @@ Route::group(['middleware' => ['lang_set']], function () {
         }
     });
     Route::get('/clear', function () {
+        Artisan::call('optimize:clear');
         Artisan::call('cache:clear');
         Artisan::call('config:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
+        Artisan::call('event:clear');
+    
+        Artisan::call('config:cache');
+        Artisan::call('route:cache'); // Only if you don't use route closures
         Artisan::call('storage:link');
-        return 'Caches cleared and optimized successfully.';
+    
+        return nl2br(Artisan::output() . "\n\nCaches cleared successfully.");
     });
+    
 
     Route::get('/migrate', function () {
         Artisan::call('migrate', ['--force' => true]);
