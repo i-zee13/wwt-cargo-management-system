@@ -103,20 +103,43 @@ Route::group(['middleware' => ['lang_set']], function () {
 
     // Remove after SMTP debugging on production.
     Route::get('/smtp-test', function () {
-        $host = config('mail.mailers.smtp.host', 'smtp.gmail.com');
-        $results = ["Testing SMTP from: ".gethostname(), "MAIL_HOST: {$host}", ''];
+        $appHost = parse_url((string) config('app.url'), PHP_URL_HOST);
+        $configuredHost = config('mail.mailers.smtp.host');
+        $hostsToTest = array_values(array_unique(array_filter([
+            $configuredHost,
+            $appHost ? 'mail.'.$appHost : null,
+            'localhost',
+        ])));
 
-        foreach ([587, 465] as $port) {
-            $errno = 0;
-            $errstr = '';
-            $fp = @fsockopen($host, $port, $errno, $errstr, 10);
+        $results = [
+            'Testing SMTP from: '.gethostname(),
+            'APP_URL: '.config('app.url'),
+            'MAIL_MAILER: '.config('mail.default'),
+            'Configured MAIL_HOST: '.$configuredHost,
+            '',
+        ];
 
-            if (! $fp) {
-                $results[] = "Port {$port}: Failed [{$errno}] {$errstr}";
-            } else {
-                fclose($fp);
-                $results[] = "Port {$port}: SMTP connection successful";
+        if (str_contains((string) $configuredHost, 'gmail.com')) {
+            $results[] = 'NOTE: Gmail SMTP is blocked on most cPanel hosts (Network unreachable).';
+            $results[] = 'Fix: set MAIL_HOST=mail.'.($appHost ?: 'yourdomain.com').' in live .env';
+            $results[] = '';
+        }
+
+        foreach ($hostsToTest as $host) {
+            $results[] = "--- {$host} ---";
+            foreach ([587, 465, 25] as $port) {
+                $errno = 0;
+                $errstr = '';
+                $fp = @fsockopen($host, $port, $errno, $errstr, 10);
+
+                if (! $fp) {
+                    $results[] = "Port {$port}: Failed [{$errno}] {$errstr}";
+                } else {
+                    fclose($fp);
+                    $results[] = "Port {$port}: OK";
+                }
             }
+            $results[] = '';
         }
 
         return response(

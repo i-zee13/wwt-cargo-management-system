@@ -116,7 +116,7 @@ class ClientsController extends Controller
              if (!$request->opp_id && $client->id && !$request->suite) {
                  $branch_name = $request->branch_name;
                  $mBranch = strtoupper(substr($branch_name, 0, 2));
-                 $client->suite = 'COMM' . $mBranch . $client->id;
+                 $client->suite = config('brand.suite_prefix', 'WWT') . $mBranch . $client->id;
                  $client->save(); 
              }else if($request->opp_id && $request->suite) {
                 $this->updatePackagesClientSuite($client);

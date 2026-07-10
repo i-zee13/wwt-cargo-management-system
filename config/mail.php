@@ -42,7 +42,19 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
-            'auth_mode' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', ''), PHP_URL_HOST) ?: null),
+        ],
+
+        // cPanel local relay — use when external SMTP (e.g. Gmail) is blocked by host.
+        'cpanel' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_CPANEL_HOST', 'localhost'),
+            'port' => env('MAIL_CPANEL_PORT', 25),
+            'encryption' => env('MAIL_CPANEL_ENCRYPTION'),
+            'username' => env('MAIL_CPANEL_USERNAME'),
+            'password' => env('MAIL_CPANEL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', ''), PHP_URL_HOST) ?: null),
         ],
 
         'ses' => [
@@ -94,6 +106,21 @@ return [
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reply-To Address
+    |--------------------------------------------------------------------------
+    |
+    | When customers click Reply, mail goes here (admin inbox) instead of the
+    | technical From / SMTP mailbox (e.g. info@zentrix.work).
+    |
+    */
+
+    'reply_to' => [
+        'address' => env('MAIL_REPLY_TO_ADDRESS', env('BRAND_SUPPORT_EMAIL')),
+        'name' => env('MAIL_REPLY_TO_NAME', env('MAIL_FROM_NAME', 'Admin')),
     ],
 
     /*

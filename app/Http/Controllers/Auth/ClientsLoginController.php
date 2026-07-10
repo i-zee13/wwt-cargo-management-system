@@ -135,7 +135,7 @@ class ClientsLoginController extends Controller
         $mBranch = strtoupper(substr($branch_name, 0, 2));
         $lastClient = ClientsModel::orderBy('id', 'desc')->first();
         $nextClientId = $lastClient ? $lastClient->id + 1 : 1;
-        $validatedData['suite'] = 'COMM' . $mBranch . $nextClientId;
+        $validatedData['suite'] = config('brand.suite_prefix', 'WWT') . $mBranch . $nextClientId;
         $client = ClientsModel::create($validatedData);
         Auth::guard('clients')->login($client);
         function generateVerificationUrl($user)

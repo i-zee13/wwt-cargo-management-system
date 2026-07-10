@@ -162,6 +162,13 @@ if (!function_exists('emailContentSettings')) {
     }
 }
  
+if (!function_exists('lastMailSendError')) {
+    function lastMailSendError(): ?string
+    {
+        return $GLOBALS['_last_mail_send_error'] ?? null;
+    }
+}
+
 if (!function_exists('SendInBlue')) {
     /**
      * Sends HTML email using Laravel mail config (MAIL_* in .env).
@@ -169,13 +176,22 @@ if (!function_exists('SendInBlue')) {
      */
     function SendInBlue($reciver_email, $recever_name, $subject, $htmlContent)
     {
+        $GLOBALS['_last_mail_send_error'] = null;
+
         try {
             \Illuminate\Support\Facades\Mail::html($htmlContent, function ($message) use ($reciver_email, $recever_name, $subject) {
                 $message->to($reciver_email, $recever_name)->subject($subject);
+
+                $replyTo = config('mail.reply_to.address');
+                if ($replyTo) {
+                    $message->replyTo($replyTo, config('mail.reply_to.name'));
+                }
             });
 
             return true;
         } catch (\Throwable $exception) {
+            $GLOBALS['_last_mail_send_error'] = $exception->getMessage();
+
             \Illuminate\Support\Facades\Log::error('Email send failed', [
                 'to' => $reciver_email,
                 'subject' => $subject,

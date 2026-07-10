@@ -135,9 +135,14 @@ class EmailContentController extends Controller
         );
 
         if (! $sent) {
+            $error = lastMailSendError();
+            $hint = $error && str_contains($error, 'Network is unreachable')
+                ? ' Hosting blocks external SMTP (e.g. Gmail). Use cPanel email: MAIL_HOST=mail.zentrix.work'
+                : '';
+
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Failed to send test email. Check mail settings and logs.',
+                'msg' => 'Failed to send test email.'.$hint.($error ? ' '.$error : ' Check mail settings and logs.'),
             ]);
         }
 

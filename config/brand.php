@@ -18,4 +18,10 @@ return [
 
     'support_email' => env('BRAND_SUPPORT_EMAIL', 'consultas@wwt.com.py'),
 
+    /*
+    | Client suite / casilla prefix (was COMM under legacy branding).
+    | Example: WWTAS123 for branch "Asuncion" + client id 123.
+    */
+    'suite_prefix' => env('BRAND_SUITE_PREFIX', 'WWT'),
+
 ];

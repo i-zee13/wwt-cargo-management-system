@@ -98,7 +98,7 @@ class ClientsImportController extends AccessRightsAuth
                         $maxId                  =          ClientsModel::max('id');
                         $client_id              =          $maxId + 1;
                         $mBranch                =          strtoupper(substr($branch_name, 0, 2));
-                        $suite                  =          'COMM' . $mBranch . $client_id;
+                        $suite                  =          config('brand.suite_prefix', 'WWT') . $mBranch . $client_id;
                     } 
                     $country                    =           Country::whereRaw('LOWER(name) = ?', [strtolower($country_name)])->first();
                     $state                      =           State::where('country_id', $country->id)
