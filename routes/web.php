@@ -254,6 +254,7 @@ Route::group(['middleware' => ['lang_set']], function () {
                 Route::get('/package-create-email', [EmailContentController::class, 'package_create'])->name('package-create-email');
 
         Route::post('/save-email-content', [EmailContentController::class, 'store'])->name('save-email-content');
+        Route::post('/send-test-email', [EmailContentController::class, 'sendTestEmail'])->name('send-test-email');
         
         //translation crud 
         Route::get('/translation-management', [TranslationsController::class, 'index'])->name('translation-management');

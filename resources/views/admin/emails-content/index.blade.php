@@ -72,8 +72,17 @@
                         </form>
                     </div>
                     <div class="col-12 text-end">
-                        <button class="btn btn-primary me-2"  id="saveContent" title="Save">{{__('fields.save')}}</button>
-                        
+                        <div class="row align-items-end g-3">
+                            <div class="col-lg-5 col-md-6 text-start">
+                                <label for="test_email" class="form-label">{{ __('fields.test_email_address') }}</label>
+                                <input type="email" name="test_email" id="test_email" class="form-control"
+                                    placeholder="{{ __('fields.enter_test_email') }}">
+                            </div>
+                            <div class="col-lg-7 col-md-6 text-end">
+                                <button type="button" class="btn btn-outline-primary me-2" id="sendTestEmail" title="{{ __('fields.send_test_email') }}">{{ __('fields.send_test_email') }}</button>
+                                <button class="btn btn-primary" id="saveContent" title="Save">{{ __('fields.save') }}</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

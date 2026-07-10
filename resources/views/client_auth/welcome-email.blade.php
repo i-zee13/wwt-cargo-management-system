@@ -13,7 +13,7 @@
     </div>
     <div class="content" style="padding: 30px 20px;">
         <p style="font-size: 0.875rem; line-height: 1.6; margin: 15px 0;">{!! $bodyText !!}</p>
-        <a href="{{ config('app.url') }}" class="button" style="display: inline-block; padding: 12px 25px; background: #eb973c; color: #fff; text-decoration: none; border-radius: 0.75rem; font-weight: 600; text-align: center; margin-top: 20px; transition: background 0.3s;">{{ emailContentSettings('welcome')->button_text }}</a>
+        <a href="{{ config('app.url') }}" class="button" style="display: inline-block; padding: 12px 25px; background: #eb973c; color: #fff; text-decoration: none; border-radius: 0.75rem; font-weight: 600; text-align: center; margin-top: 20px; transition: background 0.3s;">{{ $buttonText ?? emailContentSettings('welcome')->button_text }}</a>
     </div>
     <div class="footer" style="background-color: #f3f3f3; padding: 15px 20px; font-size: 0.75rem; text-align: center; color: #666;">
     <img src="{{ config('app.url') . getOrganizationData()->logo }}" alt="Company Logo" class="logo" style="max-width: 200px;">
