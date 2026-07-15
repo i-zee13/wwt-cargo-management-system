@@ -145,12 +145,8 @@ $(document).on('click', '.cell-more-btn', function (e) {
   var textId = $(this).attr('data-text-id');
   var full = (window.__cellFullTextStore && window.__cellFullTextStore[textId]) || '';
   $('#cellFullTextBody').text(full);
-  var modalEl = document.getElementById('cellFullTextModal');
-  if (window.bootstrap && bootstrap.Modal) {
-    bootstrap.Modal.getOrCreateInstance(modalEl).show();
-  } else if ($(modalEl).modal) {
-    $(modalEl).modal('show');
-  }
+  // Bootstrap 4 (this project) uses jQuery .modal(); BS5 getOrCreateInstance is not available.
+  $('#cellFullTextModal').modal('show');
 });
 $(document).ready(function () {
   $(document).ready(function () {
