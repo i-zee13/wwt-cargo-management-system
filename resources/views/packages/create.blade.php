@@ -47,6 +47,10 @@
                         <h2>{{__('fields.label')}}  </h2>
                     </div>
                     <div class="col-auto pr-0 text-end mr-1" >
+                    <a href="{{ GetActiveGuardDetail()->is_web ? url('/admin/package-print-wh/' . @$package->id) : url('/print-customer-packages-wh/' . @$package->id) }}"
+   class="btn btn-outline-primary me-2" target="_blank">
+   {{ __('fields.print_wh') }}
+</a>
                     <a href="{{ GetActiveGuardDetail()->is_web ? url('/admin/package-print-label/' . @$package->id) : url('/print-customer-packages-label/' . @$package->id) }}" 
    class="btn btn-primary">
    {{ __('fields.print_label') }}

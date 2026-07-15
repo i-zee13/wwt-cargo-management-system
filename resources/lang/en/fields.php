@@ -47,6 +47,8 @@ return array (
   'create_rate' => 'Create Freight Rates',
   'express' => 'Express',
   'print_label' => 'Print Label',
+  'print_wh' => 'Print WH',
+  'warehouse_receipt' => 'Warehouse Receipt',
   'update_package_status' => 'Update Package Status',
   'quick_actions' => 'Quick Actions',
   'rights_management' => 'Rights Management',

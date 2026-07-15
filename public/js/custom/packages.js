@@ -127,6 +127,7 @@ function fetchPackages(week_flag=true) {
       packages.forEach(element => {
         var create_package_slug = is_web.is_web ? `/admin/create-package/${element.id}` : `/create-customer-package/${element.id}`;
         var print_label_slug = is_web.is_web ? `/admin/package-print-label/${element.id}` : `/print-customer-packages-label/${element.id}`;
+        var print_wh_slug = is_web.is_web ? `/admin/package-print-wh/${element.id}` : `/print-customer-packages-wh/${element.id}`;
         var className = element.status == 'retired' ? "ST-Active" : "ST-draft";
         $('#packageTable tbody').append(`
                     <tr>
@@ -147,6 +148,9 @@ function fetchPackages(week_flag=true) {
                             </div>
                         </td>  
                         <td>
+                            <a href="${print_wh_slug}" class="btn btn-outline-primary" title="${Lang.get('fields.print_wh')}" target="_blank">
+                                WH
+                            </a>
                             <a href="${print_label_slug}" class="btn btn-outline-primary" title="Print Label">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tag" viewBox="0 0 16 16">
                             <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0"/>

@@ -47,6 +47,8 @@ return array(
   'create_rate' => 'Crear Tarifas de Flete',
   'express' => 'Exprés',
   'print_label' => 'Imprimir Etiqueta',
+  'print_wh' => 'Imprimir WH',
+  'warehouse_receipt' => 'Recibo de Almacén',
   'update_package_status' => 'Actualizar Estado del Paquete',
   'quick_actions' => 'Acciones Rápidas',
   'rights_management' => 'Gestión de Derechos',

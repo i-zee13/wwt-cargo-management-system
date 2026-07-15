@@ -346,6 +346,53 @@ class PackageController extends Controller
         }
 
     }
+
+    /**
+     * Warehouse Receipt PDF — org logo/data + package reference fields.
+     */
+    public function printWarehouseReceipt($id)
+    {
+        $packageRows = DB::select("SELECT packages.*,
+                origins.origin_name,
+                clients.first_name,
+                clients.last_name,
+                clients.company_name,
+                clients.email as client_email,
+                clients.phone as client_phone,
+                clients.address as client_address,
+                clients.postal_code as client_postal_code,
+                clients.suite as client_suite_resolved
+            FROM packages
+            LEFT JOIN origins ON packages.origin_id = origins.id
+            LEFT JOIN clients ON packages.client_suite = clients.suite OR packages.client_id = clients.id
+            WHERE packages.id = ?
+            LIMIT 1", [$id]);
+
+        if (empty($packageRows)) {
+            return redirect()->back()->with('error', 'Package not found.');
+        }
+
+        $package = $packageRows[0];
+        $organization = getOrganizationData();
+        $orgPhones = DB::table('organization_phone_no')->pluck('phone_number')->filter()->implode(' / ');
+
+        try {
+            $pdf = Pdf::loadView('packages.warehouse-receipt', compact('package', 'organization', 'orgPhones'))
+                ->setPaper('a4', 'portrait');
+
+            $filename = 'warehouse_receipt_'.str_replace(' ', '-', (string) ($package->waybill ?: $package->id)).'.pdf';
+
+            return response($pdf->stream($filename))
+                ->header('Content-Type', 'application/pdf')
+                ->header('Content-Disposition', 'inline; filename="'.$filename.'"');
+        } catch (\Exception $e) {
+            \Log::error('Warehouse Receipt PDF Error: '.$e->getMessage());
+
+            return response()->json([
+                'error' => 'Could not generate Warehouse Receipt: '.$e->getMessage(),
+            ], 500);
+        }
+    }
     public function changePaymentStatus(Request $request)
     {
         if ($request->id) {

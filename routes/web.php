@@ -297,6 +297,7 @@ Route::group(['middleware' => ['lang_set']], function () {
         Route::get('/getPackages', [PackageController::class, 'getPackages'])->name('getPackages');
         Route::get('/getPackageClient/{suit}', [PackageController::class, 'getPackageClient'])->name('getPackageClient');
         Route::get('/package-print-label/{id}', [PackageController::class, 'printLabel'])->name('package-print-label');
+        Route::get('/package-print-wh/{id}', [PackageController::class, 'printWarehouseReceipt'])->name('package-print-wh');
         Route::get('/package-tracking', [PackageController::class, 'packageTracking'])->name('package-tracking');
         Route::post('/change-package-status', [PackageController::class, 'changeStatus'])->name('change-package-status');
         Route::post('/change-package-tracking-status', [PackageController::class, 'changeTrackingStatus'])->name('change-package-tracking-status');
@@ -344,6 +345,7 @@ Route::group(['middleware' => ['lang_set']], function () {
         Route::post('/save-customer-package', [PackageController::class, 'store'])->name('save--customer-package');
         Route::get('/create-customer-package/{paclage_id?}', [PackageController::class, 'create'])->name('create-customer-package');
         Route::get('/print-customer-packages-label/{id?}', [PackageController::class, 'printCustomerPackage'])->name('print-customer-packages-label');
+        Route::get('/print-customer-packages-wh/{id}', [PackageController::class, 'printWarehouseReceipt'])->name('print-customer-packages-wh');
 
 
     });
