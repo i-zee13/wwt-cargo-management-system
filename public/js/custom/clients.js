@@ -39,12 +39,12 @@ function fetchClients(){
                 $('#clientsTable tbody').append(`
                     <tr>
                     <td>${element['id']}</td> 
-                    <td>${element['suite']??''}</td> 
-                        <td style="width: 200px !important; word-break: break-all !important; overflow-wrap: anywhere !important; white-space: normal !important;">${element['first_name']??''+ element.last_name??''}</td>
-                        <td>${element['email']??''}</td> 
-                        <td>${element['phone']??''}</td> 
-                        <td>${element['branch_name']??''}</td> 
-                        <td>${element['document_number']??''}</td> 
+                    <td>${truncateTextHtml(String(element['suite'] ?? '').replace(/^COMM/i, 'WWT'))}</td> 
+                        <td>${truncateTextHtml(((element['first_name'] ?? '') + ' ' + (element['last_name'] ?? '')).trim())}</td>
+                        <td>${truncateTextHtml(element['email'] ?? '')}</td> 
+                        <td>${truncateTextHtml(element['phone'] ?? '')}</td> 
+                        <td>${truncateTextHtml(element['branch_name'] ?? '')}</td> 
+                        <td>${truncateTextHtml(element['document_number'] ?? '')}</td> 
                         <td>
                         <button id="${element['id']}" class="btn btn-outline-primary openDataSidebarForAddingClient">
                         <svg width="10" height="13" viewBox="0 0 10 13"
@@ -69,7 +69,9 @@ function fetchClients(){
             });
             $('.clients_list').fadeIn();
            var clientsTable = $('#clientsTable').DataTable({
-            responsive: true,
+            responsive: false,
+            scrollX: true,
+            autoWidth: false,
             searching: true,
             lengthChange: false,
             info: false,

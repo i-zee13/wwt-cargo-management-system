@@ -49,6 +49,8 @@ return array (
   'print_label' => 'Print Label',
   'print_wh' => 'Print WH',
   'warehouse_receipt' => 'Warehouse Receipt',
+  'more' => 'more',
+  'full_text' => 'Full text',
   'update_package_status' => 'Update Package Status',
   'quick_actions' => 'Quick Actions',
   'rights_management' => 'Rights Management',

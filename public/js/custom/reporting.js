@@ -114,23 +114,17 @@ $(document).on('click', '#generate_report', function () {
                 packages.forEach(element => {
                     $('#packagesTable tbody').append(`
                         <tr>
-                            <td>${element['guide'] ?? ''}</td> 
-                            <td>${element['waybill'] ?? ''}</td>
-                            <td>${element['origin'] ?? ''}</td>
-                            <td>${element['branch'] ?? ''}</td>
-                            <td>${element['type'] ?? ''}</td>
-       <td style="width: 200px !important; word-break: break-all !important; overflow-wrap: anywhere !important; white-space: normal !important;">
-    ${element['description'] ?? ''}
-</td>
-<td style="width: 200px !important; word-break: break-all !important; overflow-wrap: anywhere !important; white-space: normal !important;">
-    ${element['tracking'] ?? ''}
-</td>
-
-
+                            <td>${truncateTextHtml(element['guide'] ?? '')}</td> 
+                            <td>${truncateTextHtml(element['waybill'] ?? '')}</td>
+                            <td>${truncateTextHtml(element['origin'] ?? '')}</td>
+                            <td>${truncateTextHtml(element['branch'] ?? '')}</td>
+                            <td>${truncateTextHtml(element['type'] ?? '')}</td>
+                            <td>${truncateTextHtml(element['description'] ?? '')}</td>
+                            <td>${truncateTextHtml(element['tracking'] ?? '')}</td>
                             <td>${element['date'] ?? ''}</td>
                             <td>${element['kg'] ?? ''}</td>
                             <td>${element['cbm'] ?? ''}</td>
-                            <td>${element['client'] ?? ''} ${element['client_last'] ?? ''} (${element.suite ?? ''})</td> 
+                            <td>${truncateTextHtml(((element['client'] ?? '') + ' ' + (element['client_last'] ?? '') + ' (' + String(element.suite ?? '').replace(/^COMM/i, 'WWT') + ')').trim())}</td> 
                             <td>
                                 ${
                                     element['status']

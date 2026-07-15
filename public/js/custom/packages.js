@@ -107,7 +107,7 @@ function fetchPackages(week_flag=true) {
       packages = response.packages;
       console.log(packages);
       $('.package_body').append(`
-            <table class="table table-hover dt-responsive nowrap" id="packageTable" style="width:100%;">
+            <table class="table table-hover packages-list-table" id="packageTable" style="width:100%;">
                 <thead>
                     <tr>
                         <th>${Lang.get('fields.waybill')}</th>
@@ -129,11 +129,13 @@ function fetchPackages(week_flag=true) {
         var print_label_slug = is_web.is_web ? `/admin/package-print-label/${element.id}` : `/print-customer-packages-label/${element.id}`;
         var print_wh_slug = is_web.is_web ? `/admin/package-print-wh/${element.id}` : `/print-customer-packages-wh/${element.id}`;
         var className = element.status == 'retired' ? "ST-Active" : "ST-draft";
+        var suiteDisplay = String(element['client_suite'] ?? '').replace(/^COMM/i, 'WWT');
+        var clientDisplay = (suiteDisplay + ' ' + (element['client_name'] ?? '')).trim();
         $('#packageTable tbody').append(`
                     <tr>
-                        <td>${element['waybill']}</td> 
-                        <td>${element['original_tracking'] ?? ''}</td>
-                        <td>${(element['client_suite'] ?? '') + ' ' + (element['client_name'] ?? '')}</td>
+                        <td>${truncateTextHtml(element['waybill'] ?? '')}</td> 
+                        <td>${truncateTextHtml(element['original_tracking'] ?? '')}</td>
+                        <td>${truncateTextHtml(clientDisplay)}</td>
                         <td>${new Date(element['created_at']).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-')}</td>
                         <td>${element['kg'] ?? ''}</td>  
                         <td>${element['grand_total'] ?? ''}</td> 
@@ -147,18 +149,19 @@ function fetchPackages(week_flag=true) {
                                 ${element['status'] ? Lang.get(`fields.package_status_${element.status.replace(/-/g, '_')}`) : ''}
                             </div>
                         </td>  
-                        <td>
-                            <a href="${print_wh_slug}" class="btn btn-outline-primary" title="${Lang.get('fields.print_wh')}" target="_blank">
+                        <td class="packages-actions-cell">
+                            <div class="packages-actions">
+                            <a href="${print_wh_slug}" class="btn btn-outline-primary btn-sm" title="${Lang.get('fields.print_wh')}" target="_blank">
                                 WH
                             </a>
-                            <a href="${print_label_slug}" class="btn btn-outline-primary" title="Print Label">
+                            <a href="${print_label_slug}" class="btn btn-outline-primary btn-sm" title="Print Label">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-tag" viewBox="0 0 16 16">
                             <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0"/>
                             <path d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1m0 5.586 7 7L13.586 9l-7-7H2z"/>
                             </svg>
                             </a>
                             ${is_web.is_web || (element.status.includes('received')) ? `
-                            <a href="${create_package_slug}" id="${element['id']}" class="btn btn-outline-primary">
+                            <a href="${create_package_slug}" id="${element['id']}" class="btn btn-outline-primary btn-sm">
                                 <svg width="10" height="13" viewBox="0 0 10 13"
                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
                                                    <path
@@ -167,14 +170,14 @@ function fetchPackages(week_flag=true) {
                        </svg> 
                             </a>` : ''}
                             ${is_web.is_web ? `
-                            <button title="Delete" type="button" id="${element['id']}" class="btn btn-outline-primary delete_package_record">
+                            <button title="Delete" type="button" id="${element['id']}" class="btn btn-outline-primary btn-sm delete_package_record">
                                  <svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path
                                     d="M10.3451 8.01958L10.8404 8.0885L10.3451 8.01958ZM10.1702 9.27626L10.6655 9.34518L10.1702 9.27626ZM1.83042 9.27627L2.32564 9.20735L1.83042 9.27627ZM1.65553 8.01958L1.1603 8.0885L1.65553 8.01958ZM4.12276 13.9911L3.92836 14.4518H3.92836L4.12276 13.9911ZM2.31705 11.8735L2.78637 11.701L2.31705 11.8735ZM9.6836 11.8735L10.1529 12.0459L9.6836 11.8735ZM7.87789 13.9911L7.6835 13.5305L7.87789 13.9911ZM1.83142 5.45263C1.8053 5.17772 1.56127 4.97604 1.28637 5.00216C1.01146 5.02828 0.809781 5.27231 0.835901 5.54721L1.83142 5.45263ZM11.1648 5.54721C11.1909 5.27231 10.9892 5.02828 10.7143 5.00216C10.4394 4.97604 10.1954 5.17772 10.1692 5.45262L11.1648 5.54721ZM11.3337 4.66659C11.6098 4.66659 11.8337 4.44273 11.8337 4.16659C11.8337 3.89044 11.6098 3.66659 11.3337 3.66659V4.66659ZM0.666992 3.66659C0.39085 3.66659 0.166992 3.89044 0.166992 4.16659C0.166992 4.44273 0.39085 4.66659 0.666992 4.66659L0.666992 3.66659ZM4.16699 11.4999C4.16699 11.7761 4.39085 11.9999 4.66699 11.9999C4.94313 11.9999 5.16699 11.7761 5.16699 11.4999H4.16699ZM5.16699 6.16659C5.16699 5.89044 4.94313 5.66659 4.66699 5.66659C4.39085 5.66659 4.16699 5.89044 4.16699 6.16659H5.16699ZM6.83366 11.4999C6.83366 11.7761 7.05752 11.9999 7.33366 11.9999C7.6098 11.9999 7.83366 11.7761 7.83366 11.4999H6.83366ZM7.83366 6.16659C7.83366 5.89044 7.6098 5.66659 7.33366 5.66659C7.05752 5.66659 6.83366 5.89044 6.83366 6.16659H7.83366ZM8.66699 4.16659V4.66659H9.16699V4.16659H8.66699ZM3.33366 4.16659H2.83366V4.66659H3.33366V4.16659ZM9.8499 7.95066L9.67501 9.20735L10.6655 9.34518L10.8404 8.0885L9.8499 7.95066ZM2.32564 9.20735L2.15075 7.95066L1.1603 8.0885L1.33519 9.34519L2.32564 9.20735ZM6.00033 13.6666C4.98088 13.6666 4.61728 13.6571 4.31715 13.5305L3.92836 14.4518C4.45975 14.676 5.07071 14.6666 6.00033 14.6666L6.00033 13.6666ZM1.33519 9.34519C1.52166 10.6851 1.62303 11.4344 1.84772 12.0459L2.78637 11.701C2.60803 11.2156 2.51933 10.5991 2.32564 9.20735L1.33519 9.34519ZM4.31715 13.5305C3.70219 13.271 3.1303 12.6371 2.78637 11.701L1.84772 12.0459C2.25746 13.1611 2.98836 14.0551 3.92836 14.4518L4.31715 13.5305ZM9.67501 9.20735C9.48132 10.5991 9.39262 11.2156 9.21428 11.701L10.1529 12.0459C10.3776 11.4344 10.479 10.6851 10.6655 9.34518L9.67501 9.20735ZM6.00033 14.6666C6.92994 14.6666 7.5409 14.676 8.07229 14.4518L7.6835 13.5305C7.38337 13.6571 7.01977 13.6666 6.00033 13.6666L6.00033 14.6666ZM9.21428 11.701C8.87035 12.6371 8.29846 13.271 7.6835 13.5305L8.07229 14.4518C9.01229 14.0551 9.74319 13.1611 10.1529 12.0459L9.21428 11.701ZM2.15075 7.95066C2.00267 6.88661 1.8921 6.09127 1.83142 5.45263L0.835901 5.54721C0.899118 6.21256 1.0134 7.03295 1.1603 8.0885L2.15075 7.95066ZM10.8404 8.0885C10.9873 7.03295 11.1015 6.21256 11.1648 5.54721L10.1692 5.45262C10.1086 6.09127 9.99798 6.8866 9.8499 7.95066L10.8404 8.0885ZM11.3337 3.66659L0.666992 3.66659L0.666992 4.66659L11.3337 4.66659V3.66659ZM5.16699 11.4999L5.16699 6.16659H4.16699L4.16699 11.4999H5.16699ZM7.83366 11.4999L7.83366 6.16659H6.83366L6.83366 11.4999H7.83366ZM8.16699 3.49992V4.16659H9.16699V3.49992H8.16699ZM8.66699 3.66659L3.33366 3.66659V4.66659L8.66699 4.66659V3.66659ZM3.83366 4.16659V3.49992H2.83366V4.16659H3.83366ZM6.00033 1.33325C7.19694 1.33325 8.16699 2.3033 8.16699 3.49992H9.16699C9.16699 1.75102 7.74923 0.333252 6.00033 0.333252V1.33325ZM6.00033 0.333252C4.25142 0.333252 2.83366 1.75102 2.83366 3.49992H3.83366C3.83366 2.3033 4.80371 1.33325 6.00033 1.33325V0.333252Z"
                                     fill="" /> </svg>
                             </button>` : ''}  
-                                               <button class="btn btn-primary changePaymentStatus"payment-status="${element.payment_status == 1?1:0}" id="${element.id}">${element.payment_status == 1?   Lang.get(`fields.mark_as_unpaid`):Lang.get(`fields.mark_as_paid`)}</button>
- 
+                                               <button class="btn btn-primary btn-sm changePaymentStatus" payment-status="${element.payment_status == 1?1:0}" id="${element.id}">${element.payment_status == 1?   Lang.get(`fields.mark_as_unpaid`):Lang.get(`fields.mark_as_paid`)}</button>
+                            </div>
                         </td>
                     </tr>`);
       });
@@ -182,14 +185,30 @@ function fetchPackages(week_flag=true) {
       $('.package_body').fadeIn();
 
       // Reinitialize DataTable and apply previous search
+      if ($.fn.DataTable.isDataTable('#packageTable')) {
+        $('#packageTable').DataTable().destroy();
+      }
       var packageTable = $('#packageTable').DataTable({
-        responsive: true,
+        responsive: false,
+        scrollX: true,
+        autoWidth: false,
         searching: true,
         lengthChange: false,
         info: false,
         pagingType: 'simple_numbers',
         pageLength: 10,
         dom: "lrtip",
+        order: [],
+        columnDefs: [
+          { targets: 0, width: '12%' },
+          { targets: 1, width: '16%' },
+          { targets: 2, width: '18%' },
+          { targets: 3, width: '9%' },
+          { targets: 4, width: '6%' },
+          { targets: 5, width: '8%' },
+          { targets: 6, width: '11%', orderable: false },
+          { targets: 7, width: '20%', orderable: false },
+        ],
       });
 
       // Apply previous search value

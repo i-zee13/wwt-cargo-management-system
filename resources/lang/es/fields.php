@@ -49,6 +49,8 @@ return array(
   'print_label' => 'Imprimir Etiqueta',
   'print_wh' => 'Imprimir WH',
   'warehouse_receipt' => 'Recibo de Almacén',
+  'more' => 'más',
+  'full_text' => 'Texto completo',
   'update_package_status' => 'Actualizar Estado del Paquete',
   'quick_actions' => 'Acciones Rápidas',
   'rights_management' => 'Gestión de Derechos',

@@ -30,7 +30,128 @@ var filterDate = 0;
 var searchQuery = null;
 let allTasksCreated = [];
 let files_url = "";
-let all_files = []; 
+let all_files = [];
+window.__cellFullTextStore = window.__cellFullTextStore || {};
+
+function escapeHtmlText(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
+ * Truncate long table cell text: max 20 words (and long tokens cut at 20 chars).
+ * Also caps preview length so wide columns do not break the table.
+ * Shows "... more" — click opens a modal with full text only.
+ */
+function truncateTextHtml(text, wordLimit) {
+  wordLimit = typeof wordLimit === 'number' ? wordLimit : 20;
+  var charSoftLimit = 40;
+  var full = String(text == null ? '' : text).replace(/\s+/g, ' ').trim();
+  if (!full) {
+    return '';
+  }
+
+  var words = full.split(' ');
+  var previewWords = [];
+  var truncated = false;
+  var joined = '';
+
+  for (var i = 0; i < words.length; i++) {
+    if (previewWords.length >= wordLimit) {
+      truncated = true;
+      break;
+    }
+
+    var word = words[i];
+    if (word.length > 20) {
+      word = word.slice(0, 20);
+      truncated = true;
+      previewWords.push(word);
+      break;
+    }
+
+    var candidate = joined ? (joined + ' ' + word) : word;
+    if (candidate.length > charSoftLimit && previewWords.length > 0) {
+      truncated = true;
+      break;
+    }
+
+    previewWords.push(word);
+    joined = candidate;
+  }
+
+  if (words.length > previewWords.length) {
+    truncated = true;
+  }
+
+  if (!truncated) {
+    return escapeHtmlText(full);
+  }
+
+  var textId = 'ft_' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+  window.__cellFullTextStore[textId] = full;
+  var moreLabel = (typeof Lang !== 'undefined' && Lang.get) ? Lang.get('fields.more') : 'more';
+  if (!moreLabel || moreLabel.indexOf('fields.') === 0) {
+    moreLabel = 'more';
+  }
+
+  return '<span class="cell-truncated-wrap">' +
+    '<span class="cell-truncated-text">' + escapeHtmlText(previewWords.join(' ')) + '...</span> ' +
+    '<button type="button" class="btn btn-link btn-sm p-0 align-baseline cell-more-btn" data-text-id="' + textId + '">' +
+    escapeHtmlText(moreLabel) +
+    '</button></span>';
+}
+
+function ensureFullTextModal() {
+  if (document.getElementById('cellFullTextModal')) {
+    return;
+  }
+  var title = (typeof Lang !== 'undefined' && Lang.get) ? Lang.get('fields.full_text') : 'Full text';
+  if (!title || title.indexOf('fields.') === 0) {
+    title = 'Full text';
+  }
+  var closeLabel = (typeof Lang !== 'undefined' && Lang.get) ? Lang.get('fields.close') : 'Close';
+  if (!closeLabel || closeLabel.indexOf('fields.') === 0) {
+    closeLabel = 'Close';
+  }
+  $('body').append(
+    '<div class="modal fade" id="cellFullTextModal" tabindex="-1" aria-hidden="true">' +
+      '<div class="modal-dialog modal-dialog-centered">' +
+        '<div class="modal-content">' +
+          '<div class="modal-header py-2">' +
+            '<h5 class="modal-title">' + escapeHtmlText(title) + '</h5>' +
+            '<button type="button" class="btn-close" data-bs-dismiss="modal" data-dismiss="modal" aria-label="Close"></button>' +
+          '</div>' +
+          '<div class="modal-body">' +
+            '<p id="cellFullTextBody" class="mb-0" style="white-space:pre-wrap;word-break:break-word;"></p>' +
+          '</div>' +
+          '<div class="modal-footer py-2">' +
+            '<button type="button" class="btn btn-light" data-bs-dismiss="modal" data-dismiss="modal">' + escapeHtmlText(closeLabel) + '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>'
+  );
+}
+
+$(document).on('click', '.cell-more-btn', function (e) {
+  e.preventDefault();
+  e.stopPropagation();
+  ensureFullTextModal();
+  var textId = $(this).attr('data-text-id');
+  var full = (window.__cellFullTextStore && window.__cellFullTextStore[textId]) || '';
+  $('#cellFullTextBody').text(full);
+  var modalEl = document.getElementById('cellFullTextModal');
+  if (window.bootstrap && bootstrap.Modal) {
+    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+  } else if ($(modalEl).modal) {
+    $(modalEl).modal('show');
+  }
+});
 $(document).ready(function () {
   $(document).ready(function () {
     

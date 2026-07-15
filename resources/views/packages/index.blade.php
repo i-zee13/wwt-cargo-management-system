@@ -131,6 +131,50 @@
         color: #79808E;
         font-size: 1rem;
     }
+
+    .package_body {
+        overflow-x: auto;
+    }
+
+    #packageTable.packages-list-table {
+        table-layout: fixed;
+        width: 100% !important;
+    }
+
+    #packageTable.packages-list-table th,
+    #packageTable.packages-list-table td {
+        vertical-align: middle;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    #packageTable.packages-list-table .packages-actions-cell {
+        white-space: normal;
+    }
+
+    #packageTable.packages-list-table .packages-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        align-items: center;
+    }
+
+    #packageTable.packages-list-table .status-box {
+        white-space: nowrap;
+        display: inline-block;
+        max-width: 100%;
+    }
+
+    .cell-truncated-wrap {
+        display: inline;
+        line-height: 1.35;
+    }
+
+    .cell-more-btn {
+        font-size: 12px;
+        text-decoration: underline;
+        vertical-align: baseline;
+    }
 </style>
 <input type="hidden" value="{{@$status}}" id="homePageStatus" hidden>
 <div class="modal fade" id="requestStatus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
