@@ -55,16 +55,19 @@ class AppServiceProvider extends ServiceProvider
                     $controllers            =   CL::get();
                     foreach($controllers as $obj)
                     {
-                        $userPermissions[]  =   $obj->controller;
+                        $userPermissions[]  =   ltrim((string) $obj->controller, '/');
                     }
                 }else{
                     $employee_des           =   Auth::user()->designation;
             
-                    $controllers            =   ControllerDesignationAssignment::whereRaw("designation_id = $employee_des")->get();
-                    $userPermissions        =   ['admin/Profile','/admin/home'];
+                    $controllers            =   ControllerDesignationAssignment::where('designation_id', $employee_des)->get();
+                    $userPermissions        =   ['admin/Profile', 'admin/home'];
                     foreach($controllers as $object)
                     {
-                        $userPermissions[] =    $object->controller_name;
+                        $permission = ltrim((string) $object->controller_name, '/');
+                        if ($permission !== '' && ! in_array($permission, $userPermissions, true)) {
+                            $userPermissions[] = $permission;
+                        }
                     } 
                 }
             }else if(Auth::guard('clients')->check()){

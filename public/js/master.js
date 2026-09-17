@@ -1020,6 +1020,20 @@ function navItemsScript() {
     allControllersData = [];
   }
 
+  if (!Array.isArray(rightsGiven)) {
+    rightsGiven = [];
+  }
+
+  // Normalize "/admin/home" and "admin/home" so PHP/JS ACL always match.
+  rightsGiven = rightsGiven.map(function (right) {
+    return String(right || '').replace(/^\//, '');
+  });
+
+  function hasRight(controllerName) {
+    var normalized = String(controllerName || '').replace(/^\//, '');
+    return rightsGiven.indexOf(normalized) !== -1;
+  }
+
   const parentModules = [
     ...new Set(
       allControllersData
@@ -1058,12 +1072,9 @@ function navItemsScript() {
     let anyChildRight = false;
 
     childModules.forEach((child) => {
-      
-      if (rightsGiven.includes(child.controller)) {
-         
+      if (hasRight(child.controller)) {
         if (child.controller != "admin/home" && child.controller != "admin/Profile") {
           anyChildRight = true;
-          console.log('second allowed',child.controller);
           if (child.show_in_sub_menu) {
             childMods.child.push(
               `<li> <a name="${element}" attr-name="${element}" href="/${
@@ -1076,12 +1087,13 @@ function navItemsScript() {
                        }</a> </li>`
             );
           }
-        } Lang.get(`fields.`+modifiedElement)
+        }
       }
     });
-    console.log(currentSegment,anyChildRight,rightsGiven);
+
     if (
-      rightsGiven.includes('admin/'+currentSegment) || rightsGiven.includes(currentSegment)||
+      hasRight('admin/' + currentSegment) ||
+      hasRight(currentSegment) ||
       currentSegment == "home" ||
       currentSegment == "Profile" ||
       currentSegment == "/"
@@ -1093,7 +1105,6 @@ function navItemsScript() {
     childMods.parent = element;
     subNavItems.push(childMods);
     if (element != "/admin/Dashboard" && element != "admin/home" && element != "admin/Profile") {
-      console.log(messages,'testfasfdasdf');
       var modifiedElement = element.toLowerCase().replace(/\s+/g, '_')
       var actionsTranslation = Lang.get(`fields.`+modifiedElement);  
   
@@ -1126,7 +1137,7 @@ function navItemsScript() {
     $(".modal").css("pointer-events", "none");
     $(".modal-header").css("justify-content", "center");
     $(".modal-custom-text").html(
-      `<div style="text-align: center">You are not authorized to view this page. Please click here to go to <a href="/home">home</a></div>`
+      `<div style="text-align: center">You are not authorized to view this page. Please click here to go to <a href="/admin/home">home</a></div>`
     );
     $(".modal-footer").hide();
     $("#hidden_btn_to_open_modal").click();

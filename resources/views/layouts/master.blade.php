@@ -235,7 +235,16 @@
             $designationData = DB::select("SELECT * from designations where id = $designation limit 1");
             $empDesignation = !empty($designationData) ? $designationData[0]->designation : 0;
             $auth_seg = 2;
-        } 
+        }
+    }
+
+    // Prefer path after /admin/ so JS rights check gets "home", "packages", etc.
+    $requestSegments = request()->segments();
+    $adminSegIndex = array_search('admin', $requestSegments, true);
+    if ($adminSegIndex !== false && isset($requestSegments[$adminSegIndex + 1])) {
+        $currentSegmentValue = $requestSegments[$adminSegIndex + 1];
+    } else {
+        $currentSegmentValue = request()->segment($auth_seg) ?: '';
     }
 
     $isWebPayload = ['is_web' => GetActiveGuardDetail()->is_web];
@@ -255,7 +264,7 @@
         var activeLang = @json(isset($activeLang) ? $activeLang : config('app.locale'));
         var fallbackLang = @json(config('app.fallback_locale'));
         var controllerAction = @json($action ?? '');
-        var currentSegment = @json(Request::segment($auth_seg));
+        var currentSegment = @json($currentSegmentValue);
         var csrfToken = $('[name="csrf_token"]').attr('content');
         var loggedInUser = @json($loggedInUserPayload);
         

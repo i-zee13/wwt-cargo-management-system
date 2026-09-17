@@ -61,14 +61,27 @@ Route::group(['middleware' => ['lang_set']], function () {
 
     // Route::get('/login', [App\Http\Controllers\Auth\ClientsLoginController::class, 'showLoginForm'])->name('login');
     Route::get('/', function () {
-
         if (Auth::guard('web')->check()) {
             return redirect('/admin/home');
-        } else if (Auth::guard('clients')->check()) {
-            return redirect('/customer-home');
-        } else {
-            return redirect('/customer-login');
         }
+
+        if (Auth::guard('clients')->check()) {
+            return redirect('/customer-home');
+        }
+
+        // Guests land on the public marketing site, not the customer portal login.
+        $marketing = rtrim((string) config('app.marketing_url'), '/');
+        $appHost = parse_url((string) config('app.url'), PHP_URL_HOST);
+        $marketingHost = parse_url($marketing, PHP_URL_HOST);
+
+        if (
+            $marketing === ''
+            || ($appHost && $marketingHost && strcasecmp($appHost, $marketingHost) === 0)
+        ) {
+            $marketing = 'https://wwt-cargo-marketing.netlify.app';
+        }
+
+        return redirect()->away($marketing);
     });
     Route::get('/clear', function () {
         Artisan::call('optimize:clear');

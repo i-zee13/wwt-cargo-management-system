@@ -54,6 +54,13 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    /*
+    | Public marketing website (Next.js / Netlify). Guests hitting Laravel "/"
+    | are redirected here instead of the customer portal login.
+    | Must be a different host than APP_URL to avoid a redirect loop.
+    */
+    'marketing_url' => env('MARKETING_URL', 'https://wwt-cargo-marketing.netlify.app'),
+
     'home' => env('APP_HOME', '/admin/home'),
 
     'force_https' => env('FORCE_HTTPS', false),
