@@ -61,14 +61,18 @@ Route::group(['middleware' => ['lang_set']], function () {
 
     // Route::get('/login', [App\Http\Controllers\Auth\ClientsLoginController::class, 'showLoginForm'])->name('login');
     Route::get('/', function () {
-
         if (Auth::guard('web')->check()) {
             return redirect('/admin/home');
-        } else if (Auth::guard('clients')->check()) {
-            return redirect('/customer-home');
-        } else {
-            return redirect('/customer-login');
         }
+
+        if (Auth::guard('clients')->check()) {
+            return redirect('/customer-home');
+        }
+
+        // Guests land on the public marketing site, not the customer portal login.
+        $marketing = rtrim((string) config('app.marketing_url'), '/') ?: 'https://wwt.com.py';
+
+        return redirect()->away($marketing);
     });
     Route::get('/clear', function () {
         Artisan::call('optimize:clear');
