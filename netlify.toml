@@ -45,15 +45,15 @@
   to = "/es/contacto"
   status = 302
 
-# Customer auth is on portal — never on the marketing apex
+# Customer auth is on client — never on the marketing apex
 [[redirects]]
   from = "/customer-login"
-  to = "https://portal.wwt.com.py/customer-login"
+  to = "https://client.wwt.com.py/customer-login"
   status = 302
 
 [[redirects]]
   from = "/customer-register"
-  to = "https://portal.wwt.com.py/customer-register"
+  to = "https://client.wwt.com.py/customer-register"
   status = 302
 
 # Required Netlify env vars (build time):
