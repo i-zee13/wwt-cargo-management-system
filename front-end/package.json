@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "next-sitemap",
+    "build:prod": "NEXT_PUBLIC_SITE_URL=https://wwt.com.py NEXT_PUBLIC_LARAVEL_URL=https://portal.wwt.com.py next build && npm run postbuild",
+    "postbuild": "next-sitemap && node scripts/prepare-cpanel-out.mjs",
     "start": "next start",
     "lint": "eslint"
   },
