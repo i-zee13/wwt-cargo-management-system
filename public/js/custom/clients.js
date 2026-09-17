@@ -394,23 +394,35 @@ Equipo WWT`;
 function fillNotifyRecipientsSelect() {
     const $sel = $('#notify_recipients');
     if (!$sel.length) return;
-    $sel.empty();
+
+    if ($sel.hasClass('select2-hidden-accessible')) {
+        $sel.select2('destroy');
+    }
+
+    $sel.empty().prop('disabled', false);
     (clients || []).forEach(function (c) {
         if (!c.email) return;
         const name = ((c.first_name || '') + ' ' + (c.last_name || '')).trim() || c.email;
-        const label = (c.suite ? c.suite + ' — ' : '') + name + ' <' + c.email + '>';
-        $sel.append(new Option(label, c.id, false, false));
+        const label = (c.suite ? c.suite + ' — ' : '') + name + ' (' + c.email + ')';
+        $sel.append(new Option(label, String(c.id), false, false));
     });
+}
+
+function initNotifyRecipientsSelect2() {
+    const $sel = $('#notify_recipients');
+    if (!$sel.length || !$.fn.select2) return;
+
     if ($sel.hasClass('select2-hidden-accessible')) {
-        $sel.trigger('change.select2');
-    } else if ($.fn.select2) {
-        $sel.select2({
-            dropdownParent: $('#portalNotifyModal'),
-            width: '100%',
-            placeholder: (typeof Lang !== 'undefined' && Lang.get) ? Lang.get('fields.recipients') : 'Recipients',
-            allowClear: true,
-        });
+        $sel.select2('destroy');
     }
+
+    $sel.select2({
+        dropdownParent: $('#portalNotifyModal'),
+        width: '100%',
+        placeholder: (typeof Lang !== 'undefined' && Lang.get) ? Lang.get('fields.recipients') : 'Select customers',
+        allowClear: true,
+        closeOnSelect: false,
+    });
 }
 
 $(document).on('click', '#openPortalNotifyModal', function () {
@@ -421,7 +433,6 @@ $(document).on('click', '#openPortalNotifyModal', function () {
     }
     fillNotifyRecipientsSelect();
     $('#notify_all_clients').prop('checked', false);
-    $('#notify_recipients').prop('disabled', false).val(null).trigger('change');
     if (!$('#notify_body').val().trim()) {
         $('#notify_body').val(DEFAULT_PORTAL_NOTIFY_BODY);
     }
@@ -431,11 +442,27 @@ $(document).on('click', '#openPortalNotifyModal', function () {
     $('#portalNotifyModal').modal('show');
 });
 
+$(document).on('shown.bs.modal', '#portalNotifyModal', function () {
+    initNotifyRecipientsSelect2();
+    $('#notify_recipients').val(null).trigger('change');
+});
+
+$(document).on('hidden.bs.modal', '#portalNotifyModal', function () {
+    const $sel = $('#notify_recipients');
+    if ($sel.hasClass('select2-hidden-accessible')) {
+        $sel.select2('destroy');
+    }
+});
+
 $(document).on('change', '#notify_all_clients', function () {
     const all = $(this).is(':checked');
-    $('#notify_recipients').prop('disabled', all);
+    const $sel = $('#notify_recipients');
+    $sel.prop('disabled', all);
     if (all) {
-        $('#notify_recipients').val(null).trigger('change');
+        $sel.val(null).trigger('change');
+    }
+    if ($sel.hasClass('select2-hidden-accessible')) {
+        $sel.trigger('change.select2');
     }
 });
 

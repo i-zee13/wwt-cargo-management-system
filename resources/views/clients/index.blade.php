@@ -276,7 +276,7 @@ line-height: 1;
                 </p>
                 <div class="mb-3">
                     <label class="form-label fw-semibold" for="notify_recipients">{{__('fields.recipients')}}</label>
-                    <select id="notify_recipients" class="form-control select_class" multiple="multiple" style="width:100%;"></select>
+                    <select id="notify_recipients" class="form-control" multiple="multiple" style="width:100%;"></select>
                     <div class="form-check mt-2">
                         <input class="form-check-input" type="checkbox" id="notify_all_clients">
                         <label class="form-check-label" for="notify_all_clients">{{__('fields.all_customers')}}</label>
@@ -360,7 +360,7 @@ line-height: 1;
             
         });
     </script>
-    <script src="/js/custom/clients.js?v=1.6.0.1"></script>
+    <script src="/js/custom/clients.js?v=1.6.0.2"></script>
 
     <!-- Buttons Extension JS -->
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
