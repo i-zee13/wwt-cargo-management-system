@@ -1,11 +1,16 @@
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://wwt.com.py";
 
-/** Laravel app base — customer auth + API on the primary domain. */
-export const LARAVEL_URL =
-  process.env.NEXT_PUBLIC_LARAVEL_URL?.replace(/\/$/, "") ?? SITE_URL;
+/** Customer portal host (login / register / tracking API). */
+export const CLIENT_URL =
+  process.env.NEXT_PUBLIC_CLIENT_URL?.replace(/\/$/, "") ??
+  "https://client.wwt.com.py";
 
-/** Admin panel host (not linked on the public site). */
+/** @deprecated Prefer CLIENT_URL — kept for tracking helpers. */
+export const LARAVEL_URL =
+  process.env.NEXT_PUBLIC_LARAVEL_URL?.replace(/\/$/, "") ?? CLIENT_URL;
+
+/** Admin panel host (not linked on the public marketing site). */
 export const ADMIN_URL =
   process.env.NEXT_PUBLIC_ADMIN_URL?.replace(/\/$/, "") ??
   "https://portal.wwt.com.py";
@@ -21,9 +26,9 @@ export const whatsappLink = (message?: string) =>
     message ? `?text=${encodeURIComponent(message)}` : ""
   }`;
 
-/** Customer portal — primary domain (wwt.com.py), not the admin portal host. */
+/** Customer auth on client.*; admin URL for private sharing only. */
 export const PORTAL_LINKS = {
-  login: `${SITE_URL}/customer-login`,
-  register: `${SITE_URL}/customer-register`,
+  login: `${CLIENT_URL}/customer-login`,
+  register: `${CLIENT_URL}/customer-register`,
   admin: `${ADMIN_URL}/admin/login`,
 };

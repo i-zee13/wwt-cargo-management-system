@@ -391,6 +391,7 @@ return array(
   'package_status_on_the_way' => 'En camino',
   'admin_login' => 'Inicio de Sesión de Administrador',
   'client_login' => 'Inicio de Sesión de Cliente',
+  'back_to_website' => 'Volver al sitio web',
   'admin_dashboard' => 'Panel de Administración',
     'package_create_email_content' => 'Contenido del Correo Electrónico de Creación de Paquete',
   'package_create_email' => 'Correo Electrónico de Creación de Paquete',

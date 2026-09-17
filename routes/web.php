@@ -69,19 +69,21 @@ Route::group(['middleware' => ['lang_set']], function () {
             return redirect('/customer-home');
         }
 
-        // Public website is NOT served by Laravel. It is Netlify (/front-end)
-        // on the apex domain via DNS. Optional: only redirect when MARKETING_URL
-        // is a different host (e.g. portal → https://wwt.com.py).
-        $marketing = rtrim((string) config('app.marketing_url'), '/');
-        $marketingHost = $marketing !== '' ? parse_url($marketing, PHP_URL_HOST) : null;
+        $host = strtolower((string) request()->getHost());
+        $portalHost = strtolower((string) (parse_url((string) config('app.portal_url'), PHP_URL_HOST) ?: ''));
+        $clientHost = strtolower((string) (parse_url((string) config('app.client_url'), PHP_URL_HOST) ?: ''));
 
-        if (
-            $marketingHost
-            && strcasecmp(request()->getHost(), $marketingHost) !== 0
-        ) {
-            return redirect()->away($marketing);
+        // portal.wwt.com.py → admin login
+        if ($portalHost !== '' && $host === $portalHost) {
+            return redirect('/admin/login');
         }
 
+        // client.wwt.com.py → customer login
+        if ($clientHost !== '' && $host === $clientHost) {
+            return redirect('/customer-login');
+        }
+
+        // Other hosts (local / unknown): customer login
         return redirect('/customer-login');
     });
     Route::get('/clear', function () {

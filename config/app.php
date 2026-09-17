@@ -55,12 +55,19 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     /*
-    | Optional: when Laravel runs on a portal host (portal.wwt.com.py), guests
-    | hitting "/" can be sent to the public site. Leave empty if unused.
-    | Public site itself is served by Netlify (/front-end) on wwt.com.py via DNS —
-    | do not point MARKETING_URL at the same host Laravel is serving.
+    | Multi-domain entry points (same Laravel app / public folder on cPanel):
+    |   portal.wwt.com.py  → guests "/" → /admin/login
+    |   client.wwt.com.py  → guests "/" → /customer-login
+    |   wwt.com.py         → marketing site (front-end/out) — not Laravel
     */
-    'marketing_url' => env('MARKETING_URL', ''),
+    'portal_url' => env('PORTAL_URL', 'https://portal.wwt.com.py'),
+
+    'client_url' => env('CLIENT_URL', 'https://client.wwt.com.py'),
+
+    /*
+    | Public marketing website (Back to Website on customer auth screens).
+    */
+    'marketing_url' => env('MARKETING_URL', 'https://wwt.com.py'),
 
     'home' => env('APP_HOME', '/admin/home'),
 

@@ -390,6 +390,7 @@ return array (
   'verify' => 'Verify',
   'admin_login' => 'Admin Login',
   'client_login' => 'Client Login',
+  'back_to_website' => 'Back to Website',
   'admin_dashboard' => 'Admin Dashboard',
     'package_create_email_content' => 'Package Create Email Content',
   'package_create_email' => 'Package Create Email',

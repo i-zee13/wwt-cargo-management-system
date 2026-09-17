@@ -53,6 +53,21 @@
         font-size: 1.2rem;
     }
 
+    .back-to-website-btn {
+        white-space: nowrap;
+        font-weight: 500;
+        border-radius: 6px;
+        padding: 0.4rem 0.9rem;
+    }
+
+    .auth-top-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+    }
+
     @keyframes bounce-in {
         0% {
             transform: translateX(-50%) translateY(-100px) scale(0.5);
@@ -99,11 +114,16 @@
             <div class="row d-flex align-items-center">
                 <div class="col-lg-6 col-md-12">
                     <span class="logo_name">
-                        <img src="{{getOrganizationData()->logo}}" alt="">
+                        <a href="{{ rtrim((string) (config('app.marketing_url') ?: 'https://wwt.com.py'), '/') }}" title="{{ __('fields.back_to_website') }}">
+                            <img src="{{getOrganizationData()->logo}}" alt="{{ config('app.name') }}">
+                        </a>
                     </span>
                 </div> 
                 <div class="col-lg-6 col-md-12 toggle_div">
-                    @include('includes.language-toggle')
+                    <div class="auth-top-actions">
+                        @include('includes.back-to-website')
+                        @include('includes.language-toggle')
+                    </div>
                 </div>
             </div>
            
