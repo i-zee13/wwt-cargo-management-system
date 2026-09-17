@@ -260,12 +260,23 @@ line-height: 1;
     </div>
 </div>
 
-{{-- New portal bulk notify --}}
-<div class="modal fade" id="portalNotifyModal" tabindex="-1" aria-labelledby="portalNotifyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+{{-- New portal bulk notify — Recipients uses same fSelect multiselect as Reporting --}}
+<style>
+    /* fSelect dropdown above Bootstrap modal (z-index 1050) */
+    #portalNotifyModal .fs-dropdown {
+        z-index: 1060;
+        width: 100%;
+    }
+    #portalNotifyModal .modal-body {
+        overflow: visible;
+    }
+</style>
+<div class="modal fade" id="portalNotifyModal" tabindex="-1" role="dialog" aria-labelledby="portalNotifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="portalNotifyModalLabel">{{__('fields.notify_portal')}}</h5>
+                {{-- Bootstrap 4 close (same as includes/modals.blade.php) — NOT Bootstrap 5 btn-close --}}
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -276,10 +287,16 @@ line-height: 1;
                 </p>
                 <div class="mb-3">
                     <label class="form-label fw-semibold" for="notify_recipients">{{__('fields.recipients')}}</label>
-                    <select id="notify_recipients" class="form-control" multiple="multiple" style="width:100%;"></select>
-                    <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" id="notify_all_clients">
-                        <label class="form-check-label" for="notify_all_clients">{{__('fields.all_customers')}}</label>
+                    <div class="icon-input">
+                        <div class="form-s2">
+                            <select id="notify_recipients"
+                                    class="reports-select multi all-select"
+                                    name="notify_recipients[]"
+                                    multiple="multiple"
+                                    style="width:100%;">
+                                <option value="all" selected>{{__('fields.all_customers')}}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="mb-3">
@@ -360,7 +377,7 @@ line-height: 1;
             
         });
     </script>
-    <script src="/js/custom/clients.js?v=1.6.0.2"></script>
+    <script src="/js/custom/clients.js?v=1.6.0.3"></script>
 
     <!-- Buttons Extension JS -->
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>

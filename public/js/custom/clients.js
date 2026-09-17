@@ -391,39 +391,60 @@ Para crear o restablecer su contraseña, use el botón del correo o este enlace:
 Saludos,
 Equipo WWT`;
 
-function fillNotifyRecipientsSelect() {
+/** Same fSelect + "all" pattern as Reporting (public/js/custom/reporting.js) */
+function destroyNotifyRecipientsFSelect() {
     const $sel = $('#notify_recipients');
     if (!$sel.length) return;
-
-    if ($sel.hasClass('select2-hidden-accessible')) {
-        $sel.select2('destroy');
+    if ($sel.data('fSelect')) {
+        $sel.fSelect('destroy');
+        $sel.removeData('fSelect');
     }
+}
 
-    $sel.empty().prop('disabled', false);
+function fillNotifyRecipientsSelect() {
+    const $sel = $('#notify_recipients');
+    if (!$sel.length || !$.fn.fSelect) return;
+
+    destroyNotifyRecipientsFSelect();
+
+    const allLabel = (typeof Lang !== 'undefined' && Lang.get)
+        ? (Lang.get('fields.all_customers') || 'All customers')
+        : 'All customers';
+
+    $sel.empty();
+    $sel.append(new Option(allLabel, 'all', true, true));
+
     (clients || []).forEach(function (c) {
         if (!c.email) return;
         const name = ((c.first_name || '') + ' ' + (c.last_name || '')).trim() || c.email;
         const label = (c.suite ? c.suite + ' — ' : '') + name + ' (' + c.email + ')';
-        $sel.append(new Option(label, String(c.id), false, false));
+        const opt = new Option(label, String(c.id), false, false);
+        opt.disabled = true; // disabled while "all" is selected (same as reports)
+        $sel.append(opt);
     });
+
+    $sel.fSelect({ placeholder: allLabel, showSearch: true });
 }
 
-function initNotifyRecipientsSelect2() {
-    const $sel = $('#notify_recipients');
-    if (!$sel.length || !$.fn.select2) return;
+$(document).on('change', '#notify_recipients.all-select', function () {
+    const $select = $(this);
+    if ($select.data('_notifyAllProcessing')) return;
+    $select.data('_notifyAllProcessing', true);
 
-    if ($sel.hasClass('select2-hidden-accessible')) {
-        $sel.select2('destroy');
+    const allOptionValue = 'all';
+    if ($select.val() && $select.val().includes(allOptionValue)) {
+        $select.find('option').each(function () {
+            if ($(this).val() !== allOptionValue) {
+                $(this).prop('disabled', true);
+            }
+        });
+        $select.val([allOptionValue]);
+    } else {
+        $select.find('option').prop('disabled', false);
     }
-
-    $sel.select2({
-        dropdownParent: $('#portalNotifyModal'),
-        width: '100%',
-        placeholder: (typeof Lang !== 'undefined' && Lang.get) ? Lang.get('fields.recipients') : 'Select customers',
-        allowClear: true,
-        closeOnSelect: false,
-    });
-}
+    $select.fSelect('reload');
+    $select.data('_notifyAllProcessing', false);
+});
 
 $(document).on('click', '#openPortalNotifyModal', function () {
     if (!clients || !clients.length) {
@@ -431,47 +452,27 @@ $(document).on('click', '#openPortalNotifyModal', function () {
         setTimeout(() => $('#notifDiv').fadeOut(), 3000);
         return;
     }
-    fillNotifyRecipientsSelect();
-    $('#notify_all_clients').prop('checked', false);
     if (!$('#notify_body').val().trim()) {
         $('#notify_body').val(DEFAULT_PORTAL_NOTIFY_BODY);
     }
     if (!$('#notify_subject').val().trim()) {
         $('#notify_subject').val('Nuevo portal WWT — acceso y contraseña');
     }
+    fillNotifyRecipientsSelect();
     $('#portalNotifyModal').modal('show');
 });
 
-$(document).on('shown.bs.modal', '#portalNotifyModal', function () {
-    initNotifyRecipientsSelect2();
-    $('#notify_recipients').val(null).trigger('change');
-});
-
 $(document).on('hidden.bs.modal', '#portalNotifyModal', function () {
-    const $sel = $('#notify_recipients');
-    if ($sel.hasClass('select2-hidden-accessible')) {
-        $sel.select2('destroy');
-    }
-});
-
-$(document).on('change', '#notify_all_clients', function () {
-    const all = $(this).is(':checked');
-    const $sel = $('#notify_recipients');
-    $sel.prop('disabled', all);
-    if (all) {
-        $sel.val(null).trigger('change');
-    }
-    if ($sel.hasClass('select2-hidden-accessible')) {
-        $sel.trigger('change.select2');
-    }
+    destroyNotifyRecipientsFSelect();
 });
 
 $(document).on('click', '#sendPortalNotifyBtn', function () {
     const btn = $(this);
     const subject = $('#notify_subject').val().trim();
     const body = $('#notify_body').val().trim();
-    const sendAll = $('#notify_all_clients').is(':checked');
-    const clientIds = sendAll ? [] : ($('#notify_recipients').val() || []);
+    const selected = $('#notify_recipients').val() || [];
+    const sendAll = selected.includes('all');
+    const clientIds = sendAll ? [] : selected.filter(function (v) { return v !== 'all'; });
 
     if (!subject || !body) {
         $('#notifDiv').fadeIn().css('background', 'red').text('Subject and template are required.');
@@ -484,7 +485,9 @@ $(document).on('click', '#sendPortalNotifyBtn', function () {
         return;
     }
 
-    const count = sendAll ? (clients || []).length : clientIds.length;
+    const count = sendAll
+        ? (clients || []).filter(function (c) { return !!c.email; }).length
+        : clientIds.length;
     if (!confirm('Send portal notification to ' + count + ' customer(s)?')) {
         return;
     }
