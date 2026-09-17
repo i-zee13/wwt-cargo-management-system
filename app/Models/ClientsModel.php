@@ -43,18 +43,17 @@ class ClientsModel extends Model implements AuthAuthenticatable, CanResetPasswor
 
     public function markEmailAsVerified()
     {
- 
         $this->email_verified_at = now();
-        $this->save(); 
-        
+        $this->save();
+
         $subject = emailContentSettings('welcome')->subject ?? 'Welcome to Our Service';
         $headerContent = emailContentSettings('welcome')->header_text ?? 'Welcome, {{ first_name }}!';
         $bodyText = emailContentSettings('welcome')->body_text ?? 'We are excited to have you on board, {{ first_name }}! Your registered email is {{ email }}.';
         $footerText = emailFooterText(emailContentSettings('welcome')->footer_text ?? null);
 
         $placeholders = [
-            '{{ first_name }}' => GetActiveGuardDetail()->first_name,
-            '{{ email }}' => GetActiveGuardDetail()->email,
+            '{{ first_name }}' => $this->first_name,
+            '{{ email }}' => $this->email,
         ];
         $headerContent = str_replace(array_keys($placeholders), array_values($placeholders), $headerContent);
         $bodyText = str_replace(array_keys($placeholders), array_values($placeholders), $bodyText);
@@ -63,8 +62,9 @@ class ClientsModel extends Model implements AuthAuthenticatable, CanResetPasswor
             'headerContent' => $headerContent,
             'bodyText' => $bodyText,
             'footerText' => $footerText,
-        ])->render(); 
-        SendInBlue(GetActiveGuardDetail()->email, GetActiveGuardDetail()->first_name, $subject, $htmlContent);
+        ])->render();
+        SendInBlue($this->email, $this->first_name, $subject, $htmlContent);
+
         return true;
     }
 

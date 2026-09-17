@@ -61,6 +61,36 @@ if (!function_exists('GetActiveGuardDetail')) {
     }
 }
 
+if (! function_exists('clientVerificationUrl')) {
+    /**
+     * Signed email-verification URL on the customer host (client.wwt.com.py).
+     */
+    function clientVerificationUrl($user): string
+    {
+        $clientRoot = rtrim((string) config('app.client_url', config('app.url')), '/');
+        $previousRoot = rtrim((string) config('app.url'), '/');
+
+        if ($clientRoot !== '') {
+            URL::forceRootUrl($clientRoot);
+        }
+
+        try {
+            return URL::temporarySignedRoute(
+                'verification.verify',
+                Carbon::now()->addMinutes((int) config('auth.verification.expire', 60)),
+                [
+                    'id' => $user->getKey(),
+                    'hash' => sha1($user->getEmailForVerification()),
+                ]
+            );
+        } finally {
+            if ($previousRoot !== '') {
+                URL::forceRootUrl($previousRoot);
+            }
+        }
+    }
+}
+
 if (!function_exists('timeFormat')) {
     function timeFormat($date)
     {

@@ -138,37 +138,27 @@ class ClientsLoginController extends Controller
         $validatedData['suite'] = config('brand.suite_prefix', 'WWT') . $mBranch . $nextClientId;
         $client = ClientsModel::create($validatedData);
         Auth::guard('clients')->login($client);
-        function generateVerificationUrl($user)
-        {
-            return URL::temporarySignedRoute(
-                'verification.verify',
-                Carbon::now()->addMinutes(config('auth.verification.expire', 60)),
-                ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())]
-            );
-        }
         $subject = emailContentSettings('verification')->subject ?? 'Email Verifications Required';
         $headerContent = emailContentSettings('verification')->header_text ?? 'Welcome, {{ client_name }}!';
         $bodyText = emailContentSettings('verification')->body_text;
         $footerText = emailFooterText(emailContentSettings('verification')->footer_text ?? null);
         $loginUser = Auth::guard('clients')->user();
         $placeholders = [
-            '{{ first_name }}' => GetActiveGuardDetail()->first_name,
-            '{{ email }}' => GetActiveGuardDetail()->email,
-            '{{ suite }}' => GetActiveGuardDetail()->suite,
+            '{{ first_name }}' => $loginUser->first_name,
+            '{{ email }}' => $loginUser->email,
+            '{{ suite }}' => $loginUser->suite,
         ];
         $headerContent = str_replace(array_keys($placeholders), array_values($placeholders), $headerContent);
         $bodyText = str_replace(array_keys($placeholders), array_values($placeholders), $bodyText);
         $footerText = str_replace(array_keys($placeholders), array_values($placeholders), $footerText);
 
-
-        $verificationUrl = generateVerificationUrl($loginUser);
+        $verificationUrl = clientVerificationUrl($loginUser);
         $htmlContent = view('client_auth.verification-email-temp', [
             'headerContent' => $headerContent,
             'bodyContent' => $bodyText,
             'footerContent' => $footerText,
             'url' => $verificationUrl
         ])->render();
-        $loginUser = Auth::guard('clients')->user();
         SendInBlue($loginUser->email, $loginUser->first_name, $subject, $htmlContent);
 
         return redirect()->route('customer.home')->with('success', 'Client created successfully!');

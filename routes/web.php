@@ -28,8 +28,9 @@ use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Http\Controllers\ClientController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Carbon\Carbon;
+use App\Models\ClientsModel;
+use Illuminate\Auth\Events\Verified;
 
 /*
 |--------------------------------------------------------------------------
@@ -364,67 +365,69 @@ Route::group(['middleware' => ['lang_set']], function () {
 
     });
     Route::post('/customer-password-update', [ClientsLoginController::class, 'update_user_password'])->name('customer.update-password-user');
-    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        // Ensure the user is authenticated via the 'clients' guard
-       
-    
-        // Fulfill the email verification request
-        $request->fulfill();
-    
-        // Redirect to the customer home with a success message
-        return redirect()->route('customer.home')->with('message', 'Email verified successfully!');
+    Route::get('/email/verify/{id}/{hash}', function (Request $request, $id, $hash) {
+        $user = ClientsModel::find($id);
+
+        if (! $user) {
+            return redirect()->route('customer-login')
+                ->with('error', 'Invalid verification link.');
+        }
+
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            abort(403, 'Invalid verification link.');
+        }
+
+        if (! $user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+            event(new Verified($user));
+        }
+
+        Auth::guard('clients')->login($user);
+
+        return redirect()->route('customer.home')
+            ->with('message', 'Email verified successfully!');
     })->middleware(['signed'])->name('verification.verify');
+
     Route::group(['middleware' => ['auth:clients']], function () {
         Route::get('/email/verify', function () {
-            if(Auth::user()->email_verified_at == null){ 
+            $user = Auth::guard('clients')->user();
+            if ($user && $user->email_verified_at == null) {
                 return view('client_auth.verify-email');
-            }else{
-                return redirect()->route('customer.home');
             }
-                  
+
+            return redirect()->route('customer.home');
         })->name('verification.notice');
-        
+
         Route::post('/email/verification-notification', function (Request $request) {
-            // $request->user()->sendEmailVerificationNotification();
-            if(Auth::user()->email_verified_at == null){
-              function generateVerificationUrl($user)
-                {
-                    return URL::temporarySignedRoute(
-                        'verification.verify',
-                        Carbon::now()->addMinutes(config('auth.verification.expire', 60)),
-                        ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())]
-                    );
-                }
-                $subject        = emailContentSettings('verification')->subject ?? 'Email Verifications Required';
-                $headerContent  = emailContentSettings('verification')->header_text ?? 'Welcome, {{ client_name }}!';
-                $bodyText       = emailContentSettings('verification')->body_text;
-                $footerText     = emailFooterText(emailContentSettings('verification')->footer_text ?? null); 
-                    $loginUser = Auth::user();
-                   $placeholders = [
-                                    '{{ first_name }}' => $loginUser->first_name,
-                                    '{{ email }}' => $loginUser->email,
-                                    '{{ suite }}' => $loginUser->suite,
-                                ]; 
-                $headerContent  = str_replace(array_keys($placeholders), array_values($placeholders), $headerContent);
-                $bodyText       = str_replace(array_keys($placeholders), array_values($placeholders), $bodyText);
-                $footerText     = str_replace(array_keys($placeholders), array_values($placeholders), $footerText);
-                
-            
-                $verificationUrl = generateVerificationUrl($loginUser);
-                $htmlContent     = view('client_auth.verification-email-temp', [
-                                        'headerContent' => $headerContent,    
-                                        'bodyContent'   => $bodyText,    
-                                        'footerContent' => $footerText,   
-                                         'url'          => $verificationUrl 
-                                    ])->render(); 
-                $loginUser      = Auth::user();
-                SendInBlue($loginUser->email,$loginUser->first_name,$subject,$htmlContent);
-                    return back()->with('message', 'Verification link sent!');
-            } else{
-                return redirect()->route('customer.home');
+            $loginUser = Auth::guard('clients')->user();
+
+            if ($loginUser && $loginUser->email_verified_at == null) {
+                $subject = emailContentSettings('verification')->subject ?? 'Email Verifications Required';
+                $headerContent = emailContentSettings('verification')->header_text ?? 'Welcome, {{ client_name }}!';
+                $bodyText = emailContentSettings('verification')->body_text;
+                $footerText = emailFooterText(emailContentSettings('verification')->footer_text ?? null);
+                $placeholders = [
+                    '{{ first_name }}' => $loginUser->first_name,
+                    '{{ email }}' => $loginUser->email,
+                    '{{ suite }}' => $loginUser->suite,
+                ];
+                $headerContent = str_replace(array_keys($placeholders), array_values($placeholders), $headerContent);
+                $bodyText = str_replace(array_keys($placeholders), array_values($placeholders), $bodyText);
+                $footerText = str_replace(array_keys($placeholders), array_values($placeholders), $footerText);
+
+                $verificationUrl = clientVerificationUrl($loginUser);
+                $htmlContent = view('client_auth.verification-email-temp', [
+                    'headerContent' => $headerContent,
+                    'bodyContent' => $bodyText,
+                    'footerContent' => $footerText,
+                    'url' => $verificationUrl,
+                ])->render();
+                SendInBlue($loginUser->email, $loginUser->first_name, $subject, $htmlContent);
+
+                return back()->with('message', 'Verification link sent!');
             }
-                 
-      
+
+            return redirect()->route('customer.home');
         })->middleware(['throttle:6,1'])->name('verification.send');
     });
 
