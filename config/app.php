@@ -55,10 +55,9 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     /*
-    | Public marketing website. Guests hitting Laravel "/" are redirected here
-    | instead of the customer portal login.
-    | Use the public domain (e.g. https://wwt.com.py). APP_URL should be the
-    | portal host (e.g. https://portal.wwt.com.py) so this is not a loop.
+    | Public marketing website. Guests on the portal host are redirected here.
+    | Example: APP_URL=https://portal.wwt.com.py, MARKETING_URL=https://wwt.com.py
+    | Do NOT set MARKETING_URL to the same host Laravel is serving — that causes a redirect loop.
     */
     'marketing_url' => env('MARKETING_URL', 'https://wwt.com.py'),
 

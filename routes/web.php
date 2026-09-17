@@ -69,10 +69,21 @@ Route::group(['middleware' => ['lang_set']], function () {
             return redirect('/customer-home');
         }
 
-        // Guests land on the public marketing site, not the customer portal login.
-        $marketing = rtrim((string) config('app.marketing_url'), '/') ?: 'https://wwt.com.py';
+        // Send guests to the public site only when Laravel is on a different host
+        // (e.g. portal.wwt.com.py → https://wwt.com.py). Same host = ERR_TOO_MANY_REDIRECTS.
+        $marketing = rtrim((string) config('app.marketing_url'), '/');
+        $marketingHost = $marketing !== '' ? parse_url($marketing, PHP_URL_HOST) : null;
+        $requestHost = request()->getHost();
 
-        return redirect()->away($marketing);
+        if (
+            $marketing !== ''
+            && $marketingHost
+            && strcasecmp($requestHost, $marketingHost) !== 0
+        ) {
+            return redirect()->away($marketing);
+        }
+
+        return redirect('/customer-login');
     });
     Route::get('/clear', function () {
         Artisan::call('optimize:clear');
