@@ -230,7 +230,7 @@ line-height: 1;
         </div>
     </div>
     <div class="col-auto col-xsm-w">
-        <button type="button" class="btn btn-outline-primary mt-0 me-2" id="openPortalNotifyModal">
+        <button type="button" class="btn btn-primary mt-0 me-2" id="openPortalNotifyModal">
             {{__('fields.notify_portal')}}
         </button>
         <button class="btn btn-primary openDataSidebarForAddingClient mt-0 ">+ {{__('fields.new_client')}}</button>
