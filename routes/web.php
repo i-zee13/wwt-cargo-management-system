@@ -69,16 +69,15 @@ Route::group(['middleware' => ['lang_set']], function () {
             return redirect('/customer-home');
         }
 
-        // Send guests to the public site only when Laravel is on a different host
-        // (e.g. portal.wwt.com.py → https://wwt.com.py). Same host = ERR_TOO_MANY_REDIRECTS.
+        // Public website is NOT served by Laravel. It is Netlify (/front-end)
+        // on the apex domain via DNS. Optional: only redirect when MARKETING_URL
+        // is a different host (e.g. portal → https://wwt.com.py).
         $marketing = rtrim((string) config('app.marketing_url'), '/');
         $marketingHost = $marketing !== '' ? parse_url($marketing, PHP_URL_HOST) : null;
-        $requestHost = request()->getHost();
 
         if (
-            $marketing !== ''
-            && $marketingHost
-            && strcasecmp($requestHost, $marketingHost) !== 0
+            $marketingHost
+            && strcasecmp(request()->getHost(), $marketingHost) !== 0
         ) {
             return redirect()->away($marketing);
         }

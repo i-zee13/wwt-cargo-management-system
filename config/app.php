@@ -55,11 +55,12 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     /*
-    | Public marketing website. Guests on the portal host are redirected here.
-    | Example: APP_URL=https://portal.wwt.com.py, MARKETING_URL=https://wwt.com.py
-    | Do NOT set MARKETING_URL to the same host Laravel is serving — that causes a redirect loop.
+    | Optional: when Laravel runs on a portal host (portal.wwt.com.py), guests
+    | hitting "/" can be sent to the public site. Leave empty if unused.
+    | Public site itself is served by Netlify (/front-end) on wwt.com.py via DNS —
+    | do not point MARKETING_URL at the same host Laravel is serving.
     */
-    'marketing_url' => env('MARKETING_URL', 'https://wwt.com.py'),
+    'marketing_url' => env('MARKETING_URL', ''),
 
     'home' => env('APP_HOME', '/admin/home'),
 
