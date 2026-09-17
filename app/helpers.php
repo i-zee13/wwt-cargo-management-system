@@ -188,7 +188,42 @@ if (!function_exists('getOrganizationData')) {
 if (!function_exists('emailContentSettings')) {
     function emailContentSettings($email_type)
     {
-        return DB::table('email_content_settings')->where('email_type', '=', $email_type)->first();
+        $row = DB::table('email_content_settings')->where('email_type', '=', $email_type)->first();
+        if (! $row) {
+            return null;
+        }
+
+        foreach (['subject', 'header_text', 'body_text', 'footer_text'] as $column) {
+            if (! empty($row->{$column})) {
+                $row->{$column} = replaceLegacyWwcBrand((string) $row->{$column});
+            }
+        }
+
+        return $row;
+    }
+}
+
+if (! function_exists('replaceLegacyWwcBrand')) {
+    /** Replace leftover WWC / World Wide Commerce strings with WWT branding. */
+    function replaceLegacyWwcBrand(string $value): string
+    {
+        return str_replace(
+            [
+                'The WWC Team',
+                'World Wide Commerce',
+                'Worldwide Commerce',
+                'WWC',
+                'wwc',
+            ],
+            [
+                'The WWT Team',
+                'World Wide Trading Group',
+                'World Wide Trading Group',
+                'WWT',
+                'wwt',
+            ],
+            $value
+        );
     }
 }
  
@@ -247,7 +282,7 @@ if (!function_exists('emailFooterText')) {
     function emailFooterText(?string $footerFromSettings = null): string
     {
         if ($footerFromSettings && trim($footerFromSettings) !== '') {
-            return $footerFromSettings;
+            return replaceLegacyWwcBrand($footerFromSettings);
         }
 
         return config('brand.email_signature');

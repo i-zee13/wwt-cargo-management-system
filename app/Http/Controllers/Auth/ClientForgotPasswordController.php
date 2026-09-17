@@ -66,15 +66,22 @@ class ClientForgotPasswordController extends Controller
             $bodyText = emailContentSettings('reset')->body_text ?? 'Click the link below to reset your password, {{ first_name }}.';
             $footerText = emailFooterText(emailContentSettings('reset')->footer_text ?? null);
             $loginUser = $user;
+            $displayName = trim((string) ($loginUser->first_name ?? ''));
+            if ($displayName === '' || strcasecmp($displayName, 'WWC') === 0) {
+                $displayName = config('brand.short_name', 'WWT');
+            }
             $token = Password::broker()->createToken($user);
           
             $placeholders = [
-                '{{ first_name }}' => $loginUser->first_name,
+                '{{ first_name }}' => $displayName,
                 '{{ email }}' => $loginUser->email,
             ];
             $headerContent = str_replace(array_keys($placeholders), array_values($placeholders), $headerContent);
             $bodyText = str_replace(array_keys($placeholders), array_values($placeholders), $bodyText);
             $footerText = str_replace(array_keys($placeholders), array_values($placeholders), $footerText);
+            $headerContent = replaceLegacyWwcBrand($headerContent);
+            $bodyText = replaceLegacyWwcBrand($bodyText);
+            $footerText = replaceLegacyWwcBrand($footerText);
             $resetUrl = URL::temporarySignedRoute(
                 'client.reset',
                 now()->addMinutes(config('auth.passwords.clients.expire', 60)), // Use 'clients' broker expiration time
@@ -90,7 +97,7 @@ class ClientForgotPasswordController extends Controller
                 'subject' => $subject,
             ])->render();
 
-            SendInBlue($loginUser->email, $loginUser->first_name, $subject, $htmlContent);
+            SendInBlue($loginUser->email, $displayName, $subject, $htmlContent);
             return $response == Password::RESET_LINK_SENT
                 ? $this->sendResetLinkResponse($request, $response)
                 : $this->sendResetLinkFailedResponse($request, $response);

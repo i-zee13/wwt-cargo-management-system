@@ -412,9 +412,15 @@ class PackageController extends Controller
     {
         $package = null;
        
-        $origins = OriginModel::select('origins.id', 'origins.origin_name', DB::raw('MAX(freight_rates.rate) as rate'), DB::raw('MAX(freight_rates.additional) as additional'))
-            ->join('freight_rates', 'origins.id', '=', 'freight_rates.origin_id')
+        $origins = OriginModel::select(
+                'origins.id',
+                'origins.origin_name',
+                DB::raw('MAX(freight_rates.rate) as rate'),
+                DB::raw('MAX(freight_rates.additional) as additional')
+            )
+            ->leftJoin('freight_rates', 'origins.id', '=', 'freight_rates.origin_id')
             ->groupBy('origins.id', 'origins.origin_name')
+            ->orderBy('origins.origin_name')
             ->get();
       
         $customers = ClientsModel::all();
