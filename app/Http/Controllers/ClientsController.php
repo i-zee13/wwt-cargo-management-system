@@ -149,8 +149,126 @@ class ClientsController extends Controller
         $client->save();
         return response()->json(['status' => 'success', 'msg' => 'Client verified successfully!']);
     }
-    
-  
 
-   
+    /**
+     * Notify selected (or all) clients about the new portal with a password reset link.
+     * Small batches send immediately; larger batches are queued for clients:send-portal-notify.
+     */
+    public function notifyPortal(Request $request, \App\Services\ClientPortalNotifyMailer $mailer)
+    {
+        $validated = $request->validate([
+            'subject' => 'required|string|max:200',
+            'body' => 'required|string|max:20000',
+            'all' => 'nullable|boolean',
+            'client_ids' => 'nullable|array',
+            'client_ids.*' => 'integer',
+        ]);
+
+        $sendAll = $request->boolean('all');
+        $query = ClientsModel::query()
+            ->whereNotNull('email')
+            ->where('email', '!=', '');
+
+        if (! $sendAll) {
+            $ids = array_values(array_unique(array_filter($validated['client_ids'] ?? [])));
+            if ($ids === []) {
+                return response()->json([
+                    'status' => 'error',
+                    'msg' => 'Select at least one client, or choose All customers.',
+                ], 422);
+            }
+            $query->whereIn('id', $ids);
+        }
+
+        $clients = $query->orderBy('id')->get();
+        if ($clients->isEmpty()) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'No clients with email found.',
+            ], 422);
+        }
+
+        $subject = $validated['subject'];
+        $body = $validated['body'];
+        $syncLimit = 20;
+
+        $batch = \App\Models\ClientPortalNotifyBatch::create([
+            'created_by' => Auth::id(),
+            'subject' => $subject,
+            'body_template' => $body,
+            'total' => $clients->count(),
+            'sent' => 0,
+            'failed' => 0,
+            'status' => $clients->count() <= $syncLimit ? 'processing' : 'pending',
+        ]);
+
+        foreach ($clients as $client) {
+            \App\Models\ClientPortalNotifyItem::create([
+                'batch_id' => $batch->id,
+                'client_id' => $client->id,
+                'email' => $client->email,
+                'status' => 'pending',
+            ]);
+        }
+
+        if ($clients->count() <= $syncLimit) {
+            $sent = 0;
+            $failed = 0;
+            foreach ($clients as $client) {
+                $item = \App\Models\ClientPortalNotifyItem::where('batch_id', $batch->id)
+                    ->where('client_id', $client->id)
+                    ->first();
+                try {
+                    $mailer->send($client, $subject, $body);
+                    $item?->update(['status' => 'sent', 'sent_at' => now(), 'error' => null]);
+                    $sent++;
+                } catch (\Throwable $e) {
+                    $item?->update(['status' => 'failed', 'error' => $e->getMessage()]);
+                    $failed++;
+                }
+            }
+            $batch->update([
+                'sent' => $sent,
+                'failed' => $failed,
+                'status' => 'completed',
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'mode' => 'sync',
+                'batch_id' => $batch->id,
+                'msg' => "Sent {$sent} email(s)" . ($failed ? ", {$failed} failed" : '') . '.',
+                'sent' => $sent,
+                'failed' => $failed,
+                'total' => $clients->count(),
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'mode' => 'queued',
+            'batch_id' => $batch->id,
+            'msg' => "Queued {$clients->count()} emails. Cron will send ~25/minute (php artisan clients:send-portal-notify).",
+            'total' => $clients->count(),
+        ]);
+    }
+
+    public function notifyPortalStatus($batchId)
+    {
+        $batch = \App\Models\ClientPortalNotifyBatch::find($batchId);
+        if (! $batch) {
+            return response()->json(['status' => 'error', 'msg' => 'Batch not found'], 404);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'batch' => [
+                'id' => $batch->id,
+                'status' => $batch->status,
+                'total' => $batch->total,
+                'sent' => $batch->sent,
+                'failed' => $batch->failed,
+            ],
+        ]);
+    }
 }

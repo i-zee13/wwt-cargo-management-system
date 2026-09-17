@@ -291,6 +291,8 @@ Route::group(['middleware' => ['lang_set']], function () {
         Route::post('/verify-client', [ClientsController::class, 'verifyClient'])->name('verify-client');
         Route::get('/clients', [ClientsController::class, 'index'])->name('clients');
         Route::get('/getClients', [ClientsController::class, 'getClients'])->name('getClients');
+        Route::post('/clients/notify-portal', [ClientsController::class, 'notifyPortal'])->name('clients.notify-portal');
+        Route::get('/clients/notify-portal/{batchId}', [ClientsController::class, 'notifyPortalStatus'])->name('clients.notify-portal-status');
 
         //origins
         Route::get('/origins', [OriginController::class, 'index'])->name('origins');

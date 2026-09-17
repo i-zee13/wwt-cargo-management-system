@@ -230,6 +230,9 @@ line-height: 1;
         </div>
     </div>
     <div class="col-auto col-xsm-w">
+        <button type="button" class="btn btn-outline-primary mt-0 me-2" id="openPortalNotifyModal">
+            {{__('fields.notify_portal')}}
+        </button>
         <button class="btn btn-primary openDataSidebarForAddingClient mt-0 ">+ {{__('fields.new_client')}}</button>
     </div>
 </div>
@@ -252,6 +255,57 @@ line-height: 1;
                     style="position: absolute; left: 50%; top: 45%;">
             </div>
             <div class="card-body clients_list p-0" style="display: none">
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- New portal bulk notify --}}
+<div class="modal fade" id="portalNotifyModal" tabindex="-1" aria-labelledby="portalNotifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="portalNotifyModalLabel">{{__('fields.notify_portal')}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="small text-muted mb-3">
+                    {{__('fields.notify_portal_help')}}
+                </p>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="notify_recipients">{{__('fields.recipients')}}</label>
+                    <select id="notify_recipients" class="form-control select_class" multiple="multiple" style="width:100%;"></select>
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="notify_all_clients">
+                        <label class="form-check-label" for="notify_all_clients">{{__('fields.all_customers')}}</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold" for="notify_subject">{{__('fields.subject')}}</label>
+                    <input type="text" class="form-control" id="notify_subject"
+                           value="Nuevo portal WWT — acceso y contraseña">
+                </div>
+                <div class="mb-2">
+                    <label class="form-label fw-semibold" for="notify_body">{{__('fields.email_template')}}</label>
+                    <div class="small text-muted mb-1">
+                        Variables:
+                        <code>@{{ first_name }}</code>
+                        <code>@{{ email }}</code>
+                        <code>@{{ suite }}</code>
+                        <code>@{{ portal_url }}</code>
+                        <code>@{{ reset_url }}</code>
+                        <code>@{{ expire_minutes }}</code>
+                    </div>
+                    <textarea class="form-control" id="notify_body" rows="12" style="font-family: monospace; font-size: 0.9rem;"></textarea>
+                </div>
+                <div class="alert alert-warning py-2 small mb-0" role="alert">
+                    <strong>{{__('fields.notify_expire_note')}}</strong>
+                    ({{ (int) config('auth.passwords.clients.expire', 60) }} {{__('fields.minutes')}}).
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{__('fields.close')}}</button>
+                <button type="button" class="btn btn-primary" id="sendPortalNotifyBtn">{{__('fields.send_emails')}}</button>
             </div>
         </div>
     </div>
@@ -304,7 +358,7 @@ line-height: 1;
             
         });
     </script>
-    <script src="/js/custom/clients.js?v=1.5.0.1"></script>
+    <script src="/js/custom/clients.js?v=1.6.0.0"></script>
 
     <!-- Buttons Extension JS -->
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>

@@ -376,3 +376,132 @@ function validateEmail(email) {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     return emailPattern.test(email);
 }
+
+const DEFAULT_PORTAL_NOTIFY_BODY = `Hola {{ first_name }},
+
+Le informamos que nuestro nuevo portal de clientes ya está disponible:
+{{ portal_url }}
+
+Su correo de acceso: {{ email }}
+Suite / casilla: {{ suite }}
+
+Para crear o restablecer su contraseña, use el botón del correo o este enlace:
+{{ reset_url }}
+
+Saludos,
+Equipo WWT`;
+
+function fillNotifyRecipientsSelect() {
+    const $sel = $('#notify_recipients');
+    if (!$sel.length) return;
+    $sel.empty();
+    (clients || []).forEach(function (c) {
+        if (!c.email) return;
+        const name = ((c.first_name || '') + ' ' + (c.last_name || '')).trim() || c.email;
+        const label = (c.suite ? c.suite + ' — ' : '') + name + ' <' + c.email + '>';
+        $sel.append(new Option(label, c.id, false, false));
+    });
+    if ($sel.hasClass('select2-hidden-accessible')) {
+        $sel.trigger('change.select2');
+    } else if ($.fn.select2) {
+        $sel.select2({
+            dropdownParent: $('#portalNotifyModal'),
+            width: '100%',
+            placeholder: (typeof Lang !== 'undefined' && Lang.get) ? Lang.get('fields.recipients') : 'Recipients',
+            allowClear: true,
+        });
+    }
+}
+
+$(document).on('click', '#openPortalNotifyModal', function () {
+    if (!clients || !clients.length) {
+        $('#notifDiv').fadeIn().css('background', 'red').text('Clients are still loading. Try again in a moment.');
+        setTimeout(() => $('#notifDiv').fadeOut(), 3000);
+        return;
+    }
+    fillNotifyRecipientsSelect();
+    $('#notify_all_clients').prop('checked', false);
+    $('#notify_recipients').prop('disabled', false).val(null).trigger('change');
+    if (!$('#notify_body').val().trim()) {
+        $('#notify_body').val(DEFAULT_PORTAL_NOTIFY_BODY);
+    }
+    if (!$('#notify_subject').val().trim()) {
+        $('#notify_subject').val('Nuevo portal WWT — acceso y contraseña');
+    }
+    const modalEl = document.getElementById('portalNotifyModal');
+    if (window.bootstrap && bootstrap.Modal) {
+        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    } else {
+        $('#portalNotifyModal').modal('show');
+    }
+});
+
+$(document).on('change', '#notify_all_clients', function () {
+    const all = $(this).is(':checked');
+    $('#notify_recipients').prop('disabled', all);
+    if (all) {
+        $('#notify_recipients').val(null).trigger('change');
+    }
+});
+
+$(document).on('click', '#sendPortalNotifyBtn', function () {
+    const btn = $(this);
+    const subject = $('#notify_subject').val().trim();
+    const body = $('#notify_body').val().trim();
+    const sendAll = $('#notify_all_clients').is(':checked');
+    const clientIds = sendAll ? [] : ($('#notify_recipients').val() || []);
+
+    if (!subject || !body) {
+        $('#notifDiv').fadeIn().css('background', 'red').text('Subject and template are required.');
+        setTimeout(() => $('#notifDiv').fadeOut(), 3000);
+        return;
+    }
+    if (!sendAll && (!clientIds || !clientIds.length)) {
+        $('#notifDiv').fadeIn().css('background', 'red').text('Select recipients or All customers.');
+        setTimeout(() => $('#notifDiv').fadeOut(), 3000);
+        return;
+    }
+
+    const count = sendAll ? (clients || []).length : clientIds.length;
+    if (!confirm('Send portal notification to ' + count + ' customer(s)?')) {
+        return;
+    }
+
+    btn.prop('disabled', true).text((typeof Lang !== 'undefined' && Lang.get) ? (Lang.get('fields.processing') || 'Processing...') : 'Processing...');
+
+    $.ajax({
+        type: 'POST',
+        url: '/admin/clients/notify-portal',
+        data: {
+            _token: $('meta[name="csrf_token"]').attr('content') || $('meta[name="csrf-token"]').attr('content'),
+            subject: subject,
+            body: body,
+            all: sendAll ? 1 : 0,
+            client_ids: clientIds,
+        },
+        success: function (response) {
+            btn.prop('disabled', false).text((typeof Lang !== 'undefined' && Lang.get) ? (Lang.get('fields.send_emails') || 'Send emails') : 'Send emails');
+            if (response.status === 'success') {
+                $('#notifDiv').fadeIn().css('background', 'green').text(response.msg);
+                setTimeout(() => $('#notifDiv').fadeOut(), 5000);
+                const modalEl = document.getElementById('portalNotifyModal');
+                if (window.bootstrap && bootstrap.Modal) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+                } else {
+                    $('#portalNotifyModal').modal('hide');
+                }
+            } else {
+                $('#notifDiv').fadeIn().css('background', 'red').text(response.msg || 'Failed');
+                setTimeout(() => $('#notifDiv').fadeOut(), 4000);
+            }
+        },
+        error: function (xhr) {
+            btn.prop('disabled', false).text((typeof Lang !== 'undefined' && Lang.get) ? (Lang.get('fields.send_emails') || 'Send emails') : 'Send emails');
+            const msg = (xhr.responseJSON && xhr.responseJSON.msg)
+                || (xhr.responseJSON && xhr.responseJSON.message)
+                || 'Failed to queue/send emails';
+            $('#notifDiv').fadeIn().css('background', 'red').text(msg);
+            setTimeout(() => $('#notifDiv').fadeOut(), 4000);
+        },
+    });
+});
