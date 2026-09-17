@@ -80,7 +80,7 @@
 
 .fs-search {
     padding: 0 10px; 
-    border-bottom: solid 1px #4d815c;
+    border-bottom: solid 1px #eb973c;
 }
 
 .fs-no-results {
@@ -130,7 +130,7 @@
 }
 
 .fs-wrap.multiple .fs-option.selected .fs-checkbox i {
-    background-color: #4d815c;
+    background-color: #eb973c;
     border-color: transparent;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNXG14zYAAABMSURBVAiZfc0xDkAAFIPhd2Kr1WRjcAExuIgzGUTIZ/AkImjSofnbNBAfHvzAHjOKNzhiQ42IDFXCDivaaxAJd0xYshT3QqBxqnxeHvhunpu23xnmAAAAAElFTkSuQmCC');
     background-repeat: no-repeat;
@@ -148,7 +148,7 @@
 }
 .fs-dropdown {
     border: solid 1px #c5c5c5 !important;
-    border-bottom: solid 2px #4d815c !important;
+    border-bottom: solid 2px #eb973c !important;
     box-shadow: 0 2px 15px rgb(0 0 0 / 18%) !important; width: 100%;
 	border-radius: 4px;
 	border-top-left-radius: 0;

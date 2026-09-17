@@ -407,9 +407,17 @@ function fillNotifyRecipientsSelect() {
 
     destroyNotifyRecipientsFSelect();
 
-    const allLabel = (typeof Lang !== 'undefined' && Lang.get)
-        ? (Lang.get('fields.all_customers') || 'All customers')
-        : 'All customers';
+    // Prefer Blade __('fields.all_customers') — Lang.get returns the raw key when JS cache is stale
+    let allLabel = $sel.attr('data-all-label');
+    if (!allLabel && typeof Lang !== 'undefined' && Lang.get) {
+        const fromLang = Lang.get('fields.all_customers');
+        if (fromLang && fromLang !== 'fields.all_customers') {
+            allLabel = fromLang;
+        }
+    }
+    if (!allLabel) {
+        allLabel = 'All customers';
+    }
 
     $sel.empty();
     $sel.append(new Option(allLabel, 'all', true, true));

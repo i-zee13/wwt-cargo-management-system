@@ -293,7 +293,8 @@ line-height: 1;
                                     class="reports-select multi all-select"
                                     name="notify_recipients[]"
                                     multiple="multiple"
-                                    style="width:100%;">
+                                    style="width:100%;"
+                                    data-all-label="{{__('fields.all_customers')}}">
                                 <option value="all" selected>{{__('fields.all_customers')}}</option>
                             </select>
                         </div>
@@ -377,7 +378,7 @@ line-height: 1;
             
         });
     </script>
-    <script src="/js/custom/clients.js?v=1.6.0.3"></script>
+    <script src="/js/custom/clients.js?v=1.6.0.4"></script>
 
     <!-- Buttons Extension JS -->
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
