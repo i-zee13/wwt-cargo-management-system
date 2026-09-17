@@ -1,0 +1,8 @@
+DirectoryIndex index.html es.html
+RewriteEngine On
+RewriteRule ^servicios/?$ /es/servicios.html [L]
+RewriteRule ^rastreo/?$ /es/rastreo.html [L]
+RewriteRule ^tarifas/?$ /es/tarifas.html [L]
+RewriteRule ^sobre-nosotros/?$ /es/sobre-nosotros.html [L]
+RewriteRule ^preguntas-frecuentes/?$ /es/preguntas-frecuentes.html [L]
+RewriteRule ^contacto/?$ /es/contacto.html [L]

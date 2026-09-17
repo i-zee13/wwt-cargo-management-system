@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://wwt-cargo-marketing.netlify.app
+
+# Sitemaps
+Sitemap: https://wwt-cargo-marketing.netlify.app/sitemap.xml
