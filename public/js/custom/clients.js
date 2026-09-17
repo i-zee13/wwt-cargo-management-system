@@ -428,12 +428,7 @@ $(document).on('click', '#openPortalNotifyModal', function () {
     if (!$('#notify_subject').val().trim()) {
         $('#notify_subject').val('Nuevo portal WWT — acceso y contraseña');
     }
-    const modalEl = document.getElementById('portalNotifyModal');
-    if (window.bootstrap && bootstrap.Modal) {
-        bootstrap.Modal.getOrCreateInstance(modalEl).show();
-    } else {
-        $('#portalNotifyModal').modal('show');
-    }
+    $('#portalNotifyModal').modal('show');
 });
 
 $(document).on('change', '#notify_all_clients', function () {
@@ -484,12 +479,7 @@ $(document).on('click', '#sendPortalNotifyBtn', function () {
             if (response.status === 'success') {
                 $('#notifDiv').fadeIn().css('background', 'green').text(response.msg);
                 setTimeout(() => $('#notifDiv').fadeOut(), 5000);
-                const modalEl = document.getElementById('portalNotifyModal');
-                if (window.bootstrap && bootstrap.Modal) {
-                    bootstrap.Modal.getOrCreateInstance(modalEl).hide();
-                } else {
-                    $('#portalNotifyModal').modal('hide');
-                }
+                $('#portalNotifyModal').modal('hide');
             } else {
                 $('#notifDiv').fadeIn().css('background', 'red').text(response.msg || 'Failed');
                 setTimeout(() => $('#notifDiv').fadeOut(), 4000);

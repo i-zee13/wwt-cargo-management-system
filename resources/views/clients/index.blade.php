@@ -266,7 +266,9 @@ line-height: 1;
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="portalNotifyModalLabel">{{__('fields.notify_portal')}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <p class="small text-muted mb-3">
@@ -304,7 +306,7 @@ line-height: 1;
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal">{{__('fields.close')}}</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">{{__('fields.close')}}</button>
                 <button type="button" class="btn btn-primary" id="sendPortalNotifyBtn">{{__('fields.send_emails')}}</button>
             </div>
         </div>
@@ -358,7 +360,7 @@ line-height: 1;
             
         });
     </script>
-    <script src="/js/custom/clients.js?v=1.6.0.0"></script>
+    <script src="/js/custom/clients.js?v=1.6.0.1"></script>
 
     <!-- Buttons Extension JS -->
 <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
