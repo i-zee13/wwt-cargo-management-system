@@ -45,6 +45,17 @@
   to = "/es/contacto"
   status = 302
 
+# Customer auth is on portal — never on the marketing apex
+[[redirects]]
+  from = "/customer-login"
+  to = "https://portal.wwt.com.py/customer-login"
+  status = 302
+
+[[redirects]]
+  from = "/customer-register"
+  to = "https://portal.wwt.com.py/customer-register"
+  status = 302
+
 # Required Netlify env vars (build time):
 #   NEXT_PUBLIC_SITE_URL    = https://wwt-cargo-marketing.netlify.app  (or https://wwt.com.py)
 #   NEXT_PUBLIC_LARAVEL_URL = https://wwcsys.worldwidecommerce.us

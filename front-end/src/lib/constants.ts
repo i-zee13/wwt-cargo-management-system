@@ -1,19 +1,19 @@
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://wwt.com.py";
 
-/** Customer portal host (login / register / tracking API). */
+/** Customer auth + API on portal host (admin "/" still redirects to /admin/login). */
+export const ADMIN_URL =
+  process.env.NEXT_PUBLIC_ADMIN_URL?.replace(/\/$/, "") ??
+  "https://portal.wwt.com.py";
+
+/** Optional client subdomain entry (Laravel CLIENT_URL). */
 export const CLIENT_URL =
   process.env.NEXT_PUBLIC_CLIENT_URL?.replace(/\/$/, "") ??
   "https://client.wwt.com.py";
 
-/** @deprecated Prefer CLIENT_URL — kept for tracking helpers. */
+/** Laravel API base — portal hosts customer auth. */
 export const LARAVEL_URL =
-  process.env.NEXT_PUBLIC_LARAVEL_URL?.replace(/\/$/, "") ?? CLIENT_URL;
-
-/** Admin panel host (not linked on the public marketing site). */
-export const ADMIN_URL =
-  process.env.NEXT_PUBLIC_ADMIN_URL?.replace(/\/$/, "") ??
-  "https://portal.wwt.com.py";
+  process.env.NEXT_PUBLIC_LARAVEL_URL?.replace(/\/$/, "") ?? ADMIN_URL;
 
 export const CONTACT = {
   email: "consultas@wwt.com.py",
@@ -26,9 +26,9 @@ export const whatsappLink = (message?: string) =>
     message ? `?text=${encodeURIComponent(message)}` : ""
   }`;
 
-/** Customer auth on client.*; admin URL for private sharing only. */
+/** Ingresar / Register → portal (not the marketing apex). */
 export const PORTAL_LINKS = {
-  login: `${CLIENT_URL}/customer-login`,
-  register: `${CLIENT_URL}/customer-register`,
+  login: `${ADMIN_URL}/customer-login`,
+  register: `${ADMIN_URL}/customer-register`,
   admin: `${ADMIN_URL}/admin/login`,
 };
