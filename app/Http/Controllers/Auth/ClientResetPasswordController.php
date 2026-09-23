@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
@@ -130,18 +131,19 @@ class ClientResetPasswordController extends Controller
      * @return void
      */
     protected function resetPassword($user, $password)
-    {    
+    {
         $this->setUserPassword($user, $password);
 
-        $user->setRememberToken(Str::random(60));
-    
+        // clients.remember_token may be missing on older schemas — only set when the column exists
+        if (Schema::hasColumn($user->getTable(), 'remember_token')) {
+            $user->setRememberToken(Str::random(60));
+        }
+
         $user->save();
-    
+
         event(new PasswordReset($user));
-    
-        // Ensure login uses the 'clients' guard
+
         Auth::guard('clients')->login($user);
-      
     }
 
     /**
