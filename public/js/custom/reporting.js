@@ -124,7 +124,7 @@ $(document).on('click', '#generate_report', function () {
                             <td>${element['date'] ?? ''}</td>
                             <td>${element['kg'] ?? ''}</td>
                             <td>${element['cbm'] ?? ''}</td>
-                            <td>${truncateTextHtml(((element['client'] ?? '') + ' ' + (element['client_last'] ?? '') + ' (' + String(element.suite ?? '').replace(/^COMM/i, 'WWT') + ')').trim())}</td> 
+                            <td>${truncateTextHtml(((element['client'] ?? '') + ' ' + (element['client_last'] ?? '') + ' (' + String(element.suite ?? '').replace(/^(COMM|WWT)/i, (typeof brandSuitePrefix !== 'undefined' ? brandSuitePrefix : 'WWC')) + ')').trim())}</td> 
                             <td>
                                 ${
                                     element['status']

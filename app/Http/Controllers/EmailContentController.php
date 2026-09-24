@@ -158,7 +158,7 @@ class EmailContentController extends Controller
             '{{ first_name }}' => 'John',
             '{{ client_name }}' => 'John',
             '{{ email }}' => $testEmail,
-            '{{ suite }}' => 'WWTAS999',
+            '{{ suite }}' => 'WWCAS999',
             '{{ waybill }}' => 'USA18026 0001',
             '{{ status }}' => 'Received',
             '{{ kg }}' => '2.50',

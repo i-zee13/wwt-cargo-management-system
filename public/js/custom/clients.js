@@ -39,7 +39,7 @@ function fetchClients(){
                 $('#clientsTable tbody').append(`
                     <tr>
                     <td>${element['id']}</td> 
-                    <td>${truncateTextHtml(String(element['suite'] ?? '').replace(/^COMM/i, 'WWT'))}</td> 
+                    <td>${truncateTextHtml(String(element['suite'] ?? '').replace(/^(COMM|WWT)/i, (typeof brandSuitePrefix !== 'undefined' ? brandSuitePrefix : 'WWC')))}</td> 
                         <td>${truncateTextHtml(((element['first_name'] ?? '') + ' ' + (element['last_name'] ?? '')).trim())}</td>
                         <td>${truncateTextHtml(element['email'] ?? '')}</td> 
                         <td>${truncateTextHtml(element['phone'] ?? '')}</td> 

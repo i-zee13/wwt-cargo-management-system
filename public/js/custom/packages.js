@@ -129,7 +129,7 @@ function fetchPackages(week_flag=true) {
         var print_label_slug = is_web.is_web ? `/admin/package-print-label/${element.id}` : `/print-customer-packages-label/${element.id}`;
         var print_wh_slug = is_web.is_web ? `/admin/package-print-wh/${element.id}` : `/print-customer-packages-wh/${element.id}`;
         var className = element.status == 'retired' ? "ST-Active" : "ST-draft";
-        var suiteDisplay = String(element['client_suite'] ?? '').replace(/^COMM/i, 'WWT');
+        var suiteDisplay = String(element['client_suite'] ?? '').replace(/^(COMM|WWT)/i, (typeof brandSuitePrefix !== 'undefined' ? brandSuitePrefix : 'WWC'));
         var clientDisplay = (suiteDisplay + ' ' + (element['client_name'] ?? '')).trim();
         $('#packageTable tbody').append(`
                     <tr>

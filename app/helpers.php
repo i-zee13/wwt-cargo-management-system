@@ -123,7 +123,7 @@ if (!function_exists('clientMacAddressForLoginLog')) {
 if (!function_exists('getOrganizationData')) {
     function getOrganizationData()
     {
-        $defaultLogo = '/'.ltrim(config('brand.default_logo', 'images/wwt-logo.png'), '/');
+        $defaultLogo = '/'.ltrim(config('brand.default_logo', 'images/logo.png'), '/');
         $organization = DB::table('organizations')->first();
 
         if (! $organization) {

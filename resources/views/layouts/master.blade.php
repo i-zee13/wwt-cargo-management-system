@@ -267,6 +267,8 @@
         var currentSegment = @json($currentSegmentValue);
         var csrfToken = $('[name="csrf_token"]').attr('content');
         var loggedInUser = @json($loggedInUserPayload);
+        var brandSuitePrefix = @json(config('brand.suite_prefix', 'WWC'));
+        var brandShortName = @json(config('brand.short_name', 'WWC'));
         
         //$(".sortable").sortable();
     </script>

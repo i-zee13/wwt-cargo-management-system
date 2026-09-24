@@ -4,24 +4,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | WWT brand identity (replaces legacy WWC / World Wide Commerce)
+    | WWC brand identity (mercalo / World Wide Commerce)
     |--------------------------------------------------------------------------
+    | main branch uses WWT / World Wide Trading Group.
+    | This mercalo branch keeps legacy WWC branding.
     */
 
-    'name' => env('BRAND_NAME', 'World Wide Trading Group'),
+    'name' => env('BRAND_NAME', 'World Wide Commerce'),
 
-    'short_name' => env('BRAND_SHORT_NAME', 'WWT'),
+    'short_name' => env('BRAND_SHORT_NAME', 'WWC'),
 
-    'email_signature' => env('BRAND_EMAIL_SIGNATURE', 'Best regards, The WWT Team'),
+    'email_signature' => env('BRAND_EMAIL_SIGNATURE', 'Best regards, The WWC Team'),
 
-    'default_logo' => env('BRAND_LOGO_PATH', 'images/wwt-logo.png'),
+    'default_logo' => env('BRAND_LOGO_PATH', 'images/logo.png'),
 
-    'support_email' => env('BRAND_SUPPORT_EMAIL', 'consultas@wwt.com.py'),
+    'support_email' => env('BRAND_SUPPORT_EMAIL', 'consultas@wwc.com.py'),
 
     /*
-    | Client suite / casilla prefix (was COMM under legacy branding).
-    | Example: WWTAS123 for branch "Asuncion" + client id 123.
+    | Client suite / casilla prefix for packaging.
+    | Example: WWCAS123 for branch "Asuncion" + client id 123.
     */
-    'suite_prefix' => env('BRAND_SUITE_PREFIX', 'WWT'),
+    'suite_prefix' => env('BRAND_SUITE_PREFIX', 'WWC'),
 
 ];

@@ -222,7 +222,7 @@
     <script>
         var organizationName = "{{ getOrganizationData()->name ?? config('brand.name') }}";
         var organizationLogo = "{{ getOrganizationData()->logo_base64 ?? '' }}";
-        var brandPdfWatermarkLabels = @json([strtolower(config('brand.short_name')), 'wwc']);
+        var brandPdfWatermarkLabels = @json([strtolower(config('brand.short_name')), 'wwc', 'comm']);
         organizationLogo = organizationLogo.replace(/^data:image\/(png|jpg);base64,/, '')
     </script>
 
