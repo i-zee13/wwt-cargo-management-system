@@ -201,6 +201,10 @@ Route::group(['middleware' => ['lang_set']], function () {
 
 
 
+    Route::group(['prefix' => 'admin', 'middleware' => ['auth:web', 'is_password_changed']], function () {
+        Route::post('/mcp-settings', [\App\Http\Controllers\McpSettingsController::class, 'update'])->name('admin.mcp-settings');
+    });
+
     Route::group(['prefix' => 'admin', 'middleware' => ['auth:web', 'is_password_changed', 'is_route_assigned']], function () {
         /**
          * Organization Routes

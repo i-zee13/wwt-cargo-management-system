@@ -118,6 +118,7 @@
     </form>
 @endsection
 @section('content')
+    @include('settings.partials.mcp-toggle', ['mcp' => \App\Mcp\McpFeature::status()])
     <div class="row m-0">
         <div class="tabs-header border-0 pr-0">
             <ul class="nav nav-pills" id="pills-tab" role="tablist">
