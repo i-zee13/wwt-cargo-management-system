@@ -1,44 +1,139 @@
 var clients = [];
 let date = '';
-$(document).ready(function () {
- 
-});
- $(document).on('change','#filter_date',function(){
-   if($(this).val() == 1){
-    $('.dates_div').hide()
-   } else{
-    $('.dates_div').fadeIn()
-   }
+const REPORT_COLUMNS_STORAGE_KEY = 'wwc_report_export_columns';
+const REPORT_COLUMN_DEFS = [
+    { key: 'guide', labelKey: 'fields.id', width: '5%', cell: (el) => truncateTextHtml(el['guide'] ?? '') },
+    { key: 'waybill', labelKey: 'fields.waybill', width: '10%', cell: (el) => truncateTextHtml(el['waybill'] ?? '') },
+    { key: 'origin', labelKey: 'fields.origin', width: '10%', cell: (el) => truncateTextHtml(el['origin'] ?? '') },
+    { key: 'branch', labelKey: 'fields.destination', width: '5%', cell: (el) => truncateTextHtml(el['branch'] ?? '') },
+    { key: 'type', labelKey: 'fields.type', width: '5%', cell: (el) => truncateTextHtml(el['type'] ?? '') },
+    { key: 'description', labelKey: 'fields.description', width: '15%', cell: (el) => truncateTextHtml(el['description'] ?? '') },
+    { key: 'tracking', labelKey: 'fields.original_tracking', width: '10%', cell: (el) => truncateTextHtml(el['tracking'] ?? '') },
+    { key: 'date', labelKey: 'fields.date', width: '5%', cell: (el) => el['date'] ?? '' },
+    { key: 'kg', labelKey: 'fields.kg', width: '5%', cell: (el) => el['kg'] ?? '' },
+    { key: 'cbm', labelKey: 'fields.cbm', width: '5%', cell: (el) => el['cbm'] ?? '' },
+    {
+        key: 'client',
+        labelKey: 'fields.client',
+        width: '15%',
+        cell: (el) => truncateTextHtml(
+            ((el['client'] ?? '') + ' ' + (el['client_last'] ?? '') + ' (' + String(el.suite ?? '').replace(/^(COMM|WWT)/i, (typeof brandSuitePrefix !== 'undefined' ? brandSuitePrefix : 'WWC')) + ')').trim()
+        ),
+    },
+    {
+        key: 'status',
+        labelKey: 'fields.package_status',
+        width: '5%',
+        cell: (el) => el['status']
+            ? el['status'].replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
+            : '',
+    },
+    { key: 'total', labelKey: 'fields.grand_total', width: '10%', cell: (el) => el['total'] ?? '' },
+];
 
-})
+function getSelectedReportColumns() {
+    const selected = $('.export-column-cb:checked').map(function () {
+        return $(this).val();
+    }).get();
+    if (selected.length === 0) {
+        return REPORT_COLUMN_DEFS.map((col) => col.key);
+    }
+    return REPORT_COLUMN_DEFS.map((col) => col.key).filter((key) => selected.includes(key));
+}
+
+function getActiveReportColumnDefs() {
+    const selected = getSelectedReportColumns();
+    return REPORT_COLUMN_DEFS.filter((col) => selected.includes(col.key));
+}
+
+function persistReportColumns() {
+    const selected = $('.export-column-cb:checked').map(function () {
+        return $(this).val();
+    }).get();
+    try {
+        localStorage.setItem(REPORT_COLUMNS_STORAGE_KEY, JSON.stringify(selected));
+    } catch (e) {}
+}
+
+function restoreReportColumns() {
+    let saved = null;
+    try {
+        saved = JSON.parse(localStorage.getItem(REPORT_COLUMNS_STORAGE_KEY) || 'null');
+    } catch (e) {
+        saved = null;
+    }
+    if (!Array.isArray(saved) || saved.length === 0) {
+        return;
+    }
+    $('.export-column-cb').each(function () {
+        $(this).prop('checked', saved.includes($(this).val()));
+    });
+}
+
 $(document).ready(function () {
-    let isProcessing = false;  
+    restoreReportColumns();
+});
+
+$(document).on('change', '#filter_date', function () {
+    if ($(this).val() == 1) {
+        $('.dates_div').hide();
+    } else {
+        $('.dates_div').fadeIn();
+    }
+});
+
+$(document).ready(function () {
+    let isProcessing = false;
     $('.all-select').on('change', function () {
-        if (isProcessing) return;  
+        if (isProcessing) return;
         isProcessing = true;
 
         let $select = $(this);
-        let allOptionValue = "all";  
+        let allOptionValue = 'all';
 
-        if ($select.val() && $select.val().includes(allOptionValue)) { 
+        if ($select.val() && $select.val().includes(allOptionValue)) {
             $select.find('option').each(function () {
                 if ($(this).val() !== allOptionValue) {
                     $(this).prop('disabled', true);
                 }
-            }); 
+            });
             $select.val([allOptionValue]);
-        } else { 
+        } else {
             $select.find('option').prop('disabled', false);
-        } 
-        $select.fSelect('reload');  
-        isProcessing = false; 
+        }
+        $select.fSelect('reload');
+        isProcessing = false;
     });
+});
+
+$(document).on('change', '.export-column-cb', function () {
+    if ($('.export-column-cb:checked').length === 0) {
+        $(this).prop('checked', true);
+        $('#notifDiv')
+            .fadeIn()
+            .css('background', 'red')
+            .text('Select at least one column')
+            .delay(2500)
+            .fadeOut();
+    }
+    persistReportColumns();
+});
+
+$(document).on('click', '#export_columns_all', function () {
+    $('.export-column-cb').prop('checked', true);
+    persistReportColumns();
+});
+
+$(document).on('click', '#export_columns_none', function () {
+    $('.export-column-cb').prop('checked', false);
+    $('.export-column-cb[value="guide"]').prop('checked', true);
+    persistReportColumns();
 });
 
 $(document).on('click', '#generate_report', function () {
     $('.report_append_div').empty();
     $('.exportExcelBtn').hide();
-    const currentRef = $(this); 
+    const currentRef = $(this);
     const origins = $('#origins').val();
     const filter_date = $('#filter_date').val();
     const start_date = $('#start_date').val();
@@ -47,13 +142,14 @@ $(document).on('click', '#generate_report', function () {
     const statuses = $('#statuses').val();
     const types = $('#types').val();
     const clients = $('#clients').val();
+    const selectedColumns = getSelectedReportColumns();
+    const activeColumns = getActiveReportColumnDefs();
 
-    console.log(origins != 0 && origins.length === 0); 
-    const isInvalid = 
+    const isInvalid =
         (!filter_date) ||
         (filter_date == 2 && (!start_date || !end_date));
 
-    if (isInvalid) { 
+    if (isInvalid) {
         $('#notifDiv')
             .fadeIn()
             .css('background', 'red')
@@ -65,7 +161,7 @@ $(document).on('click', '#generate_report', function () {
         return;
     }
 
-    currentRef.attr('disabled', true).text('Generating...'); 
+    currentRef.attr('disabled', true).text('Generating...');
     $.ajax({
         method: 'GET',
         url: '/admin/generate-report',
@@ -84,62 +180,28 @@ $(document).on('click', '#generate_report', function () {
             currentRef.attr('disabled', false).text('Generate Report');
 
             if (response.status === 'success') {
+                const headerHtml = activeColumns.map((col) => {
+                    const style = col.key === 'description' ? ' style="width:80px!important;"' : '';
+                    return `<th${style}>${Lang.get(col.labelKey)}</th>`;
+                }).join('');
+
                 $('.report_append_div').append(`
                     <table class="table table-hover dt-responsive nowrap" id="packagesTable" style="width:100%;">
                         <thead>
-                            <tr>
-                                <th>${Lang.get('fields.id')}</th>
-                                <th>${Lang.get('fields.waybill')}</th>
-                                <th>${Lang.get('fields.origin')}</th>    
-                                <th>${Lang.get('fields.destination')}</th>    
-                                <th>${Lang.get('fields.type')}</th>    
-                                <th style="width:80px!important;">${Lang.get('fields.description')}</th>    
-                                <th>${Lang.get('fields.original_tracking')}</th>    
-                                <th>${Lang.get('fields.date')}</th>
-                                <th>${Lang.get('fields.kg')}</th>    
-                                <th>${Lang.get('fields.cbm')}</th>    
-                                <th>${Lang.get('fields.client')}</th>     
-                                <th>${Lang.get('fields.package_status')}</th>    
-                                <th>${Lang.get('fields.grand_total')}</th>    
-                            </tr>
+                            <tr>${headerHtml}</tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                 `);
 
                 const packages = response.data;
-                if(packages.length > 0) {
+                if (packages.length > 0) {
                     $('.exportExcelBtn').fadeIn();
                 }
-                packages.forEach(element => {
-                    $('#packagesTable tbody').append(`
-                        <tr>
-                            <td>${truncateTextHtml(element['guide'] ?? '')}</td> 
-                            <td>${truncateTextHtml(element['waybill'] ?? '')}</td>
-                            <td>${truncateTextHtml(element['origin'] ?? '')}</td>
-                            <td>${truncateTextHtml(element['branch'] ?? '')}</td>
-                            <td>${truncateTextHtml(element['type'] ?? '')}</td>
-                            <td>${truncateTextHtml(element['description'] ?? '')}</td>
-                            <td>${truncateTextHtml(element['tracking'] ?? '')}</td>
-                            <td>${element['date'] ?? ''}</td>
-                            <td>${element['kg'] ?? ''}</td>
-                            <td>${element['cbm'] ?? ''}</td>
-                            <td>${truncateTextHtml(((element['client'] ?? '') + ' ' + (element['client_last'] ?? '') + ' (' + String(element.suite ?? '').replace(/^(COMM|WWT)/i, (typeof brandSuitePrefix !== 'undefined' ? brandSuitePrefix : 'WWC')) + ')').trim())}</td> 
-                            <td>
-                                ${
-                                    element['status']
-                                    ? element['status']
-                                        .replace(/-/g, ' ') // Replace hyphens with spaces
-                                        .replace(/\b\w/g, (c) => c.toUpperCase()) // Capitalize each word
-                                    : ''
-                                }
-                                </td>
-                            <td>${element['total'] ?? ''}</td> 
-                        </tr>
-                    `);
+                packages.forEach((element) => {
+                    const cells = activeColumns.map((col) => `<td>${col.cell(element)}</td>`).join('');
+                    $('#packagesTable tbody').append(`<tr>${cells}</tr>`);
                 });
-
-                console.log(packages, 'i am packages');
 
                 $('#packagesTable').DataTable({
                     responsive: false,
@@ -154,10 +216,12 @@ $(document).on('click', '#generate_report', function () {
                             extend: 'pdfHtml5',
                             text: '<i class="bi bi-file-earmark-pdf"></i> Export to PDF',
                             className: 'btn btn-primary mx-1',
-                            orientation: 'landscape', // Ensure landscape orientation for more space
+                            orientation: 'landscape',
                             title: '',
+                            exportOptions: {
+                                columns: ':visible'
+                            },
                             customize: function (doc) {
-                                // Remove unnecessary content
                                 const pdfWatermarkLabels = (window.brandPdfWatermarkLabels || ['wwc', 'wwt']).map((label) => label.toLowerCase());
                                 doc.content = doc.content.filter((item) => {
                                     if (!item.text) {
@@ -165,8 +229,7 @@ $(document).on('click', '#generate_report', function () {
                                     }
                                     return !pdfWatermarkLabels.includes(String(item.text).toLowerCase());
                                 });
-                
-                                // Add organization logo
+
                                 if (organizationLogo) {
                                     doc.content.splice(0, 0, {
                                         columns: [
@@ -180,8 +243,7 @@ $(document).on('click', '#generate_report', function () {
                                         margin: [0, 0, 0, 10],
                                     });
                                 }
-                
-                                // Add organization name
+
                                 doc.content.splice(1, 0, {
                                     text: organizationName,
                                     fontSize: 18,
@@ -189,34 +251,20 @@ $(document).on('click', '#generate_report', function () {
                                     bold: true,
                                     margin: [0, 10, 0, 20],
                                 });
-                
-                                // Customize table header style
+
                                 doc.styles.tableHeader = {
                                     fillColor: '#eb973c',
                                     color: 'white',
                                     alignment: 'center',
                                     bold: true,
-                                    fontSize: 10, // Adjust font size for table headers
-                                }; 
+                                    fontSize: 10,
+                                };
                                 if (doc.content[2] && doc.content[2].table) {
-                                    doc.content[2].table.widths = [
-                                        '5%',  // ID
-                                        '10%', // Waybill
-                                        '10%', // Origin
-                                        '5%', // Destination
-                                        '5%', // Type
-                                        '15%', // Description
-                                        '10%', // Tracking
-                                        '5%', // Date
-                                        '5%',  // KG
-                                        '5%',  // CBM
-                                        '15%', // Client
-                                        '5%', // Package Status
-                                        '10%'  // Grand Total
-                                    ];
+                                    const widths = activeColumns.map((col) => col.width);
+                                    const totalWeight = widths.reduce((sum, w) => sum + parseFloat(w), 0) || 1;
+                                    doc.content[2].table.widths = widths.map((w) => ((parseFloat(w) / totalWeight) * 100).toFixed(2) + '%');
                                 }
-                
-                                // Reduce font size for table body
+
                                 const bodyFontSize = 8;
                                 doc.styles.tableBodyEven = {
                                     fontSize: bodyFontSize,
@@ -224,18 +272,17 @@ $(document).on('click', '#generate_report', function () {
                                 doc.styles.tableBodyOdd = {
                                     fontSize: bodyFontSize,
                                 };
-                
-                                // Add totals section
+
                                 const totalsLabelStyle = {
                                     bold: true,
                                     alignment: 'right',
                                 };
-                
+
                                 const totalsValueStyle = {
                                     bold: true,
                                     alignment: 'left',
                                 };
-                
+
                                 const totalsTable = {
                                     table: {
                                         widths: ['85%', '15%'],
@@ -268,9 +315,9 @@ $(document).on('click', '#generate_report', function () {
                                             ],
                                         ],
                                     },
-                                    margin: [0, 20, 0, 0], // [left, top, right, bottom]
+                                    margin: [0, 20, 0, 0],
                                 };
-                
+
                                 doc.styles = doc.styles || {};
                                 doc.styles.totalsLabelStyle = totalsLabelStyle;
                                 doc.styles.totalsValueStyle = totalsValueStyle;
@@ -279,8 +326,7 @@ $(document).on('click', '#generate_report', function () {
                         },
                     ],
                 });
-                
-                
+
                 $('.dt-buttons button').removeClass('btn-secondary');
                 $('#notifDiv')
                     .fadeIn()
@@ -297,7 +343,7 @@ $(document).on('click', '#generate_report', function () {
                     .fadeOut();
             }
         },
-        error: function (error) { 
+        error: function (error) {
             currentRef.attr('disabled', false).text('Generate Report');
             console.error(error);
 
@@ -309,9 +355,9 @@ $(document).on('click', '#generate_report', function () {
                 .fadeOut();
         }
     });
-    $('.exportExcelBtn').on('click', function() { 
-         
-        
+});
+
+$(document).on('click', '.exportExcelBtn', function () {
     var origins = $('#origins').val();
     var filter_date = $('#filter_date').val();
     var start_date = $('#start_date').val();
@@ -320,12 +366,13 @@ $(document).on('click', '#generate_report', function () {
     var statuses = $('#statuses').val();
     var types = $('#types').val();
     var clients = $('#clients').val();
-    console.log(origins != 0 && origins.length === 0); 
-    const isInvalid = 
+    var columns = getSelectedReportColumns();
+
+    const isInvalid =
         (!filter_date) ||
         (filter_date == 2 && (!start_date || !end_date));
 
-    if (isInvalid) { 
+    if (isInvalid) {
         $('#notifDiv')
             .fadeIn()
             .css('background', 'red')
@@ -336,25 +383,18 @@ $(document).on('click', '#generate_report', function () {
         }, 3000);
         return;
     }
-        var filters = {
-            origins: origins,
-            branches: branches,
-            statuses: statuses,
-            types: types,
-            clients: clients,
-            filter_date: filter_date,
-            start_date: start_date,
-            end_date: end_date
-        }; 
-        var query = $.param(filters); 
-        var exportUrl = '/admin/export-packages-excel?' + query; 
-        window.location.href = exportUrl;
-    });
+    var filters = {
+        origins: origins,
+        branches: branches,
+        statuses: statuses,
+        types: types,
+        clients: clients,
+        filter_date: filter_date,
+        start_date: start_date,
+        end_date: end_date,
+        columns: columns
+    };
+    var query = $.param(filters);
+    var exportUrl = '/admin/export-packages-excel?' + query;
+    window.location.href = exportUrl;
 });
-
-
- 
-
-
-
-   

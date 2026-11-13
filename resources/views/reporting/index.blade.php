@@ -25,6 +25,36 @@
         display: inline-flex;
         align-items: center;
     }
+
+    .export-columns-box {
+        border: 1px solid #e5e5e5;
+        border-radius: 6px;
+        padding: 12px 14px;
+        background: #fff;
+        margin-bottom: 12px;
+    }
+
+    .export-columns-box .export-columns-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+
+    .export-columns-box .export-columns-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 16px;
+    }
+
+    .export-columns-box label.export-col-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+        font-weight: 500;
+        white-space: nowrap;
+    }
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
@@ -152,6 +182,30 @@
                 </select>
             </div>
 
+        </div>
+    </div>
+    <div class="col-12 form-group">
+        <div class="export-columns-box">
+            <label class="form-label mb-2">{{__('fields.export_columns')}}</label>
+            <div class="export-columns-actions">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="export_columns_all">{{__('fields.select_all_columns')}}</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="export_columns_none">{{__('fields.deselect_all_columns')}}</button>
+            </div>
+            <div class="export-columns-grid" id="export_columns_grid">
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="guide" checked> {{__('fields.id')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="waybill" checked> {{__('fields.waybill')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="origin" checked> {{__('fields.origin')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="branch" checked> {{__('fields.destination')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="type" checked> {{__('fields.type')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="description" checked> {{__('fields.description')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="tracking" checked> {{__('fields.original_tracking')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="date" checked> {{__('fields.date')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="kg" checked> {{__('fields.kg')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="cbm" checked> {{__('fields.cbm')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="client" checked> {{__('fields.client')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="status" checked> {{__('fields.package_status')}}</label>
+                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="total" checked> {{__('fields.grand_total')}}</label>
+            </div>
         </div>
     </div>
     <div class="col-lg-3 col-sm-12 mt-4">
