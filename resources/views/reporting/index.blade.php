@@ -28,8 +28,8 @@
 
     .export-columns-box {
         border: 1px solid #e5e5e5;
-        border-radius: 6px;
-        padding: 12px 14px;
+        border-radius: 0.75rem;
+        padding: 14px 16px;
         background: #fff;
         margin-bottom: 12px;
     }
@@ -38,22 +38,68 @@
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
+    }
+
+    .export-columns-box .export-columns-actions .btn {
+        border-radius: 0.75rem;
+        border-color: #eb973c;
+        color: #eb973c;
+        background: #fff;
+    }
+
+    .export-columns-box .export-columns-actions .btn:hover,
+    .export-columns-box .export-columns-actions .btn:focus {
+        background: #eb973c;
+        border-color: #eb973c;
+        color: #fff;
     }
 
     .export-columns-box .export-columns-grid {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px 16px;
+        gap: 8px;
     }
 
-    .export-columns-box label.export-col-item {
+    .export-columns-box .export-column-chip {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
         margin: 0;
+        padding: 6px 14px;
+        border: 1px solid #d9d9d9;
+        border-radius: 0.75rem;
+        background: #fff;
+        color: #555;
+        font-size: 13px;
         font-weight: 500;
+        line-height: 1.2;
         white-space: nowrap;
+        cursor: pointer;
+        user-select: none;
+        transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+    }
+
+    .export-columns-box .export-column-chip:hover {
+        border-color: #eb973c;
+        color: #eb973c;
+    }
+
+    .export-columns-box .export-column-chip.active {
+        background: #eb973c;
+        border-color: #eb973c;
+        color: #fff;
+    }
+
+    /* Match fSelect multi-select selected options to theme orange */
+    .fs-wrap.multiple .fs-option.selected .fs-checkbox i {
+        background-color: #eb973c !important;
+        border-color: #eb973c !important;
+    }
+
+    .fs-wrap .fs-label-wrap,
+    .fs-wrap .fs-dropdown {
+        border-radius: 0.75rem;
     }
 </style>
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
@@ -192,19 +238,19 @@
                 <button type="button" class="btn btn-sm btn-outline-secondary" id="export_columns_none">{{__('fields.deselect_all_columns')}}</button>
             </div>
             <div class="export-columns-grid" id="export_columns_grid">
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="guide" checked> {{__('fields.id')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="waybill" checked> {{__('fields.waybill')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="origin" checked> {{__('fields.origin')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="branch" checked> {{__('fields.destination')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="type" checked> {{__('fields.type')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="description" checked> {{__('fields.description')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="tracking" checked> {{__('fields.original_tracking')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="date" checked> {{__('fields.date')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="kg" checked> {{__('fields.kg')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="cbm" checked> {{__('fields.cbm')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="client" checked> {{__('fields.client')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="status" checked> {{__('fields.package_status')}}</label>
-                <label class="export-col-item"><input type="checkbox" class="export-column-cb" value="total" checked> {{__('fields.grand_total')}}</label>
+                <button type="button" class="export-column-chip active" data-value="guide">{{__('fields.id')}}</button>
+                <button type="button" class="export-column-chip active" data-value="waybill">{{__('fields.waybill')}}</button>
+                <button type="button" class="export-column-chip active" data-value="origin">{{__('fields.origin')}}</button>
+                <button type="button" class="export-column-chip active" data-value="branch">{{__('fields.destination')}}</button>
+                <button type="button" class="export-column-chip active" data-value="type">{{__('fields.type')}}</button>
+                <button type="button" class="export-column-chip active" data-value="description">{{__('fields.description')}}</button>
+                <button type="button" class="export-column-chip active" data-value="tracking">{{__('fields.original_tracking')}}</button>
+                <button type="button" class="export-column-chip active" data-value="date">{{__('fields.date')}}</button>
+                <button type="button" class="export-column-chip active" data-value="kg">{{__('fields.kg')}}</button>
+                <button type="button" class="export-column-chip active" data-value="cbm">{{__('fields.cbm')}}</button>
+                <button type="button" class="export-column-chip active" data-value="client">{{__('fields.client')}}</button>
+                <button type="button" class="export-column-chip active" data-value="status">{{__('fields.package_status')}}</button>
+                <button type="button" class="export-column-chip active" data-value="total">{{__('fields.grand_total')}}</button>
             </div>
         </div>
     </div>

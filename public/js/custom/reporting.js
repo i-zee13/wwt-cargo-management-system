@@ -32,8 +32,8 @@ const REPORT_COLUMN_DEFS = [
 ];
 
 function getSelectedReportColumns() {
-    const selected = $('.export-column-cb:checked').map(function () {
-        return $(this).val();
+    const selected = $('.export-column-chip.active').map(function () {
+        return $(this).data('value');
     }).get();
     if (selected.length === 0) {
         return REPORT_COLUMN_DEFS.map((col) => col.key);
@@ -47,8 +47,8 @@ function getActiveReportColumnDefs() {
 }
 
 function persistReportColumns() {
-    const selected = $('.export-column-cb:checked').map(function () {
-        return $(this).val();
+    const selected = $('.export-column-chip.active').map(function () {
+        return $(this).data('value');
     }).get();
     try {
         localStorage.setItem(REPORT_COLUMNS_STORAGE_KEY, JSON.stringify(selected));
@@ -65,8 +65,8 @@ function restoreReportColumns() {
     if (!Array.isArray(saved) || saved.length === 0) {
         return;
     }
-    $('.export-column-cb').each(function () {
-        $(this).prop('checked', saved.includes($(this).val()));
+    $('.export-column-chip').each(function () {
+        $(this).toggleClass('active', saved.includes($(this).data('value')));
     });
 }
 
@@ -106,27 +106,29 @@ $(document).ready(function () {
     });
 });
 
-$(document).on('change', '.export-column-cb', function () {
-    if ($('.export-column-cb:checked').length === 0) {
-        $(this).prop('checked', true);
+$(document).on('click', '.export-column-chip', function () {
+    const $chip = $(this);
+    if ($chip.hasClass('active') && $('.export-column-chip.active').length === 1) {
         $('#notifDiv')
             .fadeIn()
             .css('background', 'red')
             .text('Select at least one column')
             .delay(2500)
             .fadeOut();
+        return;
     }
+    $chip.toggleClass('active');
     persistReportColumns();
 });
 
 $(document).on('click', '#export_columns_all', function () {
-    $('.export-column-cb').prop('checked', true);
+    $('.export-column-chip').addClass('active');
     persistReportColumns();
 });
 
 $(document).on('click', '#export_columns_none', function () {
-    $('.export-column-cb').prop('checked', false);
-    $('.export-column-cb[value="guide"]').prop('checked', true);
+    $('.export-column-chip').removeClass('active');
+    $('.export-column-chip[data-value="guide"]').addClass('active');
     persistReportColumns();
 });
 
