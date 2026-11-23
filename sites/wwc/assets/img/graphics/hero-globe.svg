@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 760" role="img" aria-label="Rutas logísticas entre Estados Unidos, China y Argentina">
+  <defs>
+    <radialGradient id="hgCore" cx="38%" cy="32%" r="78%">
+      <stop offset="0" stop-color="#1B3356"/>
+      <stop offset="62%" stop-color="#101D33"/>
+      <stop offset="100%" stop-color="#0A1222"/>
+    </radialGradient>
+    <linearGradient id="hgRoute" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#19D3C5"/>
+      <stop offset="100%" stop-color="#FFAE34"/>
+    </linearGradient>
+    <linearGradient id="hgRing" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#19D3C5" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#19D3C5" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="hgBlur" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="22"/>
+    </filter>
+  </defs>
+
+  <!-- outer orbit rings -->
+  <g fill="none" stroke="#1E3253" stroke-width="1">
+    <circle cx="380" cy="380" r="356" stroke-dasharray="3 9" opacity=".7"/>
+    <circle cx="380" cy="380" r="316" stroke-dasharray="2 14" opacity=".5"/>
+  </g>
+
+  <!-- glow behind sphere -->
+  <circle cx="380" cy="380" r="250" fill="#19D3C5" opacity=".16" filter="url(#hgBlur)"/>
+
+  <!-- sphere -->
+  <circle cx="380" cy="380" r="248" fill="url(#hgCore)"/>
+  <circle cx="380" cy="380" r="248" fill="none" stroke="#26405F" stroke-width="1.4"/>
+
+  <!-- latitude lines -->
+  <g fill="none" stroke="#24405F" stroke-width="1" opacity=".85">
+    <ellipse cx="380" cy="380" rx="248" ry="38"/>
+    <ellipse cx="380" cy="380" rx="241" ry="110"/>
+    <ellipse cx="380" cy="380" rx="218" ry="178"/>
+    <ellipse cx="380" cy="380" rx="170" ry="232"/>
+    <ellipse cx="380" cy="380" rx="92" ry="246"/>
+  </g>
+  <!-- longitude lines -->
+  <g fill="none" stroke="#24405F" stroke-width="1" opacity=".7">
+    <line x1="132" y1="380" x2="628" y2="380"/>
+    <ellipse cx="380" cy="380" rx="38" ry="248"/>
+  </g>
+
+  <!-- dotted landmass suggestion -->
+  <g fill="#2F4D70" opacity=".9">
+    <circle cx="258" cy="268" r="3.4"/><circle cx="276" cy="256" r="3"/><circle cx="296" cy="262" r="3.6"/>
+    <circle cx="246" cy="290" r="3"/><circle cx="268" cy="292" r="3.8"/><circle cx="290" cy="286" r="3"/>
+    <circle cx="262" cy="316" r="3.2"/><circle cx="284" cy="312" r="3"/>
+    <circle cx="300" cy="340" r="3"/><circle cx="316" cy="362" r="3.4"/>
+    <circle cx="326" cy="392" r="3"/><circle cx="334" cy="420" r="3.4"/>
+    <circle cx="344" cy="450" r="3"/><circle cx="352" cy="480" r="3.2"/>
+    <circle cx="358" cy="510" r="3"/><circle cx="366" cy="538" r="3.4"/>
+    <circle cx="500" cy="276" r="3.2"/><circle cx="520" cy="266" r="3.6"/><circle cx="540" cy="274" r="3"/>
+    <circle cx="492" cy="300" r="3"/><circle cx="514" cy="296" r="3.8"/><circle cx="536" cy="302" r="3.2"/>
+    <circle cx="556" cy="290" r="3"/><circle cx="504" cy="326" r="3.2"/><circle cx="528" cy="330" r="3"/>
+    <circle cx="430" cy="236" r="3"/><circle cx="452" cy="244" r="3.2"/><circle cx="470" cy="232" r="3"/>
+  </g>
+
+  <!-- trade routes -->
+  <g fill="none" stroke="url(#hgRoute)" stroke-width="3" stroke-linecap="round" opacity=".95">
+    <!-- Miami -> China -->
+    <path class="dash-anim" d="M288 300 C 380 160, 520 180, 556 282"/>
+    <!-- Miami -> Argentina -->
+    <path class="dash-anim" d="M288 300 C 250 400, 300 470, 364 538"/>
+    <!-- China -> Argentina -->
+    <path class="dash-anim" d="M556 282 C 620 420, 500 520, 364 538"/>
+  </g>
+
+  <!-- hub nodes -->
+  <g>
+    <!-- Miami -->
+    <circle cx="288" cy="300" r="22" fill="url(#hgRing)" opacity=".8"/>
+    <circle cx="288" cy="300" r="9" fill="#19D3C5"/>
+    <circle cx="288" cy="300" r="9" fill="none" stroke="#081021" stroke-width="2.4"/>
+    <!-- China -->
+    <circle cx="556" cy="282" r="22" fill="url(#hgRing)" opacity=".8"/>
+    <circle cx="556" cy="282" r="9" fill="#FFAE34"/>
+    <circle cx="556" cy="282" r="9" fill="none" stroke="#081021" stroke-width="2.4"/>
+    <!-- Argentina -->
+    <circle cx="364" cy="538" r="22" fill="url(#hgRing)" opacity=".8"/>
+    <circle cx="364" cy="538" r="9" fill="#19D3C5"/>
+    <circle cx="364" cy="538" r="9" fill="none" stroke="#081021" stroke-width="2.4"/>
+  </g>
+
+  <!-- node labels -->
+  <g font-family="Sora,sans-serif" font-size="15" font-weight="700" fill="#DCE6F2">
+    <text x="248" y="278">MIAMI</text>
+    <text x="580" y="276">CHINA</text>
+    <text x="300" y="574">ARGENTINA</text>
+  </g>
+
+  <!-- floating parcels -->
+  <g opacity=".95">
+    <g transform="translate(600,440)">
+      <rect x="0" y="0" width="38" height="38" rx="5" fill="#16243d" stroke="#19D3C5" stroke-width="2"/>
+      <path d="M0 13h38M19 0v38" stroke="#19D3C5" stroke-width="1.6"/>
+    </g>
+    <g transform="translate(140,420)">
+      <rect x="0" y="0" width="30" height="30" rx="4" fill="#16243d" stroke="#FFAE34" stroke-width="2"/>
+      <path d="M0 10h30M15 0v30" stroke="#FFAE34" stroke-width="1.4"/>
+    </g>
+  </g>
+</svg>

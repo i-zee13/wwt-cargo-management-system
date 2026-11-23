@@ -1,0 +1,10 @@
+# robots.txt — World Wide Commerce
+User-agent: *
+Allow: /
+Disallow: /gracias.html
+Disallow: /404.html
+Disallow: /en/gracias.html
+Disallow: /en/404.html
+Disallow: /_build/
+
+Sitemap: https://worldwidecommerce.us/sitemap.xml

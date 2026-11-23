@@ -1,0 +1,118 @@
+@media (min-width:992px){
+  #mainmenu>li{margin-right:14px}
+  #mainmenu>li>a{font-size:12px}
+  .menu_side_area .btn-main{padding:6px 14px;font-size:13px}
+}
+.swiper-inner h6{font-size:15px;margin:0}
+:root{--logo-width:320px;--logo-footer-width:360px}
+#logo .wwc-lockup{display:inline-flex;align-items:center;text-decoration:none;background:transparent;padding:0}
+#logo img.logo-main,#logo img.logo-scroll,#logo img.logo-mobile,
+div#logo img{
+  width:auto!important;height:44px!important;max-width:min(320px,48vw)!important;
+  object-fit:contain!important
+}
+.wwc-logo{display:block;height:auto!important;width:auto!important;max-width:min(420px,100%)!important;max-height:72px!important;object-fit:contain}
+.wwc-wordmark{display:flex;flex-direction:column;line-height:1.15;color:#fff}
+.wwc-wordmark b{font-size:15px;font-weight:800;letter-spacing:-.02em}
+.wwc-wordmark small{font-size:11px;font-weight:500;opacity:.75}
+.wwc-header-stick{position:sticky;top:0;z-index:1000}
+.wwc-topbar{background:#101010;color:rgba(255,255,255,.85);font-size:12px;font-weight:600;letter-spacing:.02em}
+.wwc-topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:36px;padding:6px 0}
+.wwc-topbar a{color:inherit;text-decoration:none}
+.wwc-topbar a:hover{color:#fff}
+.wwc-topbar-left,.wwc-topbar-right{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.wwc-topbar-left a{display:inline-flex;align-items:center;gap:7px}
+.wwc-topbar-left i{color:var(--primary-color);font-size:11px}
+.wwc-topbar .wwc-lang{display:inline-flex;gap:4px;margin:0}
+.wwc-topbar .wwc-lang a{
+  min-width:34px;text-align:center;padding:3px 8px;border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;color:rgba(255,255,255,.75);font-size:11px;font-weight:800;letter-spacing:.06em
+}
+.wwc-topbar .wwc-lang a.active,.wwc-topbar .wwc-lang a:hover{
+  background:var(--primary-color);border-color:var(--primary-color);color:#fff
+}
+header.header-static{margin-top:0!important;padding-top:8px!important}
+header.smaller{background:#101010}
+@media (max-width:767px){
+  .wwc-topbar-left span{display:none}
+  .wwc-topbar-right>a:not(.wwc-lang a){display:none}
+}
+
+#subheader{background-size:cover;background-position:center;padding:170px 0 90px}
+#subheader h1{font-size:clamp(34px,4vw,52px);line-height:1.12}
+#subheader .container{position:relative;z-index:2}
+#subheader .lead{color:rgba(255,255,255,.82);max-width:740px;margin:16px auto 0}
+#subheader .crumb a{color:#fff}
+.crumb .sep{opacity:.6;margin:0 6px}
+
+.ul-check li:before{font-family:"Font Awesome 6 Free";font-weight:900}
+
+.section-head{max-width:760px;margin:0 auto 36px}
+.section-head.center,.text-center .section-head{text-align:center}
+.eyebrow{display:block;color:var(--primary-color);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:13px;margin-bottom:8px}
+.section--paper{background:var(--bg-light)}
+.container-narrow{max-width:860px;margin-inline:auto}
+
+.card{background:#fff;border:1px solid #eee;border-radius:20px;padding:28px;height:100%}
+.card h3{margin-bottom:8px}
+.card-icon{width:48px;height:48px;color:var(--primary-color);margin-bottom:14px}
+.card-icon svg{width:40px;height:40px}
+.card-badge{display:inline-block;background:var(--primary-color);color:#fff;border-radius:30px;font-size:12px;font-weight:700;padding:2px 10px;margin-bottom:10px}
+
+.layout-sidebar{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,.7fr);gap:40px;align-items:start}
+.side-card{background:var(--bg-light);border-radius:20px;padding:24px;margin-bottom:16px}
+.side-card--dark{background:#101010;color:#fff}
+.side-card--dark h4,.side-card--dark p,.side-card--dark a{color:#fff}
+.side-nav{display:flex;flex-direction:column;gap:8px}
+.side-nav a{color:inherit;text-decoration:none}
+.side-nav a[aria-current="page"]{color:var(--primary-color);font-weight:700}
+
+.prose h2{margin-top:28px}
+.prose p,.prose li{color:#555}
+.callout{background:var(--bg-light);border-radius:20px;padding:22px 24px;margin:18px 0}
+.callout b{display:block;margin-bottom:6px}
+
+.check-list{list-style:none;padding:0;margin:0}
+.check-list li{display:flex;gap:10px;align-items:flex-start;margin:10px 0}
+.check-list svg{width:22px;height:22px;flex:none;color:var(--primary-color);margin-top:2px}
+
+.form-grid{display:flex;flex-direction:column;gap:16px}
+.field label{display:block;font-weight:700;margin-bottom:6px}
+.field input,.field select,.field textarea{
+  width:100%;border:0;border-bottom:1px solid #ccc;background:transparent;
+  padding:10px 0;font-family:var(--body-font);font-size:16px
+}
+.field textarea{min-height:120px;border:1px solid #eee;border-radius:12px;padding:12px}
+.field-hint,.form-note{font-size:13px;color:#888}
+.office{margin-bottom:16px}
+.office b{display:block}
+
+a.btn.btn--primary,button.btn.btn--primary,a.btn.btn--dark,button.btn.btn--dark{
+  background:var(--primary-color);color:#fff;border-radius:30px;padding:8px 22px;
+  font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px;border:0
+}
+a.btn.btn--ghost,button.btn.btn--ghost{
+  background:transparent;color:inherit;border:1px solid currentColor;border-radius:30px;
+  padding:8px 22px;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:8px
+}
+.btn--block{width:100%;justify-content:center}
+.btn svg{width:18px;height:18px}
+
+.skip-link{position:absolute;left:-999px}
+.skip-link:focus{left:12px;top:12px;z-index:9999;background:#fff;padding:8px 12px}
+
+.wwc-grid{display:grid;gap:24px}
+.wwc-grid.wwc-g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.wwc-grid.wwc-g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.wwc-split{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.wwc-split img{width:100%;border-radius:20px}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
+
+@media (max-width:991px){
+  .wwc-grid.wwc-g3,.wwc-grid.wwc-g2,.wwc-split,.hero-grid{grid-template-columns:1fr}
+
+  .layout-sidebar{grid-template-columns:1fr}
+  .wwc-wordmark{display:none}
+  #mainmenu{background:#101010}
+}
+
