@@ -105,17 +105,18 @@ class ReportingController extends AccessRightsAuth
             'clients',
             'filter_date',
             'start_date',
-            'end_date'
-        ]); 
-        $organization = getOrganizationData(); 
+            'end_date',
+            'columns',
+        ]);
+        $organization = getOrganizationData();
         if (!$organization) {
             return redirect()->back()->with('error', 'Organization data not found.');
-        }  
+        }
         $export = new PackagesExport(
             $filters,
-            $organization->name, 
-            $organization->logo_base64  
-        ); 
+            $organization->name,
+            $organization->logo_base64
+        );
         return Excel::download($export, 'packages_report.xlsx');
     }
 }
