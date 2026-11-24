@@ -805,8 +805,8 @@ def build_about(locale="es"):
         _("Nosotros", "About Us"),
         "",
         trail, locale,
-        bg="assets/lx/img/s3.webp",
-        extra_class="m-3 rounded-1 sm-mt-90",
+        bg="assets/lx/img/hero-nosotros.webp",
+        extra_class="m-3 rounded-1 sm-mt-90 wwc-hero-team",
     ) + f"""
 <section>
   <div class="container">

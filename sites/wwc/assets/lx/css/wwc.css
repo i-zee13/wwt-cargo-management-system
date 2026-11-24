@@ -163,6 +163,8 @@ div#logo img{
 #subheader{background-size:cover;background-position:center;padding:170px 0 90px}
 #subheader.wwc-hero-port{background-position:center 40%}
 #subheader.wwc-hero-port .de-overlay{background:linear-gradient(180deg,rgba(8,16,33,.55) 0%,rgba(8,16,33,.72) 100%)!important;opacity:1}
+#subheader.wwc-hero-team{background-position:center 35%}
+#subheader.wwc-hero-team .de-overlay{background:linear-gradient(180deg,rgba(10,12,16,.35) 0%,rgba(10,12,16,.55) 100%)!important;opacity:1}
 #subheader h1{font-size:clamp(34px,4vw,52px);line-height:1.12}
 #subheader .container{position:relative;z-index:2}
 #subheader .lead{color:rgba(255,255,255,.82);max-width:740px;margin:16px auto 0}
