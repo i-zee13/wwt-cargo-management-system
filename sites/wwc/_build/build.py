@@ -685,99 +685,97 @@ def build_services_index(locale="es"):
                               for i, s in enumerate(SERVICES, 1)]}])
 
 
+SVC_TILE_IMGS = [
+    "s1.webp", "l2.webp", "l4.webp", "s2.webp", "s3.webp", "l1.webp", "s4.webp",
+    "l3.webp", "homepage-1.webp", "homepage-2.webp", "testimonial-delivery.webp",
+    "homepage-3.webp", "hero-servicios.webp", "homepage-4.webp",
+]
+
+
+def _svc_payload(s, locale, idx):
+    """JSON-ready service detail for client-side sidebar switching."""
+    benefits = list(sf(s, "benefits", locale))[:6]
+    return {
+        "slug": s["slug"],
+        "href": page_href(svc_url(s), locale),
+        "nav": svc_name(s, locale),
+        "h1": sf(s, "h1", locale),
+        "blurb": sf(s, "blurb", locale),
+        "intro": sf(s, "intro", locale),
+        "cta": sf(s, "cta", locale),
+        "benefits": benefits,
+        "img": "assets/lx/img/" + SVC_TILE_IMGS[idx % len(SVC_TILE_IMGS)],
+        "title": sf(s, "seo_title", locale),
+        "meta": sf(s, "meta", locale),
+    }
+
+
 # ══════════════════════════════════════════════════════════════ SERVICE DETAIL
 def build_service(s, locale="es"):
     _ = tr(locale)
     ui = load_ui(locale)
     name = svc_name(s, locale)
     trail = [(t(ui, "common.home_crumb"), "index.html"), (t(ui, "nav.services"), "servicios.html"), (name, None)]
-
-    benefits = "".join(
-        f'<li>{icon("check")}<span>{html.escape(b)}</span></li>' for b in sf(s, "benefits", locale))
-
-    body_sections = ""
-    sections = s["sections"] if not is_en(locale) else s.get("sections_en", [])
-    for heading, paras in sections:
-        body_sections += "<h2>%s</h2>\n" % html.escape(heading)
-        for p in paras:
-            body_sections += (p if p.lstrip().startswith("<") else "<p>%s</p>" % p) + "\n"
-    if is_en(locale) and not sections:
-        body_sections = ("<p>Every project is different. Tell us about yours and we'll send a tailored "
-                         "proposal with costs and timelines.</p>\n")
-
+    idx = next(i for i, o in enumerate(SERVICES) if o["slug"] == s["slug"])
+    payload = [_svc_payload(o, locale, i) for i, o in enumerate(SERVICES)]
+    current = payload[idx]
+    feats = "".join(
+        '<div class="wwc-svc-feat"><i class="fa-solid fa-check"></i><div><h4>%s</h4></div></div>'
+        % html.escape(b) for b in current["benefits"])
     side_nav = "".join(
-        '<a href="%s"%s>%s</a>' % (ph(svc_url(o), locale), ' aria-current="page"' if o["slug"] == s["slug"] else "",
-                                   html.escape(svc_name(o, locale)))
+        '<a class="wwc-svc-nav__item%s" href="%s" data-svc-slug="%s">%s</a>' % (
+            " is-active" if o["slug"] == s["slug"] else "",
+            html.escape(page_href(svc_url(o), locale)),
+            html.escape(o["slug"]),
+            html.escape(svc_name(o, locale)))
         for o in SERVICES)
+    data_json = json.dumps({
+        "assetPrefix": "" if not is_en(locale) else "../",
+        "homeCrumb": t(ui, "common.home_crumb"),
+        "servicesCrumb": t(ui, "nav.services"),
+        "servicesHref": page_href("servicios.html", locale),
+        "featuresTitle": _("Ventajas clave", "Key Features"),
+        "quoteLabel": _("Pedir cotización", "Request a quote"),
+        "quoteHref": page_href("contacto.html", locale),
+        "waPrefix": _("Hola, quiero consultar por: ", "Hello, I'd like to ask about: "),
+        "waBase": "https://wa.me/%s?text=" % SITE["whatsapp"],
+        "items": payload,
+    }, ensure_ascii=False).replace("<", "\\u003c")
 
-    related = [o for o in SERVICES if o["slug"] != s["slug"]][:3]
-    rel_cards = "".join(service_card(o, locale, badge=False) for o in related)
-    wa_text = _("Hola, quiero consultar por: ", "Hello, I'd like to ask about: ") + name
-
-    body = page_hero(html.escape(sf(s, "h1", locale)), html.escape(sf(s, "intro", locale)), trail, locale) + f"""
-<section class="section">
+    body = page_hero(
+        html.escape(name),
+        "",
+        trail, locale,
+        bg="assets/lx/img/hero-servicios.webp",
+        extra_class="wwc-hero-port m-3 rounded-1 sm-mt-90",
+    ) + f"""
+<section class="pt-50 pb-50">
   <div class="container">
-    <div class="layout-sidebar">
-
-      <div class="prose wow fadeInUp">
-        <div class="callout">
-          <b>{_("En resumen", "In short")}</b>
-          {html.escape(sf(s, 'blurb', locale))}
+    <div class="wwc-svc-single" data-svc-single data-active="{html.escape(s['slug'])}">
+      <aside class="wwc-svc-nav" aria-label="{_("Servicios", "Services")}">
+{side_nav}      </aside>
+      <div class="wwc-svc-panel" data-svc-panel>
+        <div class="wwc-svc-panel__top">
+          <div class="wwc-svc-panel__copy">
+            <h2 data-svc-title>{html.escape(current['h1'])}</h2>
+            <p data-svc-intro>{html.escape(current['intro'])}</p>
+          </div>
+          <div class="wwc-svc-panel__media">
+            <img data-svc-img src="{img(current['img'], locale)}" alt="" width="640" height="480" loading="eager">
+            <div class="wwc-svc-panel__card" data-svc-blurb>{html.escape(current['blurb'])}</div>
+          </div>
         </div>
-
-        <h2>{_("Lo que obtenés", "What you get")}</h2>
-        <ul class="check-list">{benefits}</ul>
-
-{body_sections}
-        <div class="callout" style="border-color:var(--amber)">
-          <b>{_("Siguiente paso", "Next step")}</b>
-          {html.escape(sf(s, 'cta', locale))}
-        </div>
-
-        <div class="flex gap-3 wrap mt-5">
-          <a class="btn btn--primary" href="{ph('contacto.html', locale)}">{_("Pedir cotización", "Request a quote")} {icon('arrow-right')}</a>
-          <a class="btn btn--ghost" href="{wa_link(locale, wa_text)}" target="_blank" rel="noopener">{icon('whatsapp')} {_("Consultar por WhatsApp", "Ask on WhatsApp")}</a>
+        <h3 class="wwc-svc-panel__features-title">{_("Ventajas clave", "Key Features")}</h3>
+        <div class="wwc-svc-feats" data-svc-feats>{feats}</div>
+        <div class="wwc-svc-panel__actions">
+          <a class="btn-main fx-slide" data-svc-quote href="{ph('contacto.html', locale)}" data-hover="{_("Pedir cotización", "Request a quote")}"><span>{_("Pedir cotización", "Request a quote")}</span></a>
+          <a class="btn-main btn-line fx-slide" data-svc-wa href="{wa_link(locale, _('Hola, quiero consultar por: ', "Hello, I'd like to ask about: ") + name)}" target="_blank" rel="noopener" data-hover="WhatsApp"><span>WhatsApp</span></a>
         </div>
       </div>
-
-      <aside class="sidebar">
-        <div class="side-card">
-          <h4>{_("Todos los servicios", "All services")}</h4>
-          <nav class="side-nav" aria-label="{_("Otros servicios", "Other services")}">{side_nav}</nav>
-        </div>
-        <div class="side-card side-card--dark">
-          <h4>{_("Hablemos de tu caso", "Let's talk about your case")}</h4>
-          <p>{_("Contanos qué necesitás mover y te respondemos con una propuesta concreta.", "Tell us what you need to move and we'll reply with a concrete proposal.")}</p>
-          <a class="btn btn--primary btn--block btn--sm" href="tel:{SITE['phone_raw']}">{icon('phone')} {SITE['phone_display']}</a>
-          <div style="height:.6rem"></div>
-          <a class="btn btn--ghost btn--block btn--sm" href="mailto:{SITE['email']}">{icon('mail')} {_("Escribinos", "Email us")}</a>
-        </div>
-        <div class="side-card">
-          <h4>{html.escape(t(ui, 'track.title'))}</h4>
-          <form class="form-grid" data-track-form>
-            <div class="field">
-              <label for="trk-side">{_("Código de seguimiento", "Tracking code")}</label>
-              <input id="trk-side" name="codigo" type="text" placeholder="WWC-128374" required>
-            </div>
-            <button class="btn btn--dark btn--block btn--sm" type="submit">{icon('search')} {html.escape(t(ui, 'track.button'))}</button>
-          </form>
-        </div>
-      </aside>
-
     </div>
   </div>
 </section>
-
-<section class="section section--paper">
-  <div class="container">
-    <div class="section-head center wow fadeInUp">
-      <span class="eyebrow">{_("También te puede interesar", "You may also like")}</span>
-      <h2>{_("Otros servicios", "Other services")}</h2>
-    </div>
-    <div class="row g-4">
-{rel_cards}    </div>
-  </div>
-</section>
+<script type="application/json" id="wwc-services-data">{data_json}</script>
 
 {cta_band(locale)}
 """
