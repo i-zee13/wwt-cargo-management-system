@@ -612,22 +612,45 @@ def build_home(locale="es"):
 def build_services_index(locale="es"):
     _ = tr(locale)
     ui = load_ui(locale)
-    cards = "".join(service_card(s, locale) for s in SERVICES)
     trail = [(t(ui, "common.home_crumb"), "index.html"), (t(ui, "nav.services"), None)]
+    # Cycle logistics photos across the 14 service tiles
+    tile_imgs = [
+        "s1.webp", "l2.webp", "l4.webp", "s2.webp", "s3.webp", "l1.webp", "s4.webp",
+        "l3.webp", "homepage-1.webp", "homepage-2.webp", "testimonial-delivery.webp",
+        "homepage-3.webp", "hero-servicios.webp", "homepage-4.webp",
+    ]
+    tiles = ""
+    for i, s in enumerate(SERVICES):
+        num = "%02d" % (i + 1)
+        flip = " is-flip" if (i // 2) % 2 == 1 else ""
+        delay = ".%ss" % (i % 4)
+        blurb = html.escape(sf(s, "blurb", locale))
+        name = html.escape(svc_name(s, locale))
+        href = ph(svc_url(s), locale)
+        src = img("assets/lx/img/" + tile_imgs[i % len(tile_imgs)], locale)
+        tiles += f"""
+      <a class="wwc-svc-tile{flip} wow fadeInUp" href="{href}" data-wow-delay="{delay}">
+        <div class="wwc-svc-tile__media">
+          <span class="wwc-svc-tile__num" aria-hidden="true">{num}</span>
+          <img src="{src}" alt="" width="640" height="480" loading="lazy">
+        </div>
+        <div class="wwc-svc-tile__body">
+          <h3>{name}</h3>
+          <p>{blurb}</p>
+        </div>
+      </a>
+"""
     body = page_hero(
-        _("Catorce servicios, una sola cadena logística", "Fourteen services, one logistics chain"),
-        _("Desde una compra personal en Amazon hasta la importación de un contenedor completo. Todo con infraestructura propia en Estados Unidos y China.",
-          "From a personal Amazon purchase to importing a full container. All with our own infrastructure in the United States and China."),
+        _("Nuestros servicios", "Our Services"),
+        "",
         trail, locale,
         bg="assets/lx/img/hero-servicios.webp",
-        extra_class="wwc-hero-port",
+        extra_class="wwc-hero-port m-3 rounded-1 sm-mt-90",
     ) + f"""
-{trust_strip(locale)}
-
-<section class="section">
-  <div class="container">
-    <div class="row g-4">
-{cards}    </div>
+<section class="pt-40 pb-40">
+  <div class="container-fluid px-3 px-lg-4">
+    <div class="wwc-svc-grid">
+{tiles}    </div>
   </div>
 </section>
 
@@ -635,12 +658,12 @@ def build_services_index(locale="es"):
   <div class="container container-narrow">
     <div class="section-head center wow fadeInUp">
       <span class="eyebrow">{_("No sabés cuál necesitás", "Not sure which one you need")}</span>
-      <h2 class="balance">{_("Contanos qué querés mover y te decimos cómo", "Tell us what you want to move and we'll tell you how")}</h2>
-      <p class="lead">{_("Un mensaje corto con lo que necesitás es suficiente para que te orientemos sobre el servicio que te conviene y su costo aproximado.",
-                         "A short message about what you need is enough for us to point you to the right service and give you an approximate cost.")}</p>
+      <h2 class="split">{_("Contanos qué querés mover", "Tell us what you want to move")}</h2>
+      <p class="lead wow fadeInUp" data-wow-delay=".15s">{_("Un mensaje corto alcanza para orientarte sobre el servicio y el costo aproximado.",
+                         "A short message is enough to point you to the right service and approximate cost.")}</p>
     </div>
     <div class="text-center wow fadeInUp">
-      <a class="btn btn--primary btn--lg" href="{ph('contacto.html', locale)}">{_("Pedir asesoramiento", "Get advice")} {icon('arrow-right')}</a>
+      <a class="btn-main fx-slide" href="{ph('contacto.html', locale)}" data-hover="{_("Pedir asesoramiento", "Get advice")}"><span>{_("Pedir asesoramiento", "Get advice")}</span></a>
     </div>
   </div>
 </section>
