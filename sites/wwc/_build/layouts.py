@@ -164,7 +164,7 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 <link rel="stylesheet" href="{a('assets/lx/css/coloring.css')}">
 <link rel="stylesheet" href="{a('assets/lx/css/scheme-01.css')}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=11">{schema_html}
+<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=12">{schema_html}
 </head>
 <body>
 <a class="skip-link" href="#content">{html.escape(t(ui, 'skip_content'))}</a>

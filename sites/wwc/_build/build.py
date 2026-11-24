@@ -1019,12 +1019,17 @@ def build_stores(locale="es"):
     blocks = ""
     for names, ic, stores in STORE_CATS:
         items = "".join(
-          f'<li><a href="https://www.{dom}" target="_blank" rel="noopener nofollow">{icon("chevron-right")}{html.escape(lbl)}</a></li>'
+          (
+            '<li><a class="wwc-store-link" href="https://www.%s" target="_blank" rel="noopener nofollow">'
+            '<span class="wwc-store-link__icon">'
+            '<img src="https://www.google.com/s2/favicons?domain=%s&amp;sz=64" alt="" width="20" height="20" loading="lazy" decoding="async">'
+            '</span><span>%s</span></a></li>'
+          ) % (html.escape(dom), html.escape(dom), html.escape(lbl))
           for lbl, dom in stores)
         blocks += f"""      <article class="card">
         <div class="card-icon">{icon(ic)}</div>
         <h3>{html.escape(_(*names))}</h3>
-        <ul class="side-nav" style="margin-top:.5rem">{items}</ul>
+        <ul class="wwc-store-list">{items}</ul>
       </article>
 """
     body = page_hero(
