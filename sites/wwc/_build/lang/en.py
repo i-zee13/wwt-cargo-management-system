@@ -90,15 +90,21 @@ HOME = {
     "slides": [
         {
             "img": "l2.webp",
-            "title": "Your gateway to the world: shop in the USA or China and receive in Argentina",
-            "text": "International logistics, no hidden fees, no surprises. Just receive! Sign up and get your Miami or China address: shop online anywhere and we deliver it to your door.",
-            "tags": ["No hidden fees", "Our own operation", "End-to-end tracking", "Fixed pricing"],
+            "title": "Shop in the USA or China. Receive in Argentina.",
+            "text": "Free mailbox in Miami and China. No hidden fees.",
+            "tags": ["No surprises", "Our own operation", "Fixed pricing"],
         },
         {
             "img": "l1.webp",
             "title": "Your free mailbox in Miami and China",
-            "text": "Sign up free and get your exclusive WWC Miami / China address. Shop at your favorite stores, ship to your mailbox and we take care of the rest.",
-            "tags": ["Miami", "China", "Paraguay", "20+ years"],
+            "text": "Sign up, shop online, and we deliver it to your door.",
+            "tags": ["Miami", "China", "20+ years"],
+        },
+        {
+            "img": "l4.webp",
+            "title": "From one parcel to a full container",
+            "text": "We consolidate and track your cargo end to end.",
+            "tags": ["Consolidation", "Customs", "Door to door"],
         },
     ],
     "photos": [
@@ -142,4 +148,22 @@ HOME = {
         "groups": ["International shipping", "International moving"],
     },
     "trust": ["No hidden fees", "Express 4-7 days", "5.0 on Google · 76 reviews", "20+ years"],
+    "quotes": [
+        {
+            "text": "They consolidated my Amazon and Shein orders into one shipment. It arrived in Buenos Aires at the price they quoted — no surprises.",
+            "by": "WWC customer · Buenos Aires",
+        },
+        {
+            "text": "Having our own address in Miami and China changed how we import. Clear tracking and a team that answers when it matters.",
+            "by": "WWC customer · Asunción",
+        },
+        {
+            "text": "We booked a door-to-door move from Florida. Professional packing, realistic timelines, and smooth delivery at destination.",
+            "by": "WWC customer · Córdoba",
+        },
+        {
+            "text": "Fixed quote, customs included, and the package at our door. International logistics should always work this way.",
+            "by": "WWC customer · Mendoza",
+        },
+    ],
 }

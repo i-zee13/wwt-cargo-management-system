@@ -1,0 +1,88 @@
+# Deploy WWC marketing site (sites/wwc) + pull Laravel (mercalo) on cPanel server.
+# WWT Netlify deploy stays on main via deploy-front-end.yml — do not mix domains.
+
+name: Deploy WWC to server
+
+on:
+  push:
+    branches: [mercalo]
+    paths:
+      - "sites/wwc/**"
+      - "app/**"
+      - "routes/**"
+      - "resources/**"
+      - "config/**"
+      - "database/**"
+      - "composer.json"
+      - "composer.lock"
+      - ".github/workflows/deploy-wwc.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-wwc-mercalo
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python (rebuild static HTML)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build sites/wwc
+        working-directory: sites/wwc
+        run: python3 _build/build.py
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.WWC_SSH_PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.WWC_SSH_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Pull mercalo + publish sites/wwc
+        env:
+          HOST: ${{ secrets.WWC_SSH_HOST }}
+          USER: ${{ secrets.WWC_SSH_USER }}
+        run: |
+          set -euo pipefail
+          REMOTE="${USER}@${HOST}"
+          REPO="~/repositories/wwt-cargo-management-system"
+          WEB="~/public_html/mcp"
+
+          # Sync built static site first (fast path for marketing pages)
+          rsync -az --delete \
+            --exclude='_build' \
+            --exclude='README.md' \
+            --exclude='IMAGES.md' \
+            --exclude='.gitignore' \
+            -e ssh \
+            sites/wwc/ "${REMOTE}:${WEB}/"
+
+          # Pull full mercalo branch for Laravel / source of truth
+          ssh "${REMOTE}" bash -s <<EOF
+          set -euo pipefail
+          cd ${REPO}
+          git fetch origin mercalo
+          git checkout mercalo
+          git reset --hard origin/mercalo
+          # Keep live web root in sync with repo after pull
+          rsync -a --delete \
+            --exclude='_build' \
+            --exclude='README.md' \
+            --exclude='IMAGES.md' \
+            --exclude='.gitignore' \
+            sites/wwc/ ${WEB}/
+          if [ -f artisan ]; then
+            php artisan config:clear || true
+            php artisan view:clear || true
+          fi
+          EOF

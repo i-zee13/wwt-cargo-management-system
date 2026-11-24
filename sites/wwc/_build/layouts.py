@@ -80,13 +80,15 @@ def topbar(locale, current_file):
 
 # ══════════════════════════════════════════════════════════════ HEAD
 def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="website",
-         schema=None, canonical=None, noindex=False):
+         schema=None, canonical=None, noindex=False, og_image=None):
     loc = get_locale(locale)
     ui = load_ui(loc)
     alt = get_locale(other_locale(loc))
     canonical = canonical or abs_url(SITE["domain"], url, loc)
     robots = "noindex,follow" if noindex else ROBOTS_DEFAULT
     a = lambda p: html.escape(asset(p, loc))
+    og_img = og_image or (SITE["domain"].rstrip("/") + "/assets/img/og-image.png")
+    og_alt = html.escape(t(ui, "og_alt"))
     schema_html = ""
     if schema:
         for blob in (schema if isinstance(schema, list) else [schema]):
@@ -99,7 +101,7 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
                 code, abs_url(SITE["domain"], url, code))
         hreflang += '<link rel="alternate" hreflang="x-default" href="%s">\n' % abs_url(
             SITE["domain"], url, "es")
-    kw = '<meta name="keywords" content="%s">' % html.escape(keywords) if keywords else ""
+    kw = '<meta name="keywords" content="%s">\n' % html.escape(keywords) if keywords else ""
     return f"""<!DOCTYPE html>
 <html lang="{loc.html_lang}">
 <head>
@@ -107,9 +109,13 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
-{kw}
-<meta name="author" content="{SITE['legal']}">
+{kw}<meta name="author" content="{SITE['legal']}">
+<meta name="application-name" content="{SITE['name']}">
 <meta name="robots" content="{robots}">
+<meta name="googlebot" content="{robots}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="format-detection" content="telephone=yes">
+<meta name="color-scheme" content="light">
 <link rel="canonical" href="{canonical}">
 {hreflang}
 <!-- Open Graph -->
@@ -120,25 +126,35 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 <meta property="og:title" content="{html.escape(title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{canonical}">
-<meta property="og:image" content="{SITE['domain']}/assets/img/og-image.png">
+<meta property="og:image" content="{og_img}">
+<meta property="og:image:secure_url" content="{og_img}">
+<meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="{html.escape(t(ui, 'og_alt'))}">
+<meta property="og:image:alt" content="{og_alt}">
+<link rel="image_src" href="{og_img}">
 
-<!-- Twitter -->
+<!-- Twitter / X -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{html.escape(title)}">
 <meta name="twitter:description" content="{html.escape(desc)}">
-<meta name="twitter:image" content="{SITE['domain']}/assets/img/og-image.png">
+<meta name="twitter:image" content="{og_img}">
+<meta name="twitter:image:alt" content="{og_alt}">
 
 <!-- Geo -->
 <meta name="geo.region" content="US-FL">
 <meta name="geo.placename" content="Miami">
+<meta name="ICBM" content="25.7959,-80.2871">
 
 <link rel="icon" href="{a('assets/img/brand/favicon.svg')}" type="image/svg+xml">
-<link rel="apple-touch-icon" href="{a('assets/img/brand/apple-touch-icon.png')}">
+<link rel="alternate icon" href="{a('favicon.ico')}">
+<link rel="apple-touch-icon" sizes="180x180" href="{a('assets/img/brand/apple-touch-icon.png')}">
 <link rel="manifest" href="{a('site.webmanifest')}">
 <meta name="theme-color" content="#101010">
+<meta name="msapplication-TileColor" content="#101010">
+
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
 <link rel="stylesheet" href="{a('assets/lx/css/bootstrap.min.css')}">
 <link rel="stylesheet" href="{a('assets/lx/css/plugins.css')}">
@@ -148,11 +164,12 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 <link rel="stylesheet" href="{a('assets/lx/css/coloring.css')}">
 <link rel="stylesheet" href="{a('assets/lx/css/scheme-01.css')}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=3">{schema_html}
+<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=8">{schema_html}
 </head>
 <body>
 <a class="skip-link" href="#content">{html.escape(t(ui, 'skip_content'))}</a>
 <div id="wrapper">
+<div id="de-loader"></div>
 <a href="#" id="back-to-top"></a>
 """
 

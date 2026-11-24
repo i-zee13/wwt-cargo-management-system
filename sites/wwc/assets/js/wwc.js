@@ -25,4 +25,21 @@
   }
   var y = new Date().getFullYear();
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = y; });
+
+  if (window.jQuery && jQuery.fn.owlCarousel) {
+    var $q = jQuery("#wwc-quotes");
+    if ($q.length) {
+      $q.owlCarousel({
+        items: 1,
+        loop: true,
+        margin: 0,
+        dots: true,
+        nav: false,
+        autoplay: true,
+        autoplayTimeout: 6500,
+        autoplayHoverPause: true,
+        smartSpeed: 600
+      });
+    }
+  }
 })();

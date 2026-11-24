@@ -61,15 +61,29 @@ def asset(path, locale=DEFAULT_LOCALE):
     return get_locale(locale).dir_prefix + path
 
 
+def pretty_path(filename):
+    """Strip .html for clean public URLs. index.html → '' (folder root)."""
+    if not filename:
+        return ""
+    name = filename.split("?", 1)[0].split("#", 1)[0]
+    if name in ("index.html", "index", "/", "."):
+        return ""
+    if name.endswith(".html"):
+        return name[:-5]
+    return name
+
+
 def page_href(filename, locale=DEFAULT_LOCALE):
-    """Pages of each locale live side by side, so links stay in the same folder."""
-    return filename
+    """Same-folder relative link without .html (./ for home)."""
+    path = pretty_path(filename)
+    return "./" if path == "" else path
 
 
 def switch_href(filename, locale=DEFAULT_LOCALE):
+    path = pretty_path(filename)
     if get_locale(locale).code == "es":
-        return "en/" + filename
-    return "../" + filename
+        return "en/" + path if path else "en/"
+    return "../" + path if path else "../"
 
 
 def other_locale(locale=DEFAULT_LOCALE):
@@ -78,4 +92,6 @@ def other_locale(locale=DEFAULT_LOCALE):
 
 def abs_url(domain, filename, locale=DEFAULT_LOCALE):
     loc = get_locale(locale)
-    return domain + "/" + (loc.out_dir + "/" if loc.out_dir else "") + filename
+    path = pretty_path(filename)
+    base = domain.rstrip("/") + "/" + (loc.out_dir + "/" if loc.out_dir else "")
+    return base if path == "" else base + path

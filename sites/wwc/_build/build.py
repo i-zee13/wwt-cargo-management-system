@@ -17,8 +17,12 @@ from config import SITE, OFFICES as OFFICES_ES, NAV, PROCESS as PROCESS_ES, STAT
     STORES, FAQS as FAQS_ES, WHY_US as WHY_US_ES, ICONS
 from services import SERVICES
 import content_en
-from i18n import LOCALES, get_locale, load_ui, load_home, t, asset, abs_url
+from i18n import LOCALES, get_locale, load_ui, load_home, t, asset, abs_url, page_href
 from layouts import render, svc_url, svc_name, wa_link
+
+
+def ph(filename, locale="es"):
+    return html.escape(page_href(filename, locale))
 
 TODAY = datetime.date.today().isoformat()
 
@@ -63,29 +67,31 @@ def img(path, locale):
 
 
 # ══════════════════════════════════════════════════════════════ PARTIALS
-def crumbs(trail):
+def crumbs(trail, locale="es"):
     out = ['<div class="crumb">']
     for i, (label, href) in enumerate(trail):
         if i:
             out.append('<span class="sep">/</span>')
         if href:
-            out.append('<a href="%s">%s</a>' % (href, html.escape(label)))
+            out.append('<a href="%s">%s</a>' % (ph(href, locale), html.escape(label)))
         else:
             out.append('<span aria-current="page">%s</span>' % html.escape(label))
     out.append("</div>")
     return "".join(out)
 
 
-def page_hero(h1, lead, trail, locale="es"):
-    bg = asset("assets/lx/img/l1.webp", locale)
+def page_hero(h1, lead, trail, locale="es", bg=None, extra_class=""):
+    bg = asset(bg or "assets/lx/img/l1.webp", locale)
+    cls = ("text-light relative overflow-hidden " + extra_class).strip()
+    lead_html = f'<p class="lead wow fadeInUp" data-wow-delay=".2s">{lead}</p>' if lead else ""
     return f"""
-<section id="subheader" class="text-light" data-bgimage="url({bg})">
-  <div class="container">
+<section id="subheader" class="{cls}" data-bgimage="url({bg})">
+  <div class="container relative z-2">
     <div class="row">
       <div class="col-lg-8 offset-lg-2">
-        <h1>{h1}</h1>
-        <p class="lead">{lead}</p>
-        {crumbs(trail)}
+        <h1 class="split">{h1}</h1>
+        {lead_html}
+        <div class="wow fadeInUp" data-wow-delay=".15s">{crumbs(trail, locale)}</div>
       </div>
     </div>
   </div>
@@ -100,8 +106,9 @@ def service_card(s, locale="es", badge=True):
     ui = load_ui(locale)
     badge_html = '<span class="card-badge">%s</span>' % html.escape(t(ui, "common.new_badge")) \
         if (badge and s["new"]) else ""
-    return f"""      <div class="col-lg-3 col-md-6">
-        <a href="{svc_url(s)}" class="d-block hover relative">
+    delay = ".%ss" % (idx % 4)
+    return f"""      <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="{delay}">
+        <a href="{ph(svc_url(s), locale)}" class="d-block hover relative">
           {badge_html}
           <img src="{img('assets/lx/img/' + icons[idx % 4], locale)}" class="w-70px mb-3" alt="">
           <h4>{html.escape(svc_name(s, locale))}</h4>
@@ -119,10 +126,20 @@ def trust_strip(locale="es"):
 
 def stats_band(locale="es"):
     cells = ""
-    for st in content(locale)["STATS"]:
+    for i, st in enumerate(content(locale)["STATS"]):
+        num = st["num"]
+        delay = ".%ss" % (i * 2)
+        # Animate whole numbers with timer; keep decimals/stars as plain text
+        if num.replace(".", "", 1).isdigit() and "." not in num:
+            num_html = '<span class="timer" data-to="%s" data-speed="2500">0</span>%s' % (
+                html.escape(num), html.escape(st["suffix"]))
+        else:
+            num_html = "%s%s" % (html.escape(num), html.escape(st["suffix"]))
         cells += f"""      <div class="col-md-3 text-center">
-        <h2 class="mb-1">{html.escape(st['num'])}{html.escape(st['suffix'])}</h2>
-        <p class="mb-0">{html.escape(st['label'])}</p>
+        <div class="de_count wow fadeInUp" data-wow-delay="{delay}">
+          <h2 class="mb-1 fs-40">{num_html}</h2>
+          <p class="mb-0">{html.escape(st['label'])}</p>
+        </div>
       </div>
 """
     return f"""
@@ -135,25 +152,75 @@ def stats_band(locale="es"):
 """
 
 
+def _pretty_href(href, locale):
+    if not href:
+        return href
+    if href.startswith("http://") or href.startswith("https://") or href.startswith("mailto:") or href.startswith("tel:") or href.startswith("wa.me") or "wa.me" in href:
+        return href
+    if href.endswith(".html") or href in ("index.html", "index"):
+        return page_href(href, locale)
+    return href
+
+
+def quote_split(locale="es"):
+    """Left photo + right quote slider (homepage / marketing)."""
+    h = load_home(locale)
+    quotes = h.get("quotes") or []
+    if not quotes:
+        return ""
+    slides = ""
+    for q in quotes:
+        slides += f"""
+                        <div class="item">
+                            <blockquote class="wwc-quote-text">{html.escape(q['text'])}</blockquote>
+                            <div class="wwc-quote-by">{html.escape(q['by'])}</div>
+                        </div>"""
+    photo = img("assets/lx/img/testimonial-delivery.webp", locale)
+    _ = tr(locale)
+    alt = html.escape(_("Cliente recibiendo su paquete WWC", "Customer receiving their WWC package"))
+    return f"""
+            <section class="mx-3 mb-3 p-0">
+                <div class="container-fluid px-0">
+                    <div class="row g-0 rounded-1 overflow-hidden wwc-quote-split">
+                        <div class="col-lg-6">
+                            <div class="wwc-quote-photo">
+                                <img src="{photo}" alt="{alt}" width="1000" height="1000" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 bg-dark text-light">
+                            <div class="wwc-quote-panel">
+                                <div class="wwc-quote-mark" aria-hidden="true">“</div>
+                                <div id="wwc-quotes" class="owl-carousel owl-theme">
+{slides}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+"""
+
+
 def cta_band(locale="es", title=None, text=None, primary=None, secondary=None):
     ui = load_ui(locale)
     title = title or t(ui, "cta.ready_title")
     text = text or t(ui, "cta.ready_text")
     p_label, p_href = primary or (t(ui, "register_free"), None)
     s_label, s_href = secondary or (t(ui, "talk_whatsapp"), None)
-    p_href = p_href or SITE["register_url"]
-    s_href = s_href or wa_link(locale)
+    p_href = _pretty_href(p_href or SITE["register_url"], locale)
+    s_href = _pretty_href(s_href or wa_link(locale), locale)
+    s_blank = ' target="_blank" rel="noopener"' if s_href.startswith("http") else ""
     return f"""
 <section class="bg-color text-light pt-50 pb-50">
   <div class="container">
     <div class="row g-4 align-items-center">
       <div class="col-md-8">
-        <h3 class="mb-2 fs-32">{html.escape(title)}</h3>
-        <p class="mb-0">{html.escape(text)}</p>
+        <h3 class="mb-2 fs-32 split">{html.escape(title)}</h3>
+        <p class="mb-0 wow fadeInUp" data-wow-delay=".15s">{html.escape(text)}</p>
       </div>
       <div class="col-md-4 text-lg-end">
-        <a class="btn-main fx-slide me-2 mb-2" href="{p_href}" data-hover="{html.escape(p_label)}"><span>{html.escape(p_label)}</span></a>
-        <a class="btn-main btn-line fx-slide" href="{s_href}" target="_blank" rel="noopener" data-hover="{html.escape(s_label)}"><span>{html.escape(s_label)}</span></a>
+        <a class="btn-main fx-slide me-2 mb-2" href="{html.escape(p_href)}" data-hover="{html.escape(p_label)}"><span>{html.escape(p_label)}</span></a>
+        <a class="btn-main btn-line fx-slide" href="{html.escape(s_href)}"{s_blank} data-hover="{html.escape(s_label)}"><span>{html.escape(s_label)}</span></a>
       </div>
     </div>
   </div>
@@ -194,7 +261,9 @@ def write(filename, content_, locale="es"):
     out_dir = get_locale(locale).out_dir
     rel = os.path.join(out_dir, filename) if out_dir else filename
     path = os.path.join(ROOT, rel)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    parent = os.path.dirname(path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         f.write(content_)
     return rel, len(content_)
@@ -276,18 +345,19 @@ def build_home(locale="es"):
     read_more = html.escape(t(ui, "common.read_more"))
 
     slide_html = ""
-    for sl in h["slides"]:
+    for i, sl in enumerate(h["slides"]):
         tags_html = "".join("<div><h6>%s</h6></div>" % html.escape(x) for x in sl["tags"])
         slide_html += f"""
-                        <div class="swiper-slide">
+                        <div class="swiper-slide" data-slide-i="{i}">
                             <div class="swiper-inner" data-bgimage="url({img('assets/lx/img/' + sl['img'], locale)})">
                                 <div class="sw-caption">
                                     <div class="container">
                                         <div class="row gx-5 align-items-center">
                                             <div class="col-lg-6">
                                                 <div class="sw-text-wrapper">
-                                                    <h1 class="text-uppercase">{html.escape(sl['title'])}</h1>
-                                                    <div>
+                                                    <div class="wwc-slide-kicker anim-order-1" aria-hidden="true"></div>
+                                                    <h1 class="text-uppercase anim-order-1">{html.escape(sl['title'])}</h1>
+                                                    <div class="anim-order-2">
                                                         <p>{html.escape(sl['text'])}</p>
                                                         <div class="spacer-half"></div>
                                                         <a class="btn-main fx-slide" href="{SITE['register_url']}" data-hover="{register}"><span>{register}</span></a>
@@ -313,8 +383,8 @@ def build_home(locale="es"):
                 '<h1 class="fs-84 mb-1">%s</h1><div class="fs-16 lh-1-5">%s</div></div></div>'
                 % (p["badge"], html.escape(h["years_label"])))
         photo_html += f"""
-                        <div class="col-lg-4 col-md-6">
-                            <a href="{p['href']}">
+                        <div class="col-lg-4 col-md-6 wow scaleIn">
+                            <a href="{html.escape(_pretty_href(p['href'], locale))}">
                                 <div class="hover rounded-1 relative overflow-hidden text-light">
                                     {badge_html}
                                     <div class="abs p-40 bottom-0 z-3">
@@ -331,8 +401,8 @@ def build_home(locale="es"):
     svc_html = ""
     for i, s in enumerate(SERVICES[:4]):
         svc_html += f"""
-                        <div class="col-lg-3 col-md-6">
-                            <a href="{svc_url(s)}" class="d-block hover relative">
+                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay=".{i}s">
+                            <a href="{ph(svc_url(s), locale)}" class="d-block hover relative">
                                 <img src="{img('assets/lx/img/' + icons[i], locale)}" class="w-70px mb-3 hover-jello infinite" alt="">
                                 <h4>{html.escape(svc_name(s, locale))}</h4>
                                 <p>{html.escape(sf(s, 'blurb', locale))}</p>
@@ -340,17 +410,17 @@ def build_home(locale="es"):
                         </div>"""
 
     steps = ""
-    for pstep in c["PROCESS"]:
+    for i, pstep in enumerate(c["PROCESS"]):
         steps += f"""
-                        <div class="col-lg-3 col-md-6">
+                        <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay=".{i}s">
                             <h4>{html.escape(pstep['title'])}</h4>
                             <p>{html.escape(pstep['text'])}</p>
                         </div>"""
 
     why = ""
-    for item in c["WHY_US"]:
+    for i, item in enumerate(c["WHY_US"]):
         why += f"""
-                        <div class="col-lg-4 col-md-6">
+                        <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay=".{i * 2}s">
                             <div class="relative">
                                 <i class="abs fs-40 p-4 bg-dark rounded-1 text-light fa-solid fa-check"></i>
                                 <div class="ps-100 ms-4">
@@ -364,7 +434,7 @@ def build_home(locale="es"):
     for g in h["gallery"]:
         gal += f"""
                                     <div class="item">
-                                        <a href="{g['href']}">
+                                        <a href="{html.escape(_pretty_href(g['href'], locale))}">
                                             <div class="hover rounded-1 relative overflow-hidden text-light">
                                                 <div class="abs p-40 bottom-0 z-3 w-50">
                                                     <h3>{html.escape(g['title'])}</h3>
@@ -397,14 +467,16 @@ def build_home(locale="es"):
     st, fq = h["stores"], h["faq"]
 
     body = f"""
-            <section class="text-light no-top no-bottom relative rounded-1 overflow-hidden m-3 sm-mt-90">
-                <div class="mh-800">
+            <section class="text-light no-top no-bottom relative rounded-1 overflow-hidden m-3 sm-mt-90 wwc-hero-slider">
+                <div class="mh-800 wwc-hero-frame">
                     <div class="swiper">
                       <div class="swiper-wrapper">
 {slide_html}
                       </div>
                       <div class="swiper-button-prev"></div>
                       <div class="swiper-button-next"></div>
+                      <div class="swiper-pagination wwc-hero-dots"></div>
+                      <div class="wwc-hero-progress" aria-hidden="true"><span></span></div>
                     </div>
                 </div>
             </section>
@@ -417,14 +489,14 @@ def build_home(locale="es"):
                 <div class="container">
                     <div class="row g-4 justify-content-center">
                         <div class="col-lg-8 text-center">
-                            <div class="subtitle">{html.escape(sv['subtitle'])}</div>
+                            <div class="subtitle wow fadeInUp">{html.escape(sv['subtitle'])}</div>
                             <h2 class="split">{html.escape(sv['title'])}</h2>
-                            <p>{html.escape(sv['lead'])}</p>
+                            <p class="wow fadeInUp" data-wow-delay=".2s">{html.escape(sv['lead'])}</p>
                         </div>
                     </div>
                     <div class="row g-4 gx-5">{svc_html}</div>
                     <div class="text-center mt-4">
-                        <a class="btn-main" href="servicios.html" data-hover="{html.escape(sv['button'])}"><span>{html.escape(sv['button'])}</span></a>
+                        <a class="btn-main" href="{ph('servicios.html', locale)}" data-hover="{html.escape(sv['button'])}"><span>{html.escape(sv['button'])}</span></a>
                     </div>
                 </div>
             </section>
@@ -433,7 +505,7 @@ def build_home(locale="es"):
                 <div class="container">
                     <div class="row g-4 justify-content-center">
                         <div class="col-lg-8 text-center">
-                            <div class="subtitle">{html.escape(pr['subtitle'])}</div>
+                            <div class="subtitle wow fadeInUp">{html.escape(pr['subtitle'])}</div>
                             <h2 class="split">{html.escape(pr['title'])}</h2>
                         </div>
                     </div>
@@ -465,7 +537,7 @@ def build_home(locale="es"):
                 <div class="container">
                     <div class="row g-4 justify-content-center">
                         <div class="col-lg-8 text-center">
-                            <div class="subtitle">{html.escape(wh['subtitle'])}</div>
+                            <div class="subtitle wow fadeInUp">{html.escape(wh['subtitle'])}</div>
                             <h2 class="split">{html.escape(wh['title'])}</h2>
                         </div>
                     </div>
@@ -473,10 +545,10 @@ def build_home(locale="es"):
                 </div>
             </section>
 
-            <section class="bg-dark text-light pt-0 overflow-hidden">
-                <div class="de-marquee-list-1">{stores}</div>
+            <section class="bg-dark text-light pt-0 overflow-hidden wwc-stores-band">
+                <div class="de-marquee-list de-marquee-list-1 wwc-stores-marquee">{stores}</div>
                 <div class="text-center pb-5">
-                    <a class="btn-main btn-line" href="donde-comprar.html" data-hover="{html.escape(st['hover'])}"><span>{html.escape(st['button'])}</span></a>
+                    <a class="btn-main btn-line" href="{ph('donde-comprar.html', locale)}" data-hover="{html.escape(st['hover'])}"><span>{html.escape(st['button'])}</span></a>
                 </div>
             </section>
 
@@ -496,9 +568,9 @@ def build_home(locale="es"):
                 <div class="container">
                     <div class="row g-4">
                         <div class="col-lg-5">
-                            <div class="subtitle id-color">{html.escape(fq['subtitle'])}</div>
+                            <div class="subtitle id-color wow fadeInUp">{html.escape(fq['subtitle'])}</div>
                             <h2 class="split">{html.escape(fq['title'])}</h2>
-                            <a class="btn-main" href="preguntas-frecuentes.html" data-hover="{html.escape(fq['hover'])}"><span>{html.escape(fq['button'])}</span></a>
+                            <a class="btn-main" href="{ph('preguntas-frecuentes.html', locale)}" data-hover="{html.escape(fq['hover'])}"><span>{html.escape(fq['button'])}</span></a>
                         </div>
                         <div class="col-lg-7">
                             <div class="de-tab">
@@ -516,6 +588,7 @@ def build_home(locale="es"):
                 </div>
             </section>
 
+{quote_split(locale)}
 {cta_band(locale)}
 """
     return render(body, locale, "index.html",
@@ -537,7 +610,9 @@ def build_services_index(locale="es"):
         _("Catorce servicios, una sola cadena logística", "Fourteen services, one logistics chain"),
         _("Desde una compra personal en Amazon hasta la importación de un contenedor completo. Todo con infraestructura propia en Estados Unidos y China.",
           "From a personal Amazon purchase to importing a full container. All with our own infrastructure in the United States and China."),
-        trail, locale
+        trail, locale,
+        bg="assets/lx/img/hero-servicios.webp",
+        extra_class="wwc-hero-port",
     ) + f"""
 {trust_strip(locale)}
 
@@ -550,14 +625,14 @@ def build_services_index(locale="es"):
 
 <section class="section section--paper">
   <div class="container container-narrow">
-    <div class="section-head center" data-reveal>
+    <div class="section-head center wow fadeInUp">
       <span class="eyebrow">{_("No sabés cuál necesitás", "Not sure which one you need")}</span>
       <h2 class="balance">{_("Contanos qué querés mover y te decimos cómo", "Tell us what you want to move and we'll tell you how")}</h2>
       <p class="lead">{_("Un mensaje corto con lo que necesitás es suficiente para que te orientemos sobre el servicio que te conviene y su costo aproximado.",
                          "A short message about what you need is enough for us to point you to the right service and give you an approximate cost.")}</p>
     </div>
-    <div class="text-center" data-reveal>
-      <a class="btn btn--primary btn--lg" href="contacto.html">{_("Pedir asesoramiento", "Get advice")} {icon('arrow-right')}</a>
+    <div class="text-center wow fadeInUp">
+      <a class="btn btn--primary btn--lg" href="{ph('contacto.html', locale)}">{_("Pedir asesoramiento", "Get advice")} {icon('arrow-right')}</a>
     </div>
   </div>
 </section>
@@ -600,7 +675,7 @@ def build_service(s, locale="es"):
                          "proposal with costs and timelines.</p>\n")
 
     side_nav = "".join(
-        '<a href="%s"%s>%s</a>' % (svc_url(o), ' aria-current="page"' if o["slug"] == s["slug"] else "",
+        '<a href="%s"%s>%s</a>' % (ph(svc_url(o), locale), ' aria-current="page"' if o["slug"] == s["slug"] else "",
                                    html.escape(svc_name(o, locale)))
         for o in SERVICES)
 
@@ -613,7 +688,7 @@ def build_service(s, locale="es"):
   <div class="container">
     <div class="layout-sidebar">
 
-      <div class="prose" data-reveal>
+      <div class="prose wow fadeInUp">
         <div class="callout">
           <b>{_("En resumen", "In short")}</b>
           {html.escape(sf(s, 'blurb', locale))}
@@ -629,7 +704,7 @@ def build_service(s, locale="es"):
         </div>
 
         <div class="flex gap-3 wrap mt-5">
-          <a class="btn btn--primary" href="contacto.html">{_("Pedir cotización", "Request a quote")} {icon('arrow-right')}</a>
+          <a class="btn btn--primary" href="{ph('contacto.html', locale)}">{_("Pedir cotización", "Request a quote")} {icon('arrow-right')}</a>
           <a class="btn btn--ghost" href="{wa_link(locale, wa_text)}" target="_blank" rel="noopener">{icon('whatsapp')} {_("Consultar por WhatsApp", "Ask on WhatsApp")}</a>
         </div>
       </div>
@@ -664,7 +739,7 @@ def build_service(s, locale="es"):
 
 <section class="section section--paper">
   <div class="container">
-    <div class="section-head center" data-reveal>
+    <div class="section-head center wow fadeInUp">
       <span class="eyebrow">{_("También te puede interesar", "You may also like")}</span>
       <h2>{_("Otros servicios", "Other services")}</h2>
     </div>
@@ -687,113 +762,188 @@ def build_about(locale="es"):
     ui = load_ui(locale)
     trail = [(t(ui, "common.home_crumb"), "index.html"), (t(ui, "nav.about"), None)]
     offices = ""
-    for o in content(locale)["OFFICES"]:
+    for i, o in enumerate(content(locale)["OFFICES"]):
         lines = "<br>".join(html.escape(l) for l in o["lines"])
-        offices += f"""      <article class="card">
+        offices += f"""      <article class="card wow fadeInUp" data-wow-delay=".{i * 2}s">
         <div class="card-icon">{icon('pin')}</div>
         <h3>{html.escape(o['city'])}</h3>
         <p><strong>{html.escape(o['label'])}</strong><br>{lines}</p>
       </article>
 """
     body = page_hero(
-        _("Veinte años construyendo una puerta al mundo", "Twenty years building a doorway to the world"),
-        _("Empezamos resolviendo un problema concreto: la gente quería comprar afuera y no podía. Hoy movemos carga entre tres continentes con infraestructura propia.",
-          "We started by solving a concrete problem: people wanted to buy abroad and couldn't. Today we move cargo across three continents with our own infrastructure."),
-        trail, locale
+        _("Nosotros", "About Us"),
+        "",
+        trail, locale,
+        bg="assets/lx/img/s3.webp",
+        extra_class="m-3 rounded-1 sm-mt-90",
     ) + f"""
-{trust_strip(locale)}
-
-<section class="section">
+<section>
   <div class="container">
-    <div class="wwc-split">
-      <div data-reveal="left">
-        <span class="eyebrow">{_("Quiénes somos", "Who we are")}</span>
-        <h2>{_("Un operador logístico, no un intermediario", "A logistics operator, not a middleman")}</h2>
-        <p><strong>{SITE['legal']}</strong> {_("nació de una observación simple: miles de personas en Latinoamérica querían comprar productos que no llegaban a su país, y las que lo intentaban se topaban con tarjetas rechazadas, tiendas que no enviaban al exterior y costos que aparecían recién al final.",
-          "was born from a simple observation: thousands of people in Latin America wanted to buy products that didn't reach their country, and those who tried ran into declined cards, stores that didn't ship abroad and costs that only showed up at the end.")}</p>
-        <p>{_("Más de dos décadas después seguimos resolviendo ese problema, pero el alcance creció. Hoy operamos almacenes propios en Miami y en tres ciudades de China, tenemos oficina regional en Asunción, y atendemos tanto a la persona que compra unas zapatillas como a la empresa que importa pallets todos los meses.",
-          "More than two decades later we're still solving that problem, but our reach has grown. Today we run our own warehouses in Miami and in three Chinese cities, have a regional office in Asunción, and serve both the person buying a pair of sneakers and the company importing pallets every month.")}</p>
-        <p>{_("La diferencia que más valoran nuestros clientes es la que menos se ve desde afuera: cuando algo se complica —una retención en aduana, un proveedor que entrega mal, un paquete que no aparece— del otro lado hay alguien que ya pasó por eso cientos de veces.",
-          "The difference our customers value most is the one that's least visible from the outside: when something goes wrong — a customs hold, a supplier who delivers badly, a package that doesn't show up — there's someone on the other end who has been through it hundreds of times.")}</p>
-        <ul class="check-list">
-          <li>{icon('check')}<span><strong>{_("Infraestructura propia", "Our own infrastructure")}</strong>{_(", no espacio alquilado ni manipulación tercerizada", ", not rented space or outsourced handling")}</span></li>
-          <li>{icon('check')}<span><strong>{_("Equipo hispanohablante", "Spanish-speaking team")}</strong> {_("por WhatsApp, teléfono y correo", "by WhatsApp, phone and email")}</span></li>
-          <li>{icon('check')}<span><strong>{_("Tecnología desarrollada en casa", "In-house technology")}</strong>{_(", por quienes operan la logística", ", built by the people who run the logistics")}</span></li>
-          <li>{icon('check')}<span><strong>{_("Precio cerrado antes de despachar", "Fixed price before dispatch")}</strong>{_(", con los conceptos desglosados", ", with itemized charges")}</span></li>
-        </ul>
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <div class="relative">
+          <div class="w-100 pe-5 pb-5 wow scaleIn">
+            <img src="{img('assets/lx/img/l1.webp', locale)}" class="w-100 rounded-1" alt="{_("Logística internacional WWC", "WWC international logistics")}" width="800" height="600" loading="lazy">
+          </div>
+          <img src="{img('assets/lx/img/s1.webp', locale)}" class="w-40 rounded-1 abs end-0 bottom-0 z-2 soft-shadow wow scaleIn" data-wow-delay=".2s" alt="{_("Operación de carga", "Freight operation")}" width="320" height="400" loading="lazy">
+        </div>
       </div>
-      <div class="split-media" data-reveal="right">
-        <img src="{img('assets/lx/img/s2.webp', locale)}" alt="{_("Operación logística de World Wide Commerce", "World Wide Commerce logistics operation")}" width="800" height="600" loading="lazy">
-        <div class="media-tag">{icon('warehouse')} 2355 NW 70th Ave · Miami</div>
+      <div class="col-lg-6">
+        <div class="ps-lg-3">
+          <div class="subtitle id-color wow fadeInUp" data-wow-delay=".2s">{_("Quiénes somos", "Who we are")}</div>
+          <h2 class="split">{_("Movemos carga, conectamos el mundo", "Moving cargo, connecting the world")}</h2>
+          <p class="mb-0 wow fadeInUp" data-wow-delay=".5s"><strong>{SITE['legal']}</strong> {_("es un operador logístico con infraestructura propia en Miami y China. Casillero, consolidación, aduana y entrega puerta a puerta — sin intermediarios ni sorpresas en el precio.",
+            "is a logistics operator with our own infrastructure in Miami and China. Mailbox, consolidation, customs and door-to-door delivery — no middlemen and no price surprises.")}</p>
+        </div>
+      </div>
+
+      <div class="spacer-single"></div>
+
+      <div class="row g-4">
+        <div class="col-lg-12">
+          <h2 class="split mb-0">{_("Nuestra expertise", "Our expertise")}</h2>
+        </div>
+        <div class="col-lg-6">
+          <div class="skill-bar style-2 wow fadeInUp" data-wow-delay=".1s">
+            <h5>{_("Casillero y puerta a puerta", "Mailbox and door-to-door")}</h5>
+            <div class="de-progress">
+              <div class="value">95%</div>
+              <div class="progress-bar" data-value="95%"></div>
+            </div>
+          </div>
+          <div class="skill-bar style-2 wow fadeInUp" data-wow-delay=".2s">
+            <h5>{_("Aduana e importación", "Customs and import")}</h5>
+            <div class="de-progress">
+              <div class="value">90%</div>
+              <div class="progress-bar" data-value="90%"></div>
+            </div>
+          </div>
+          <div class="skill-bar style-2 wow fadeInUp" data-wow-delay=".3s">
+            <h5>{_("Almacenamiento y fulfillment", "Warehousing and fulfillment")}</h5>
+            <div class="de-progress">
+              <div class="value">85%</div>
+              <div class="progress-bar" data-value="85%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="row g-4">
+            <div class="col-md-6 text-center">
+              <div class="de_count wow fadeInRight" data-wow-delay=".0s">
+                <h3 class="fs-40 mb-0"><span class="timer" data-to="20" data-speed="2500">0</span>+</h3>
+                {_("Años de experiencia", "Years of experience")}
+              </div>
+            </div>
+            <div class="col-md-6 text-center">
+              <div class="de_count wow fadeInRight" data-wow-delay=".2s">
+                <h3 class="fs-40 mb-0"><span class="timer" data-to="3" data-speed="2500">0</span></h3>
+                {_("Países con operación propia", "Countries with our own ops")}
+              </div>
+            </div>
+            <div class="col-md-6 text-center">
+              <div class="de_count wow fadeInRight" data-wow-delay=".4s">
+                <h3 class="fs-40 mb-0"><span class="timer" data-to="76" data-speed="2500">0</span>+</h3>
+                {_("Reseñas en Google", "Google reviews")}
+              </div>
+            </div>
+            <div class="col-md-6 text-center">
+              <div class="de_count wow fadeInRight" data-wow-delay=".6s">
+                <h3 class="fs-40 mb-0"><span class="timer" data-to="4" data-speed="2500">0</span></h3>
+                {_("Almacenes Miami + China", "Warehouses Miami + China")}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-{stats_band(locale)}
+<section>
+  <div class="container relative z-1">
+    <div class="row g-4 gx-5">
+      <div class="col-lg-6">
+        <div class="relative">
+          <div class="abs bottom-0 end-0 m-5 z-2">
+            <div class="p-4 mb-4 bg-color text-light rounded-1 text-center wow fadeInUp">
+              <h1 class="fs-84 mb-1">{SITE['years']}</h1>
+              <div class="fs-16 lh-1-5">{_("Años de excelencia", "Years of excellence")}</div>
+            </div>
+          </div>
+          <img src="{img('assets/lx/img/s3.webp', locale)}" class="w-100 rounded-1 wow scaleIn" alt="{_("Equipo e infraestructura WWC", "WWC team and infrastructure")}" width="800" height="600" loading="lazy">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="h-100 relative">
+          <div class="subtitle id-color wow fadeInUp" data-wow-delay=".2s">{_("Tu socio de envíos", "Your shipping partner")}</div>
+          <h2 class="split">{_("Operador propio, no intermediario", "Our own operator, not a middleman")}</h2>
+          <div class="mt-4 wow fadeInUp" data-wow-delay=".5s">
+            <div class="d-flex align-items-center justify-content-between border-bottom pb-4 mb-4">
+              <a class="btn-main fx-slide me-3" href="{SITE['register_url']}" data-hover="{html.escape(t(ui, 'register_free'))}"><span>{html.escape(t(ui, 'register_free'))}</span></a>
+              <div class="d-flex align-items-center">
+                <div class="me-3">
+                  <img src="{img('assets/lx/img/1.webp', locale)}" class="w-50px circle ms-min-10" alt="">
+                  <img src="{img('assets/lx/img/2.webp', locale)}" class="w-50px circle ms-min-10" alt="">
+                  <img src="{img('assets/lx/img/3.webp', locale)}" class="w-50px circle ms-min-10" alt="">
+                </div>
+                <div class="fw-600 fs-14 lh-1-5"><span class="fs-16 fw-bold text-dark">{SITE['google_rating']}★</span><br>{SITE['google_reviews']} {_("reseñas Google", "Google reviews")}</div>
+              </div>
+            </div>
+            <p class="mb-0">{_("Cuando algo se complica —aduana, proveedor o un paquete que no aparece— del otro lado hay un equipo que ya lo resolvió cientos de veces. Precio cerrado, seguimiento claro e infraestructura propia en Miami y China.",
+              "When something goes wrong — customs, a supplier, or a missing package — there's a team on the other end that has solved it hundreds of times. Fixed pricing, clear tracking, and our own warehouses in Miami and China.")}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="section">
   <div class="container">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">{_("Presencia", "Presence")}</span>
-      <h2 class="balance">{_("Dónde estamos", "Where we are")}</h2>
-      <p class="lead">{_("Operación propia en los tres puntos que importan: el origen de la mercadería, el nodo de consolidación y el mercado de destino.",
-                         "Our own operations at the three points that matter: the origin of the goods, the consolidation hub and the destination market.")}</p>
+    <div class="section-head center">
+      <span class="eyebrow wow fadeInUp">{_("Presencia", "Presence")}</span>
+      <h2 class="split">{_("Dónde estamos", "Where we are")}</h2>
+      <p class="lead wow fadeInUp" data-wow-delay=".2s">{_("Operación propia en origen, consolidación y destino.", "Our own ops at origin, consolidation and destination.")}</p>
     </div>
-    <div class="wwc-grid wwc-g3" data-stagger>
+    <div class="wwc-grid wwc-g3">
 {offices}    </div>
   </div>
 </section>
 
 <section class="section section--paper">
   <div class="container">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">{_("Cómo trabajamos", "How we work")}</span>
-      <h2 class="balance">{_("Tres compromisos que sostenemos", "Three commitments we keep")}</h2>
+    <div class="section-head center">
+      <span class="eyebrow wow fadeInUp">{_("Cómo trabajamos", "How we work")}</span>
+      <h2 class="split">{_("Tres compromisos", "Three commitments")}</h2>
     </div>
-    <div class="wwc-grid wwc-g3" data-stagger>
-      <article class="card">
+    <div class="wwc-grid wwc-g3">
+      <article class="card wow fadeInUp" data-wow-delay=".0s">
         <div class="card-icon">{icon('shield')}</div>
         <h3>{_("Transparencia en el precio", "Price transparency")}</h3>
-        <p>{_("Te mostramos el presupuesto desglosado antes de despachar. Si durante el proceso aparece un costo no previsto, lo autorizás vos antes de que se genere. Sin impuestos ocultos: lo decimos porque es la queja más común sobre este rubro.",
-              "We show you an itemized quote before dispatch. If an unexpected cost comes up along the way, you approve it before it's incurred. No hidden fees: we say it because it's the most common complaint in this industry.")}</p>
+        <p>{_("Presupuesto desglosado antes de despachar. Sin impuestos ocultos.", "Itemized quote before dispatch. No hidden fees.")}</p>
       </article>
-      <article class="card">
+      <article class="card wow fadeInUp" data-wow-delay=".15s">
         <div class="card-icon">{icon('users')}</div>
-        <h3>{_("Una persona, no un formulario", "A person, not a form")}</h3>
-        <p>{_("Cada cuenta tiene un interlocutor que conoce su historial. No vas a tener que explicar tu caso de nuevo cada vez que escribís, ni esperar que un sistema de tickets te asigne a alguien distinto.",
-              "Every account has a contact who knows its history. You won't have to explain your case again every time you write, or wait for a ticket system to assign you to someone different.")}</p>
+        <h3>{_("Una persona, no un ticket", "A person, not a ticket")}</h3>
+        <p>{_("Un interlocutor que conoce tu historial. Respuesta humana por WhatsApp, teléfono o correo.", "A contact who knows your history. Human replies by WhatsApp, phone or email.")}</p>
       </article>
-      <article class="card">
+      <article class="card wow fadeInUp" data-wow-delay=".3s">
         <div class="card-icon">{icon('check')}</div>
-        <h3>{_("Verificación antes de embarcar", "Verification before shipping")}</h3>
-        <p>{_("Inspeccionamos y fotografiamos la mercadería cuando ingresa al almacén. Si algo llegó dañado o incompleto te enterás mientras todavía se puede reclamar, no cuando el paquete ya cruzó el continente.",
-              "We inspect and photograph goods when they arrive at the warehouse. If something arrived damaged or incomplete, you find out while you can still file a claim, not after the package has crossed the continent.")}</p>
+        <h3>{_("Verificación antes de embarcar", "Check before shipping")}</h3>
+        <p>{_("Inspección y fotos al ingresar al almacén, mientras todavía se puede reclamar.", "Inspection and photos on warehouse intake, while claims are still possible.")}</p>
       </article>
     </div>
   </div>
 </section>
 
-<!-- RESEÑAS / REVIEWS
-     Intentionally EMPTY of testimonials. Do not add invented reviews.
-     Paste REAL Google reviews here (76 reviews, 5.0 average) using:
-       <article class="quote-card">
-         <div class="stars">icon('star') x5</div>
-         <blockquote>Literal text of the real review.</blockquote>
-         <div class="quote-meta"><span class="avatar">XX</span><div><b>Customer name</b><span>Google review</span></div></div>
-       </article>
-     Alternative: embed the official Google Reviews / Trustindex widget. -->
 <section class="section">
   <div class="container container-narrow text-center">
-    <div class="section-head center" data-reveal>
-      <span class="eyebrow">{_("Opiniones", "Reviews")}</span>
-      <h2 class="balance">{_(f"{SITE['google_rating']} de 5 en Google, sobre {SITE['google_reviews']} reseñas", f"{SITE['google_rating']} out of 5 on Google, based on {SITE['google_reviews']} reviews")}</h2>
-      <p class="lead">{_("Nuestra calificación la escriben los clientes, no nuestro equipo de marketing.", "Our rating is written by customers, not by our marketing team.")}</p>
+    <div class="section-head center">
+      <span class="eyebrow wow fadeInUp">{_("Opiniones", "Reviews")}</span>
+      <h2 class="split">{_(f"{SITE['google_rating']} en Google", f"{SITE['google_rating']} on Google")}</h2>
+      <p class="lead wow fadeInUp" data-wow-delay=".2s">{_(f"Sobre {SITE['google_reviews']} reseñas reales de clientes.", f"Based on {SITE['google_reviews']} real customer reviews.")}</p>
     </div>
-    <div class="stars mt-5" style="justify-content:center;transform:scale(1.6)" aria-hidden="true">
-      {icon('star')}{icon('star')}{icon('star')}{icon('star')}{icon('star')}
-    </div>
-    <p class="mt-6"><a class="btn btn--ghost" href="https://www.google.com/search?q=worldwide+commerce+miami+reviews" target="_blank" rel="noopener">{_("Leer las reseñas en Google", "Read our reviews on Google")} {icon('arrow-right')}</a></p>
+    <p class="mt-4 wow fadeInUp" data-wow-delay=".3s"><a class="btn-main fx-slide" href="https://www.google.com/search?q=worldwide+commerce+miami+reviews" target="_blank" rel="noopener" data-hover="{_("Ver reseñas", "See reviews")}"><span>{_("Leer reseñas en Google", "Read Google reviews")}</span></a></p>
   </div>
 </section>
 
@@ -854,7 +1004,7 @@ def build_stores(locale="es"):
     ) + f"""
 <section class="section">
   <div class="container">
-    <div class="callout mb-6" data-reveal>
+    <div class="callout mb-6 wow fadeInUp">
       <b>{_("Antes de comprar, recordá dos cosas", "Before you buy, remember two things")}</b>
       {_("Primero: usá siempre la dirección exacta del almacén <strong>junto con tu número de casillero</strong>, que recibís al registrarte. Sin ese número el paquete tarda mucho más en asociarse a tu cuenta. Segundo: si no estás seguro de que un producto se pueda transportar, preguntanos antes de pagarlo.",
          "First: always use the warehouse's exact address <strong>together with your mailbox number</strong>, which you receive when you sign up. Without that number, the package takes much longer to be matched to your account. Second: if you're not sure a product can be shipped, ask us before you pay for it.")}
@@ -866,14 +1016,14 @@ def build_stores(locale="es"):
 
 <section class="section section--paper">
   <div class="container container-narrow">
-    <div class="section-head center" data-reveal>
+    <div class="section-head center wow fadeInUp">
       <span class="eyebrow">{_("Si la tienda no te deja", "If the store won't let you")}</span>
       <h2 class="balance">{_("¿Te rechazaron la tarjeta o no envían al exterior?", "Card declined or no shipping abroad?")}</h2>
       <p class="lead">{_("Es más común de lo que parece, y tiene solución: compramos nosotros a tu nombre con medios de pago locales y el producto entra directo a tu casillero.",
                          "It's more common than it seems, and it has a fix: we buy on your behalf with local payment methods and the item goes straight to your mailbox.")}</p>
     </div>
-    <div class="text-center" data-reveal>
-      <a class="btn btn--primary btn--lg" href="servicio-realizamos-tus-compras.html">{_("Ver el servicio de compras asistidas", "See the assisted shopping service")} {icon('arrow-right')}</a>
+    <div class="text-center wow fadeInUp">
+      <a class="btn btn--primary btn--lg" href="{ph('servicio-realizamos-tus-compras.html', locale)}">{_("Ver el servicio de compras asistidas", "See the assisted shopping service")} {icon('arrow-right')}</a>
     </div>
   </div>
 </section>
@@ -961,11 +1111,11 @@ def build_tracking(locale="es"):
 
 <section class="section section--paper">
   <div class="container container-narrow">
-    <div class="section-head center" data-reveal>
+    <div class="section-head center wow fadeInUp">
       <span class="eyebrow">{_("Demoras", "Delays")}</span>
       <h2 class="balance">{_("¿Tu envío no se mueve hace días?", "Hasn't your shipment moved in days?")}</h2>
     </div>
-    <div data-reveal>
+    <div class="wow fadeInUp">
 {accordion(faqs, start_id=100)}
     </div>
   </div>
@@ -1001,7 +1151,7 @@ def build_faq(locale="es"):
     ) + f"""
 <section class="section">
   <div class="container container-narrow">
-    <div data-reveal>
+    <div class="wow fadeInUp">
 {accordion(faqs)}
     </div>
   </div>
@@ -1050,7 +1200,7 @@ def build_contact(locale="es"):
   <div class="container">
     <div class="layout-sidebar">
 
-      <div data-reveal>
+      <div class="wow fadeInUp">
         <h2>{_("Pedir una cotización", "Request a quote")}</h2>
         <p class="lead mb-6">{required}</p>
 
@@ -1136,7 +1286,7 @@ def build_simple(locale, slug, title, seo_title, desc, lead, body_html, noindex=
     body = page_hero(html.escape(title), html.escape(lead), trail, locale) + f"""
 <section class="section">
   <div class="container container-narrow">
-    <div class="prose" data-reveal>
+    <div class="prose wow fadeInUp">
 {body_html}
     </div>
   </div>
@@ -1154,8 +1304,8 @@ def build_404(locale="es"):
   <div class="container">
     <h1>404</h1>
     <p class="lead">{e('not_found.text')}</p>
-    <a class="btn-main me-2" href="index.html" data-hover="{e('nav.home')}"><span>{e('not_found.back_home')}</span></a>
-    <a class="btn-main btn-line" href="contacto.html" data-hover="{e('not_found.contact')}"><span>{e('not_found.contact')}</span></a>
+    <a class="btn-main me-2" href="{ph('index.html', locale)}" data-hover="{e('nav.home')}"><span>{e('not_found.back_home')}</span></a>
+    <a class="btn-main btn-line" href="{ph('contacto.html', locale)}" data-hover="{e('not_found.contact')}"><span>{e('not_found.contact')}</span></a>
   </div>
   <div class="de-overlay"></div>
 </section>
@@ -1171,9 +1321,9 @@ def build_thanks(locale="es"):
 {_("Escribinos por WhatsApp al", "Message us on WhatsApp at")} <a href="{wa_link(locale)}">{SITE['phone_display']}</a> {_("y te atendemos en el momento.", "and we'll help you right away.")}</div>
 <h2>{_("Mientras esperás", "While you wait")}</h2>
 <ul>
-<li><a href="servicios.html">{_("Conocé los 14 servicios", "Discover the 14 services")}</a> {_("que ofrecemos", "we offer")}</li>
-<li><a href="donde-comprar.html">{_("Mirá dónde podés comprar", "See where you can shop")}</a> {_("con tu casillero", "with your mailbox")}</li>
-<li><a href="preguntas-frecuentes.html">{_("Revisá las preguntas frecuentes", "Check the frequently asked questions")}</a></li>
+<li><a href="{ph('servicios.html', locale)}">{_("Conocé los 14 servicios", "Discover the 14 services")}</a> {_("que ofrecemos", "we offer")}</li>
+<li><a href="{ph('donde-comprar.html', locale)}">{_("Mirá dónde podés comprar", "See where you can shop")}</a> {_("con tu casillero", "with your mailbox")}</li>
+<li><a href="{ph('preguntas-frecuentes.html', locale)}">{_("Revisá las preguntas frecuentes", "Check the frequently asked questions")}</a></li>
 <li><a href="{SITE['register_url']}">{_("Creá tu cuenta gratis", "Create your free account")}</a> {_("y obtené tu dirección en Miami", "and get your Miami address")}</li>
 </ul>"""
     return build_simple(locale, "gracias", t(ui, "thanks.title"), t(ui, "thanks.seo_title"),
@@ -1196,7 +1346,7 @@ Este texto es una ESTRUCTURA BASE, no un documento legal definitivo. Hacelo revi
 <h2>6. Responsabilidad</h2>
 <p>La responsabilidad por pérdida o daño se rige por el valor declarado y la cobertura contratada. [COMPLETAR CON ASESORAMIENTO LEGAL]</p>
 <h2>7. Protección de datos</h2>
-<p>El tratamiento de datos personales se rige por nuestra <a href="privacidad.html">Política de privacidad</a>.</p>
+<p>El tratamiento de datos personales se rige por nuestra <a href="privacidad">Política de privacidad</a>.</p>
 <h2>8. Jurisdicción</h2>
 <p>[COMPLETAR: jurisdicción y legislación aplicable]</p>"""
 
@@ -1216,7 +1366,7 @@ This text is a BASE STRUCTURE, not a final legal document. Have a lawyer review 
 <h2>6. Liability</h2>
 <p>Liability for loss or damage is governed by the declared value and the coverage contracted. [COMPLETE WITH LEGAL ADVICE]</p>
 <h2>7. Data protection</h2>
-<p>The processing of personal data is governed by our <a href="privacidad.html">Privacy Policy</a>.</p>
+<p>The processing of personal data is governed by our <a href="privacidad">Privacy Policy</a>.</p>
 <h2>8. Jurisdiction</h2>
 <p>[COMPLETE: jurisdiction and applicable law]</p>"""
 
@@ -1317,10 +1467,10 @@ def build_robots():
     return f"""# robots.txt — {SITE['name']}
 User-agent: *
 Allow: /
-Disallow: /gracias.html
-Disallow: /404.html
-Disallow: /en/gracias.html
-Disallow: /en/404.html
+Disallow: /gracias
+Disallow: /404
+Disallow: /en/gracias
+Disallow: /en/404
 Disallow: /_build/
 
 Sitemap: {SITE['domain']}/sitemap.xml
@@ -1331,12 +1481,35 @@ def build_manifest():
     return json.dumps({
       "name": SITE["name"], "short_name": SITE["short"],
       "description": "Comprá en USA o China y recibí en Argentina.",
-      "start_url": "/index.html", "display": "standalone",
+      "start_url": "/", "display": "standalone",
       "background_color": "#081021", "theme_color": "#081021", "lang": "es",
       "icons": [{"src": "assets/img/brand/favicon.svg", "sizes": "any", "type": "image/svg+xml"},
                 {"src": "assets/img/brand/icon-192.png", "sizes": "192x192", "type": "image/png"},
                 {"src": "assets/img/brand/icon-512.png", "sizes": "512x512", "type": "image/png"}]
     }, ensure_ascii=False, indent=2)
+
+
+def build_htaccess():
+    return """# Clean URLs — serve page.html as /page
+Options -MultiViews
+RewriteEngine On
+
+# Redirect /index.html → /
+RewriteCond %{THE_REQUEST} \\s/+index\\.html[\\s?] [NC]
+RewriteRule ^index\\.html$ / [R=301,L]
+
+# Redirect /path.html → /path
+RewriteCond %{THE_REQUEST} \\s/+(.+?)\\.html[\\s?] [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# Internally map /path → /path.html when the file exists
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+ErrorDocument 404 /404.html
+"""
 
 
 # ══════════════════════════════════════════════════════════════ MAIN
@@ -1364,6 +1537,7 @@ def main():
     w("sitemap.xml", build_sitemap())
     w("robots.txt", build_robots())
     w("site.webmanifest", build_manifest())
+    w(".htaccess", build_htaccess())
 
     total = sum(n for _, n in written)
     print("Generated %d files, %.1f KB of markup\n" % (len(written), total / 1024))

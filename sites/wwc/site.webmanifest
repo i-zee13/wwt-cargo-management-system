@@ -2,7 +2,7 @@
   "name": "World Wide Commerce",
   "short_name": "WWC",
   "description": "Comprá en USA o China y recibí en Argentina.",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#081021",
   "theme_color": "#081021",

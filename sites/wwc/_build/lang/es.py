@@ -90,15 +90,21 @@ HOME = {
     "slides": [
         {
             "img": "l2.webp",
-            "title": "Tu puerta al mundo: comprá en USA o China y recibí en Argentina",
-            "text": "Logística internacional, sin impuestos ocultos, sin sorpresas. ¡Solo recibí! Registrate y obtené tu dirección en Miami o China: comprás online donde quieras y nosotros te lo entregamos en tu domicilio.",
-            "tags": ["Sin impuestos ocultos", "Operación propia", "Rastreo de punta a punta", "Precio cerrado"],
+            "title": "Comprá en USA o China. Recibí en Argentina.",
+            "text": "Casillero gratis en Miami y China. Sin impuestos ocultos.",
+            "tags": ["Sin sorpresas", "Operación propia", "Precio cerrado"],
         },
         {
             "img": "l1.webp",
             "title": "Tu casillero gratis en Miami y China",
-            "text": "Registrate gratis y recibí tu dirección exclusiva en WWC Miami / China. Comprá en tus tiendas favoritas, enviá a tu casillero y nosotros nos encargamos del resto.",
-            "tags": ["Miami", "China", "Paraguay", "+20 años"],
+            "text": "Registrate, comprá online y nosotros te lo llevamos a casa.",
+            "tags": ["Miami", "China", "+20 años"],
+        },
+        {
+            "img": "l4.webp",
+            "title": "De un paquete a un contenedor",
+            "text": "Consolidamos y rastreamos tu carga de punta a punta.",
+            "tags": ["Consolidación", "Aduana", "Puerta a puerta"],
         },
     ],
     "photos": [
@@ -142,4 +148,22 @@ HOME = {
         "groups": ["Envíos internacionales", "Mudanzas internacionales"],
     },
     "trust": ["Sin impuestos ocultos", "Express 4-7 días", "5,0 en Google · 76 reseñas", "+20 años"],
+    "quotes": [
+        {
+            "text": "Consolidaron mis compras de Amazon y Shein en un solo envío. Llegó a Buenos Aires con el precio que me habían cotizado, sin sorpresas.",
+            "by": "Cliente WWC · Buenos Aires",
+        },
+        {
+            "text": "Tener dirección propia en Miami y China cambió cómo importamos. Seguimiento claro y un equipo que responde cuando hace falta.",
+            "by": "Cliente WWC · Asunción",
+        },
+        {
+            "text": "Pedimos una mudanza puerta a puerta desde Florida. Empaque profesional, plazos realistas y entrega en destino sin complicaciones.",
+            "by": "Cliente WWC · Córdoba",
+        },
+        {
+            "text": "Cotización cerrada, aduana incluida y el paquete en casa. Así debería ser siempre la logística internacional.",
+            "by": "Cliente WWC · Mendoza",
+        },
+    ],
 }
