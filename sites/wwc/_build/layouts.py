@@ -164,7 +164,7 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 <link rel="stylesheet" href="{a('assets/lx/css/coloring.css')}">
 <link rel="stylesheet" href="{a('assets/lx/css/scheme-01.css')}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=9">{schema_html}
+<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=10">{schema_html}
 </head>
 <body>
 <a class="skip-link" href="#content">{html.escape(t(ui, 'skip_content'))}</a>
@@ -264,7 +264,9 @@ def footer(locale="es", current_file="index.html"):
         '                                        <li><a href="%s">%s</a></li>' % (ph(f), label)
         for f, label in company)
     scripts = "\n".join(
-        '<script src="%s"></script>' % html.escape(asset(p, loc)) for p in (
+        '<script src="%s"></script>' % html.escape(
+            asset(p, loc) + ("?v=10" if p.endswith(("custom-marquee.js", "custom-swiper-1.js", "wwc.js")) else "")
+        ) for p in (
             "assets/lx/js/plugins.js", "assets/lx/js/designesia.js", "assets/lx/js/swiper.js",
             "assets/lx/js/custom-swiper-1.js", "assets/lx/js/custom-marquee.js", "assets/js/wwc.js"))
     return f"""        </div>

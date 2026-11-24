@@ -459,12 +459,14 @@ def build_home(locale="es"):
 
     stores = "".join(
         (
-            '<span class="d-item-txt wwc-store-logo">'
+            '<span class="wwc-store-chip">'
+            '<span class="wwc-store-chip__icon">'
             '<img src="https://www.google.com/s2/favicons?domain=%s&amp;sz=128" '
-            'alt="%s" width="40" height="40" loading="lazy" decoding="async">'
-            '<span class="wwc-store-name">%s</span>'
-            '</span><span class="d-item-block"></span>'
-        ) % (html.escape(dom), html.escape(name), html.escape(name))
+            'alt="" width="32" height="32" loading="lazy" decoding="async">'
+            '</span>'
+            '<span class="wwc-store-chip__name">%s</span>'
+            '</span>'
+        ) % (html.escape(dom), html.escape(name))
         for name, dom in STORES)
 
     rating_text = html.escape(h["rating"]["text"].format(
@@ -552,7 +554,7 @@ def build_home(locale="es"):
             </section>
 
             <section class="bg-dark text-light pt-0 overflow-hidden wwc-stores-band">
-                <div class="de-marquee-list de-marquee-list-1 wwc-stores-marquee">{stores}</div>
+                <div class="wwc-stores-marquee" data-wwc-marquee>{stores}</div>
                 <div class="text-center pb-5">
                     <a class="btn-main btn-line" href="{ph('donde-comprar.html', locale)}" data-hover="{html.escape(st['hover'])}"><span>{html.escape(st['button'])}</span></a>
                 </div>

@@ -279,44 +279,40 @@ a.btn.btn--ghost,button.btn.btn--ghost{
   }
 }
 
-/* Store logo marquee — Google favicons on light pills */
-.wwc-store-logo{
-  display:inline-flex!important;align-items:center;gap:10px;
-  padding:8px 14px 8px 10px;margin:0 4px;
-  background:rgba(255,255,255,.96);border-radius:999px;
-  color:#111!important;-webkit-text-stroke:0!important;
-  box-shadow:0 6px 18px rgba(0,0,0,.18)
-}
-.wwc-store-logo img{
-  width:28px;height:28px;object-fit:contain;border-radius:6px;flex:none;
-  background:#fff
-}
-.wwc-store-name{font-size:13px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
-@media (max-width:767px){
-  .wwc-store-logo{padding:7px 12px 7px 8px}
-  .wwc-store-logo img{width:24px;height:24px}
-  .wwc-store-name{font-size:12px}
-}
-
-/* Store name marquee — readable spacing + separators */
+/* Store logo marquee — one chip = one logo (no theme d-item-txt / CSS loop) */
 .wwc-stores-band{padding-top:8px}
-.wwc-stores-marquee,
-.de-marquee-list-1.wwc-stores-marquee{
-  display:flex;align-items:center;gap:0;
-  padding:40px 0 28px;white-space:nowrap;
-  -webkit-animation:none;animation:none
+.wwc-stores-marquee{
+  overflow:hidden;padding:36px 0 24px;white-space:nowrap;
+  -webkit-animation:none!important;animation:none!important
 }
-.wwc-stores-marquee .d-item-txt,
-.de-marquee-list-1.wwc-stores-marquee .d-item-txt{
-  display:inline-flex;align-items:center;
-  font-family:var(--heading-font);
-  font-size:13px;font-weight:700;line-height:1.2;letter-spacing:.01em;
-  color:#111!important;-webkit-text-stroke:0!important;
-  text-transform:none;user-select:none
+.wwc-stores-marquee .js-marquee{display:inline-flex;align-items:center;gap:12px}
+.wwc-store-chip{
+  display:inline-flex;align-items:center;gap:10px;
+  height:44px;padding:0 16px 0 8px;margin:0;
+  background:#fff;border-radius:999px;
+  color:#111!important;-webkit-text-fill-color:#111!important;
+  -webkit-text-stroke:0!important;text-transform:none;
+  box-shadow:0 4px 14px rgba(0,0,0,.16);vertical-align:middle
 }
-.wwc-stores-marquee .d-item-block,
-.de-marquee-list-1.wwc-stores-marquee .d-item-block{display:none}
-.wwc-stores-marquee .wwc-store-logo{margin:0 10px}
+.wwc-store-chip__icon{
+  width:28px;height:28px;flex:none;
+  display:inline-flex;align-items:center;justify-content:center;
+  border-radius:8px;background:#f3f4f6;overflow:hidden
+}
+.wwc-store-chip__icon img{
+  width:20px;height:20px;object-fit:contain;display:block;
+  margin:0!important
+}
+.wwc-store-chip__name{
+  font-family:var(--heading-font);font-size:13px;font-weight:700;
+  line-height:1;letter-spacing:.01em;white-space:nowrap;color:#111
+}
+@media (max-width:767px){
+  .wwc-store-chip{height:40px;padding:0 14px 0 7px;gap:8px}
+  .wwc-store-chip__icon{width:26px;height:26px;border-radius:7px}
+  .wwc-store-chip__icon img{width:18px;height:18px}
+  .wwc-store-chip__name{font-size:12px}
+}
 
 @media (max-width:991px){
   .wwc-grid.wwc-g3,.wwc-grid.wwc-g2,.wwc-split,.hero-grid{grid-template-columns:1fr}
