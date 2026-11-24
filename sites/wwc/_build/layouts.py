@@ -13,6 +13,7 @@ NAV_KEYS = {
     "index.html": "home",
     "servicios.html": "services",
     "nosotros.html": "about",
+    "presencia.html": "presence",
     "donde-comprar.html": "stores",
     "rastreo.html": "tracking",
     "preguntas-frecuentes.html": "faq",
@@ -32,9 +33,10 @@ def svc_name(s, locale):
     return s["nav"]
 
 
-def wa_link(locale, text=None):
+def wa_link(locale, text=None, region=None):
     text = text or t(load_ui(locale), "wa_text")
-    return "https://wa.me/%s?text=%s" % (SITE["whatsapp"], quote(text))
+    num = SITE["whatsapp_china"] if region == "china" else SITE["whatsapp"]
+    return "https://wa.me/%s?text=%s" % (num, quote(text))
 
 
 def lang_switcher(locale, current_file):
@@ -164,7 +166,7 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 <link rel="stylesheet" href="{a('assets/lx/css/coloring.css')}">
 <link rel="stylesheet" href="{a('assets/lx/css/scheme-01.css')}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=14">{schema_html}
+<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=15">{schema_html}
 </head>
 <body>
 <a class="skip-link" href="#content">{html.escape(t(ui, 'skip_content'))}</a>
@@ -253,6 +255,7 @@ def footer(locale="es", current_file="index.html"):
     company = [
         ("index.html", e("nav.home")),
         ("nosotros.html", e("nav.about")),
+        ("presencia.html", e("nav.presence")),
         ("donde-comprar.html", e("nav.stores")),
         ("rastreo.html", e("nav.tracking")),
         ("preguntas-frecuentes.html", e("nav.faq")),

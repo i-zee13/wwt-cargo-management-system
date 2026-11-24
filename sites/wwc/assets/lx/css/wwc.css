@@ -331,6 +331,63 @@ a.btn.btn--ghost,button.btn.btn--ghost{
 .wwc-store-link__icon img{width:18px;height:18px;object-fit:contain;display:block}
 .wwc-store-link svg{display:none}
 
+/* Global presence hubs */
+.wwc-hub-strip{
+  display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:14px 18px;
+  margin:36px auto 8px;padding:18px 20px;max-width:820px;
+  background:#101010;border-radius:18px;color:#fff
+}
+.wwc-hub-strip a{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  text-decoration:none;color:#fff;min-width:88px
+}
+.wwc-hub-strip__code{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:34px;height:22px;padding:0 8px;margin-bottom:4px;
+  border-radius:999px;background:var(--primary-color);color:#fff;
+  font-size:11px;font-weight:800;letter-spacing:.06em
+}
+.wwc-hub-strip a b{font-size:15px;font-weight:800}
+.wwc-hub-strip a small{font-size:11px;opacity:.65;text-transform:uppercase;letter-spacing:.06em}
+.wwc-hub__badge b{
+  display:inline-block;margin-right:6px;padding:2px 7px;border-radius:999px;
+  background:var(--primary-color);font-size:11px;letter-spacing:.04em
+}
+.wwc-hub-strip__line{
+  width:36px;height:2px;background:var(--primary-color);opacity:.85;border-radius:2px
+}
+.wwc-hubs{display:flex;flex-direction:column;gap:28px;margin-top:28px}
+.wwc-hub{
+  display:grid;grid-template-columns:1.05fr .95fr;gap:0;overflow:hidden;
+  border-radius:18px;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.06)
+}
+.wwc-hub.is-flip .wwc-hub__media{order:2}
+.wwc-hub.is-flip .wwc-hub__body{order:1}
+.wwc-hub__media{position:relative;min-height:320px;background:#111}
+.wwc-hub__media img{width:100%;height:100%;object-fit:cover;display:block;min-height:320px}
+.wwc-hub__badge{
+  position:absolute;left:16px;bottom:16px;z-index:2;
+  background:rgba(16,16,16,.88);color:#fff;border-radius:999px;
+  padding:8px 14px;font-size:13px;font-weight:700
+}
+.wwc-hub__body{padding:36px 34px;display:flex;flex-direction:column;justify-content:center}
+.wwc-hub__body h2{margin:0 0 8px;font-size:clamp(28px,3vw,40px)}
+.wwc-hub__role{font-weight:700;color:var(--primary-color);margin:0 0 12px}
+.wwc-hub__list{list-style:none;margin:14px 0 22px;padding:0}
+.wwc-hub__list li{
+  position:relative;padding:7px 0 7px 22px;font-size:14.5px;line-height:1.45;color:#444
+}
+.wwc-hub__list li:before{
+  content:"";position:absolute;left:0;top:14px;width:8px;height:8px;border-radius:50%;
+  background:var(--primary-color)
+}
+@media (max-width:991px){
+  .wwc-hub,.wwc-hub.is-flip{grid-template-columns:1fr}
+  .wwc-hub.is-flip .wwc-hub__media,.wwc-hub.is-flip .wwc-hub__body{order:initial}
+  .wwc-hub__body{padding:26px 22px}
+  .wwc-hub-strip__line{width:18px}
+}
+
 /* Services index — LogiXpress split tiles */
 .wwc-svc-grid{
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px

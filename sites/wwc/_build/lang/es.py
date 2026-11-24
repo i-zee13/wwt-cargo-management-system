@@ -7,6 +7,7 @@ UI = {
         "home": "Inicio",
         "services": "Servicios",
         "about": "Nosotros",
+        "presence": "Presencia",
         "stores": "Dónde comprar",
         "tracking": "Rastreo",
         "faq": "Preguntas",

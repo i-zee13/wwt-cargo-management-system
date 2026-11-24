@@ -989,6 +989,144 @@ def build_about(locale="es"):
         schema=[breadcrumb_schema(trail, locale), org_schema(locale)])
 
 
+# ══════════════════════════════════════════════════════════════ PRESENCIA / GLOBAL HUBS
+def build_presence(locale="es"):
+    _ = tr(locale)
+    ui = load_ui(locale)
+    trail = [(t(ui, "common.home_crumb"), "index.html"), (t(ui, "nav.presence"), None)]
+    hubs = [
+        {
+            "id": "miami",
+            "region": None,
+            "code": "US",
+            "img": "s3.webp",
+            "kicker": _("Hub Estados Unidos", "United States hub"),
+            "title": _("Miami", "Miami"),
+            "role": _("Casa central y almacén propio", "Headquarters and own warehouse"),
+            "lead": _("Acá recibimos tus compras de EE. UU., inspeccionamos, consolidamos y preparamos el despacho hacia Latinoamérica.",
+                      "Here we receive your US purchases, inspect, consolidate and prepare dispatch to Latin America."),
+            "points": [
+                _("Casillero exclusivo en 2355 NW 70th Ave, Miami", "Exclusive mailbox at 2355 NW 70th Ave, Miami"),
+                _("Consolidación, fotos e inspección al ingreso", "Consolidation, photos and intake inspection"),
+                _("Compras asistidas cuando tu tarjeta no pasa", "Assisted shopping when your card is declined"),
+                _("Equipo hispanohablante por WhatsApp y teléfono", "Spanish-speaking team by WhatsApp and phone"),
+            ],
+            "wa_label": _("WhatsApp Miami", "WhatsApp Miami"),
+            "wa_display": SITE["whatsapp_display"],
+        },
+        {
+            "id": "china",
+            "region": "china",
+            "code": "CN",
+            "img": "l1.webp",
+            "kicker": _("Hub China", "China hub"),
+            "title": _("China", "China"),
+            "role": _("Almacenes en Shenzhen, Shanghái y Guangzhou", "Warehouses in Shenzhen, Shanghai and Guangzhou"),
+            "lead": _("Comprá en proveedores chinos o marketplaces: consolidamos en origen y movemos la carga con la misma cadena que en Miami.",
+                      "Shop Chinese suppliers or marketplaces: we consolidate at origin and move cargo on the same chain as Miami."),
+            "points": [
+                _("Consolidación en tres ciudades clave", "Consolidation in three key cities"),
+                _("Compras a proveedores y marketplaces locales", "Buying from local suppliers and marketplaces"),
+                _("Control de calidad antes de embarcar", "Quality checks before shipping"),
+                _("WhatsApp dedicado para operación China", "Dedicated WhatsApp for China operations"),
+            ],
+            "wa_label": _("WhatsApp China", "WhatsApp China"),
+            "wa_display": SITE["whatsapp_china_display"],
+        },
+        {
+            "id": "argentina",
+            "region": None,
+            "code": "AR",
+            "img": "testimonial-delivery.webp",
+            "kicker": _("Mercado destino", "Destination market"),
+            "title": _("Argentina", "Argentina"),
+            "role": _("Entrega puerta a puerta y acompañamiento local", "Door-to-door delivery and local support"),
+            "lead": _("El destino de la mayoría de nuestros envíos: aduana clara, seguimiento y entrega en domicilio sin sorpresas de último momento.",
+                      "Where most of our shipments land: clear customs, tracking and door delivery without last-minute surprises."),
+            "points": [
+                _("Puerta a puerta en todo el país", "Door-to-door nationwide"),
+                _("Orientación de aduana e impuestos antes de despachar", "Customs and tax guidance before dispatch"),
+                _("Seguimiento hasta la entrega", "Tracking through to delivery"),
+                _("Atención en español, cercana al cliente", "Spanish support close to the customer"),
+            ],
+            "wa_label": _("WhatsApp atención", "WhatsApp support"),
+            "wa_display": SITE["whatsapp_display"],
+        },
+    ]
+    cards = ""
+    for i, h in enumerate(hubs):
+        flip = " is-flip" if i % 2 == 1 else ""
+        pts = "".join("<li>%s</li>" % html.escape(p) for p in h["points"])
+        wa = wa_link(locale, region=h["region"])
+        cards += f"""
+      <article class="wwc-hub{flip} wow fadeInUp" id="hub-{h['id']}" data-wow-delay=".{i * 15}s">
+        <div class="wwc-hub__media">
+          <img src="{img('assets/lx/img/' + h['img'], locale)}" alt="" width="800" height="600" loading="lazy">
+          <span class="wwc-hub__badge"><b>{h['code']}</b> {html.escape(h['title'])}</span>
+        </div>
+        <div class="wwc-hub__body">
+          <div class="subtitle id-color">{html.escape(h['kicker'])}</div>
+          <h2>{html.escape(h['title'])}</h2>
+          <p class="wwc-hub__role">{html.escape(h['role'])}</p>
+          <p>{html.escape(h['lead'])}</p>
+          <ul class="wwc-hub__list">{pts}</ul>
+          <a class="btn-main fx-slide" href="{wa}" target="_blank" rel="noopener" data-hover="{html.escape(h['wa_label'])}"><span>{icon('whatsapp')} {html.escape(h['wa_label'])} · {html.escape(h['wa_display'])}</span></a>
+        </div>
+      </article>
+"""
+    body = page_hero(
+        _("Presencia global", "Global presence"),
+        _("Una sola operación entre Miami, China y Argentina — almacenes propios en origen y entrega confiable en destino.",
+          "One operation across Miami, China and Argentina — our own warehouses at origin and reliable delivery at destination."),
+        trail, locale,
+        bg="assets/lx/img/hero-servicios.webp",
+        extra_class="wwc-hero-port m-3 rounded-1 sm-mt-90",
+    ) + f"""
+<section class="pt-50 pb-20">
+  <div class="container">
+    <div class="row g-4 justify-content-center text-center">
+      <div class="col-lg-8">
+        <div class="subtitle wow fadeInUp">{_("Cómo trabajamos el mundo", "How we cover the world")}</div>
+        <h2 class="split">{_("No somos tres empresas. Somos una cadena.", "Not three companies. One chain.")}</h2>
+        <p class="lead wow fadeInUp" data-wow-delay=".2s">{_("Comprás en USA o China, nosotros operamos el almacén, y lo entregamos en Argentina. El mismo equipo, el mismo precio cerrado, el mismo seguimiento.",
+          "You shop in the USA or China, we run the warehouse, and we deliver in Argentina. Same team, same fixed pricing, same tracking.")}</p>
+      </div>
+    </div>
+    <div class="wwc-hub-strip wow fadeInUp" data-wow-delay=".25s">
+      <a href="#hub-miami"><span class="wwc-hub-strip__code">US</span><b>Miami</b><small>{_("Almacén", "Warehouse")}</small></a>
+      <span class="wwc-hub-strip__line" aria-hidden="true"></span>
+      <a href="#hub-china"><span class="wwc-hub-strip__code">CN</span><b>China</b><small>{_("Almacén", "Warehouse")}</small></a>
+      <span class="wwc-hub-strip__line" aria-hidden="true"></span>
+      <a href="#hub-argentina"><span class="wwc-hub-strip__code">AR</span><b>Argentina</b><small>{_("Entrega", "Delivery")}</small></a>
+    </div>
+  </div>
+</section>
+
+<section class="pb-50">
+  <div class="container">
+    <div class="wwc-hubs">
+{cards}    </div>
+  </div>
+</section>
+
+{cta_band(locale,
+    title=_("¿Desde qué hub empezamos?", "Which hub should we start from?"),
+    text=_("Escribinos por WhatsApp Miami o China y te orientamos según de dónde sale tu mercadería.",
+           "Message us on WhatsApp Miami or China and we'll guide you based on where your goods ship from."),
+    primary=(_("WhatsApp Miami", "WhatsApp Miami"), wa_link(locale)),
+    secondary=(_("WhatsApp China", "WhatsApp China"), wa_link(locale, region="china")),
+)}
+"""
+    return render(body, locale, "presencia.html",
+        title=_("Presencia global: Miami, China y Argentina | WWC",
+                "Global presence: Miami, China and Argentina | WWC"),
+        desc=_("Operamos con almacenes en Miami y China y entrega puerta a puerta en Argentina. Una sola cadena logística internacional.",
+               "We operate warehouses in Miami and China with door-to-door delivery in Argentina. One international logistics chain."),
+        keywords=_("almacen miami, almacen china, envios argentina, logistica internacional, worldwide commerce presencia",
+                   "miami warehouse, china warehouse, shipping argentina, international logistics, worldwide commerce presence"),
+        schema=[breadcrumb_schema(trail, locale), org_schema(locale)])
+
+
 # ══════════════════════════════════════════════════════════════ DÓNDE COMPRAR / WHERE TO BUY
 STORE_CATS = [
  (("Generalistas y marketplaces", "Generalists and marketplaces"), "cart",
@@ -1288,7 +1426,9 @@ def build_contact(locale="es"):
         <div class="side-card side-card--dark">
           <h4>{_("Contacto directo", "Direct contact")}</h4>
           <p>{_("Si preferís la vía rápida, escribinos por WhatsApp. Es el canal donde respondemos antes.", "If you prefer the fast lane, message us on WhatsApp. It's the channel where we reply fastest.")}</p>
-          <a class="btn btn--primary btn--block btn--sm" href="{wa_link(locale)}" target="_blank" rel="noopener">{icon('whatsapp')} WhatsApp</a>
+          <a class="btn btn--primary btn--block btn--sm" href="{wa_link(locale)}" target="_blank" rel="noopener">{icon('whatsapp')} WhatsApp Miami · {SITE['whatsapp_display']}</a>
+          <div style="height:.6rem"></div>
+          <a class="btn btn--primary btn--block btn--sm" href="{wa_link(locale, region='china')}" target="_blank" rel="noopener">{icon('whatsapp')} WhatsApp China · {SITE['whatsapp_china_display']}</a>
           <div style="height:.6rem"></div>
           <a class="btn btn--ghost btn--block btn--sm" href="tel:{SITE['phone_raw']}">{icon('phone')} {SITE['phone_display']}</a>
           <div style="height:.6rem"></div>
@@ -1478,7 +1618,8 @@ def build_privacy(locale="es"):
 # ══════════════════════════════════════════════════════════════ SEO FILES
 def build_sitemap():
     urls = [("index.html", "1.0", "weekly"), ("servicios.html", "0.9", "monthly"),
-            ("nosotros.html", "0.7", "monthly"), ("donde-comprar.html", "0.7", "monthly"),
+            ("nosotros.html", "0.7", "monthly"), ("presencia.html", "0.8", "monthly"),
+            ("donde-comprar.html", "0.7", "monthly"),
             ("rastreo.html", "0.8", "monthly"), ("preguntas-frecuentes.html", "0.7", "monthly"),
             ("contacto.html", "0.8", "monthly")]
     urls += [(svc_url(s), "0.85", "monthly") for s in SERVICES]
@@ -1561,6 +1702,7 @@ def main():
         for s in SERVICES:
             w(svc_url(s), build_service(s, locale), locale)
         w("nosotros.html", build_about(locale), locale)
+        w("presencia.html", build_presence(locale), locale)
         w("donde-comprar.html", build_stores(locale), locale)
         w("rastreo.html", build_tracking(locale), locale)
         w("preguntas-frecuentes.html", build_faq(locale), locale)
