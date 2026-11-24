@@ -458,8 +458,14 @@ def build_home(locale="es"):
         tabs_body += "<li%s>%s</li>" % (shown, accordion(items, start_id=i * 10))
 
     stores = "".join(
-        '<span class="d-item-txt">%s</span><span class="d-item-block"></span>' % html.escape(s)
-        for s in STORES)
+        (
+            '<span class="d-item-txt wwc-store-logo">'
+            '<img src="https://www.google.com/s2/favicons?domain=%s&amp;sz=128" '
+            'alt="%s" width="40" height="40" loading="lazy" decoding="async">'
+            '<span class="wwc-store-name">%s</span>'
+            '</span><span class="d-item-block"></span>'
+        ) % (html.escape(dom), html.escape(name), html.escape(name))
+        for name, dom in STORES)
 
     rating_text = html.escape(h["rating"]["text"].format(
         rating=SITE["google_rating"], reviews=SITE["google_reviews"]))
@@ -780,15 +786,15 @@ def build_about(locale="es"):
 <section>
   <div class="container">
     <div class="row g-4 align-items-center">
-      <div class="col-lg-6">
-        <div class="relative">
-          <div class="w-100 pe-5 pb-5 wow scaleIn">
+      <div class="col-lg-6 order-2 order-lg-1">
+        <div class="relative wwc-about-overlap">
+          <div class="wwc-about-overlap__main wow scaleIn">
             <img src="{img('assets/lx/img/l1.webp', locale)}" class="w-100 rounded-1" alt="{_("Logística internacional WWC", "WWC international logistics")}" width="800" height="600" loading="lazy">
           </div>
-          <img src="{img('assets/lx/img/s1.webp', locale)}" class="w-40 rounded-1 abs end-0 bottom-0 z-2 soft-shadow wow scaleIn" data-wow-delay=".2s" alt="{_("Operación de carga", "Freight operation")}" width="320" height="400" loading="lazy">
+          <img src="{img('assets/lx/img/s1.webp', locale)}" class="wwc-about-overlap__inset rounded-1 soft-shadow wow scaleIn" data-wow-delay=".2s" alt="{_("Operación de carga", "Freight operation")}" width="320" height="400" loading="lazy">
         </div>
       </div>
-      <div class="col-lg-6">
+      <div class="col-lg-6 order-1 order-lg-2">
         <div class="ps-lg-3">
           <div class="subtitle id-color wow fadeInUp" data-wow-delay=".2s">{_("Quiénes somos", "Who we are")}</div>
           <h2 class="split">{_("Movemos carga, conectamos el mundo", "Moving cargo, connecting the world")}</h2>

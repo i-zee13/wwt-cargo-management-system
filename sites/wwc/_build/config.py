@@ -107,12 +107,32 @@ TRUST = [
     {"icon": "globe", "html": "<b>+20 años</b> en logística internacional, con depósito propio"},
 ]
 
-# ---------------------------------------------------------------- retailers
+# ---------------------------------------------------------------- retailers (name, domain for logo)
 STORES = [
-    "Amazon", "eBay", "Walmart", "AliExpress", "B&H Photo", "Carter's",
-    "Disney Store", "Victoria's Secret", "Zappos", "Zara", "Apple", "Sephora",
-    "The Home Depot", "Target", "Shein", "Uniqlo", "LEGO", "Nike",
-    "Best Buy", "Costco", "Alibaba", "Temu", "Ulta Beauty", "iHerb",
+    ("Amazon", "amazon.com"),
+    ("eBay", "ebay.com"),
+    ("Walmart", "walmart.com"),
+    ("AliExpress", "aliexpress.com"),
+    ("B&H Photo", "bhphotovideo.com"),
+    ("Carter's", "carters.com"),
+    ("Disney Store", "shopdisney.com"),
+    ("Victoria's Secret", "victoriassecret.com"),
+    ("Zappos", "zappos.com"),
+    ("Zara", "zara.com"),
+    ("Apple", "apple.com"),
+    ("Sephora", "sephora.com"),
+    ("The Home Depot", "homedepot.com"),
+    ("Target", "target.com"),
+    ("Shein", "shein.com"),
+    ("Uniqlo", "uniqlo.com"),
+    ("LEGO", "lego.com"),
+    ("Nike", "nike.com"),
+    ("Best Buy", "bestbuy.com"),
+    ("Costco", "costco.com"),
+    ("Alibaba", "alibaba.com"),
+    ("Temu", "temu.com"),
+    ("Ulta Beauty", "ulta.com"),
+    ("iHerb", "iherb.com"),
 ]
 
 # ---------------------------------------------------------------- FAQ
