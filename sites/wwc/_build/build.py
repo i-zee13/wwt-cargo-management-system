@@ -818,14 +818,12 @@ def build_service(s, locale="es"):
           <div class="col-lg-6">
             <h2 data-svc-title>{html.escape(current['h1'])}</h2>
             <p data-svc-intro>{html.escape(current['intro'])}</p>
+            <div class="bg-color text-light p-4 rounded-1 mt-4">
+              <p class="no-bottom mb-0" data-svc-blurb>{html.escape(current['blurb'])}</p>
+            </div>
           </div>
           <div class="col-lg-6">
-            <div class="relative">
-              <img data-svc-img src="{img(current['img'], locale)}" class="img-fluid rounded-1" alt="" width="640" height="480" loading="eager">
-              <div class="bg-color text-light p-4 abs m-4 bottom-0 rounded-1 sm-hide">
-                <p class="no-bottom mb-0" data-svc-blurb>{html.escape(current['blurb'])}</p>
-              </div>
-            </div>
+            <img data-svc-img src="{img(current['img'], locale)}" class="img-fluid rounded-1" alt="" width="640" height="480" loading="eager">
           </div>
         </div>
         <div class="spacer-double"></div>
