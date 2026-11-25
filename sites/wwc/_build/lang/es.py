@@ -9,6 +9,7 @@ UI = {
         "about": "Nosotros",
         "presence": "Presencia",
         "stores": "Dónde comprar",
+        "pago": "Pago a proveedores",
         "tracking": "Rastreo",
         "faq": "Preguntas",
         "contact": "Contacto",
@@ -84,10 +85,11 @@ UI = {
 
 HOME = {
     "meta": {
-        "title": "World Wide Commerce | Tu puerta al mundo: comprá en USA o China y recibí en Argentina",
-        "desc": "Logística internacional, sin impuestos ocultos, sin sorpresas. Registrate gratis, obtené tu dirección en Miami o China, comprá online y recibí en tu domicilio en Argentina.",
-        "keywords": "casillero en miami, comprar en estados unidos desde argentina, importar desde china, envio puerta a puerta argentina, courier miami argentina",
+        "title": "World Wide Commerce | Comprá en USA, China y Asia. Recibí en Latinoamérica",
+        "desc": "Logística internacional, sin impuestos ocultos, sin sorpresas. Registrate gratis, obtené tu dirección en Miami o China, comprá online y recibí en tu domicilio en Latinoamérica.",
+        "keywords": "casillero en miami, comprar en estados unidos desde argentina, importar desde china, envio puerta a puerta argentina, courier miami argentina, pago a proveedores china",
     },
+    "corridor": "Comprá en China, Taiwán, Tailandia, Bangladés y Estados Unidos, y consolidá tu mercadería en un solo lugar. Recibila en Argentina, Estados Unidos, México, Colombia, Ecuador, Perú, Bolivia, Chile, Brasil y Paraguay.",
     "slides": [
         {
             "img": "l2.webp",

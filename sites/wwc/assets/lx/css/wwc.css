@@ -490,3 +490,133 @@ a.btn.btn--ghost,button.btn.btn--ghost{
   #mainmenu{background:#101010}
 }
 
+
+/* Corridor line under hero title */
+.wwc-corridor{max-width:42ch;font-size:clamp(13px,1.3vw,15px);opacity:.88;margin-top:8px;line-height:1.45}
+
+/* Origen / Destino quote widget */
+.wwc-route-section{padding:48px 0}
+.wwc-route-quote{
+  background:#fff;border:1px solid #eee;border-radius:20px;padding:24px 22px;
+  box-shadow:0 10px 30px rgba(0,0,0,.05)
+}
+.wwc-route-quote__fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.wwc-route-quote__field span{display:block;font-weight:700;font-size:13px;margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;color:#666}
+.wwc-route-quote__field select{
+  width:100%;border:1px solid #e5e5e5;border-radius:12px;padding:12px 14px;
+  font-size:15px;background:#fafafa
+}
+.wwc-route-quote__result{margin-top:8px}
+.wwc-route-mode{
+  display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+  padding:12px 0;border-bottom:1px solid #f0f0f0
+}
+.wwc-route-mode:last-of-type{border-bottom:0;margin-bottom:12px}
+.wwc-route-mode b{display:block;font-size:15px}
+.wwc-route-mode small{color:#666}
+.wwc-route-mode__price{font-weight:800;color:var(--primary-color);white-space:nowrap}
+.wwc-route-quote__hint{color:#b45309;font-size:13px;margin:8px 0 0}
+@media (max-width:767px){.wwc-route-quote__fields{grid-template-columns:1fr}}
+
+/* Supplier payment teaser + hero block */
+.wwc-pago-teaser{padding:10px 0 40px}
+.wwc-pago-teaser__inner{
+  display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  background:#101010;color:#fff;border-radius:20px;padding:28px 30px
+}
+.wwc-pago-teaser__inner h2{color:#fff;margin:6px 0 10px;font-size:clamp(22px,2.4vw,32px)}
+.wwc-pago-teaser__inner p{color:rgba(255,255,255,.78);margin:0;max-width:58ch}
+.wwc-pago{padding:20px 0 56px}
+.wwc-pago__card{
+  background:linear-gradient(145deg,#1a1208 0%,#2a1808 45%,#3d220c 100%);
+  color:#fff;border-radius:24px;padding:clamp(28px,4vw,48px);
+  border:1px solid rgba(223,170,9,.35);box-shadow:0 20px 50px rgba(0,0,0,.25)
+}
+.wwc-pago__card .subtitle{color:#f2a33c}
+.wwc-pago__card h2,.wwc-pago__card h3{color:#fff}
+.wwc-pago__card .lead,.wwc-pago__card p{color:rgba(255,255,255,.86)}
+.wwc-pago__steps{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:28px 0
+}
+.wwc-pago__step{
+  background:rgba(255,255,255,.06);border-radius:16px;padding:18px 16px;text-align:center
+}
+.wwc-pago__step i{font-size:22px;color:#f2a33c;margin-bottom:10px}
+.wwc-pago__step p{margin:0;font-size:14px;line-height:1.45}
+.wwc-pago__actions{margin-top:8px}
+@media (max-width:767px){.wwc-pago__steps{grid-template-columns:1fr}}
+
+/* Destination cards on services */
+.wwc-destinations{padding:48px 0}
+.wwc-dest-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px
+}
+.wwc-dest-card{
+  display:flex;flex-direction:column;gap:8px;text-decoration:none!important;color:inherit;
+  background:#fff;border:1px solid #eee;border-radius:18px;padding:20px 18px;
+  transition:transform .2s ease,box-shadow .2s ease
+}
+.wwc-dest-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.08);color:inherit}
+.wwc-dest-card__flag{font-size:28px;line-height:1}
+.wwc-dest-card h3{margin:0;font-size:18px}
+.wwc-dest-card p{margin:0;font-size:13.5px;line-height:1.5;color:#555;flex:1}
+.wwc-dest-card__cta{font-size:13px;font-weight:700;color:var(--primary-color)}
+.wwc-dest-card--pago{
+  background:#101010;color:#fff;border-color:#101010;
+  grid-column:1 / -1
+}
+.wwc-dest-card--pago h3,.wwc-dest-card--pago p{color:#fff}
+.wwc-dest-card--pago p{color:rgba(255,255,255,.75)}
+@media (max-width:991px){.wwc-dest-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:575px){.wwc-dest-grid{grid-template-columns:1fr}}
+
+/* SVG trade map */
+.wwc-map-section{padding:20px 0 48px}
+.wwc-map{margin:0}
+.wwc-map__svg{width:100%;height:auto;display:block;border-radius:18px}
+.wwc-map__land{fill:rgba(255,255,255,.06)}
+.wwc-map__lane{stroke-width:1.6;stroke-linecap:round;fill:none;
+  stroke-dasharray:6 8;animation:wwcLane 18s linear infinite}
+.wwc-map__lane--in{stroke:#f2a33c}
+.wwc-map__lane--out{stroke:rgba(255,255,255,.55);animation-duration:22s}
+.wwc-map__dot{fill:#f2a33c}
+.wwc-map__hub--miami .wwc-map__dot{fill:#fff}
+.wwc-map__hub--dest .wwc-map__dot{fill:#7dd3fc}
+.wwc-map__pulse{
+  fill:none;stroke:#f2a33c;stroke-width:1.5;opacity:.55;
+  animation:wwcPulse 2.4s ease-out infinite
+}
+.wwc-map__hub text{
+  fill:rgba(255,255,255,.85);font-size:11px;font-family:var(--heading-font);font-weight:700
+}
+.wwc-map__cap{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:14px}
+.wwc-map__leg{font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.wwc-map__leg:before{content:"";width:10px;height:10px;border-radius:50%;background:#f2a33c}
+.wwc-map__leg--hub:before{background:#fff;border:1px solid #333}
+.wwc-map__leg--dest:before{background:#7dd3fc}
+@keyframes wwcLane{to{stroke-dashoffset:-140}}
+@keyframes wwcPulse{0%{r:8;opacity:.55}100%{r:20;opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .wwc-map__lane,.wwc-map__pulse{animation:none}
+}
+
+/* Asia entity */
+.wwc-asia-entity{padding:24px 0 40px}
+.wwc-asia-entity__card{
+  background:#f7f4ef;border-radius:20px;padding:28px 30px;border:1px solid #efe8dc
+}
+.wwc-asia-entity__grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:18px}
+.wwc-asia-entity__grid h3{font-size:16px;margin-bottom:6px}
+.wwc-asia-footer{margin-top:28px;padding-top:22px;border-top:1px solid rgba(255,255,255,.12)}
+.wwc-asia-footer__cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}
+@media (max-width:767px){
+  .wwc-asia-entity__grid,.wwc-asia-footer__cols{grid-template-columns:1fr}
+}
+
+/* Rates table */
+.wwc-rates{padding:40px 0}
+.wwc-rates__table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden}
+.wwc-rates__table th,.wwc-rates__table td{padding:12px 14px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+.wwc-rates__table th{background:#101010;color:#fff;font-weight:700}
+.wwc-rates__note{font-size:13px;color:#777;margin-top:14px;max-width:720px;margin-left:auto;margin-right:auto}
+.wwc-stores-cta{padding:8px 0 8px}
