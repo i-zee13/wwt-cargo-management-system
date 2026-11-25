@@ -351,9 +351,12 @@ def build_home(locale="es"):
     register = html.escape(t(ui, "register_free"))
     read_more = html.escape(t(ui, "common.read_more"))
 
+    # Fixed bottom tags (outside slides) so creativeEffect opacity does not hide them
+    fixed_tags = h["slides"][1]["tags"] if len(h["slides"]) > 1 else h["slides"][0]["tags"]
+    hero_tags_html = "".join("<div><h6>%s</h6></div>" % html.escape(x) for x in fixed_tags)
+
     slide_html = ""
     for i, sl in enumerate(h["slides"]):
-        tags_html = "".join("<div><h6>%s</h6></div>" % html.escape(x) for x in sl["tags"])
         slide_html += f"""
                         <div class="swiper-slide" data-slide-i="{i}">
                             <div class="swiper-inner" data-bgimage="url({img('assets/lx/img/' + sl['img'], locale)})">
@@ -374,9 +377,6 @@ def build_home(locale="es"):
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="abs w-100 bottom-0 z-2 pb-4 sm-hide">
-                                    <div class="container"><div class="d-flex justify-content-between">{tags_html}</div></div>
                                 </div>
                                 <div class="sw-overlay op-4"></div>
                             </div>
@@ -484,7 +484,7 @@ def build_home(locale="es"):
 
     body = f"""
             <section class="text-light no-top no-bottom relative rounded-1 overflow-hidden m-3 sm-mt-90 wwc-hero-slider">
-                <div class="mh-800 wwc-hero-frame">
+                <div class="mh-800 wwc-hero-frame relative">
                     <div class="swiper">
                       <div class="swiper-wrapper">
 {slide_html}
@@ -493,6 +493,9 @@ def build_home(locale="es"):
                       <div class="swiper-button-next"></div>
                       <div class="swiper-pagination wwc-hero-dots"></div>
                       <div class="wwc-hero-progress" aria-hidden="true"><span></span></div>
+                    </div>
+                    <div class="wwc-hero-tags abs w-100 bottom-0 z-3 pb-4 sm-hide" aria-hidden="true">
+                      <div class="container"><div class="d-flex justify-content-between">{hero_tags_html}</div></div>
                     </div>
                 </div>
             </section>

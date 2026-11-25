@@ -19,6 +19,22 @@
   background:var(--primary-color);will-change:transform
 }
 .wwc-hero-dots{display:none}
+/* Stay visible across slide transitions (was inside swiper-inner → opacity 0) */
+.wwc-hero-tags{
+  pointer-events:none;
+  animation:wwcHeroTagsIn .7s ease .85s both
+}
+.wwc-hero-tags h6{
+  margin:0;font-size:15px;font-weight:700;color:#fff;
+  text-shadow:0 1px 8px rgba(0,0,0,.45)
+}
+@keyframes wwcHeroTagsIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .wwc-hero-tags{animation:none;opacity:1}
+}
 
 /* Mobile hero: image breathes on top, copy docks bottom — wide shots feel intentional */
 @media (max-width:767px){
