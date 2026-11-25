@@ -8,6 +8,7 @@ from config import SITE, OFFICES, NAV
 from services import SERVICES
 from i18n import (LOCALES, get_locale, load_ui, t, asset, page_href,
                   switch_href, other_locale, abs_url)
+from widgets import asia_entity_block
 
 NAV_KEYS = {
     "index.html": "home",
@@ -15,6 +16,7 @@ NAV_KEYS = {
     "nosotros.html": "about",
     "presencia.html": "presence",
     "donde-comprar.html": "stores",
+    "donde-comprar.html#pago-proveedores": "pago",
     "rastreo.html": "tracking",
     "preguntas-frecuentes.html": "faq",
     "contacto.html": "contact",
@@ -166,7 +168,7 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 <link rel="stylesheet" href="{a('assets/lx/css/coloring.css')}">
 <link rel="stylesheet" href="{a('assets/lx/css/scheme-01.css')}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=16">{schema_html}
+<link rel="stylesheet" href="{a('assets/lx/css/wwc.css')}?v=17">{schema_html}
 </head>
 <body>
 <a class="skip-link" href="#content">{html.escape(t(ui, 'skip_content'))}</a>
@@ -177,18 +179,28 @@ def head(locale="es", *, title, desc, url="index.html", keywords="", og_type="we
 
 
 # ══════════════════════════════════════════════════════════════ HEADER
+def _nav_href(href, locale):
+    """Support hash links like donde-comprar.html#pago-proveedores."""
+    if "#" in href:
+        base, frag = href.split("#", 1)
+        return html.escape(page_href(base, locale) + "#" + frag)
+    return html.escape(page_href(href, locale))
+
+
 def header(locale="es", current_file="index.html"):
     loc = get_locale(locale)
     ui = load_ui(loc)
     ph = lambda f: html.escape(page_href(f, loc))
     items = ""
     for n in NAV:
-        label = html.escape(t(ui, "nav." + NAV_KEYS[n["href"]], n["label"]))
+        nav_key = n.get("nav_key") or NAV_KEYS.get(n["href"], "")
+        label = html.escape(t(ui, "nav." + nav_key, n["label"]) if nav_key else n["label"])
+        href = _nav_href(n["href"], loc)
         if n.get("children") == "SERVICES":
             links = "".join(
                 '<li><a href="%s">%s</a></li>' % (ph(svc_url(s)), html.escape(svc_name(s, loc)))
                 for s in SERVICES)
-            items += f"""                                    <li class="menu-item-has-children has-child"><a class="menu-item" href="{ph(n['href'])}">{label}</a><span></span>
+            items += f"""                                    <li class="menu-item-has-children has-child"><a class="menu-item" href="{href}">{label}</a><span></span>
                                         <ul>
                                             <li><a href="{ph('servicios.html')}">{html.escape(t(ui, 'nav.all_services'))}</a></li>
                                             {links}
@@ -196,7 +208,7 @@ def header(locale="es", current_file="index.html"):
                                     </li>
 """
         else:
-            items += f'                                    <li><a class="menu-item" href="{ph(n["href"])}">{label}</a></li>\n'
+            items += f'                                    <li><a class="menu-item" href="{href}">{label}</a></li>\n'
 
     logo = html.escape(asset("assets/img/brand/logo-lockup.png", loc))
     register = html.escape(t(ui, "register_free"))
@@ -268,7 +280,7 @@ def footer(locale="es", current_file="index.html"):
         for f, label in company)
     scripts = "\n".join(
         '<script src="%s"></script>' % html.escape(
-            asset(p, loc) + ("?v=16" if p.endswith(("custom-marquee.js", "custom-swiper-1.js", "wwc.js")) else "")
+            asset(p, loc) + ("?v=17" if p.endswith(("custom-marquee.js", "custom-swiper-1.js", "wwc.js")) else "")
         ) for p in (
             "assets/lx/js/plugins.js", "assets/lx/js/designesia.js", "assets/lx/js/swiper.js",
             "assets/lx/js/custom-swiper-1.js", "assets/lx/js/custom-marquee.js", "assets/js/wwc.js"))
@@ -326,6 +338,7 @@ def footer(locale="es", current_file="index.html"):
                         </div>
                     </div>
                 </div>
+                {asia_entity_block(loc, footer=True)}
             </div>
             <div class="subfooter">
                 <div class="container">

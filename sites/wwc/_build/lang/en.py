@@ -9,6 +9,7 @@ UI = {
         "about": "About Us",
         "presence": "Presence",
         "stores": "Where to Buy",
+        "pago": "Supplier payments",
         "tracking": "Tracking",
         "faq": "FAQ",
         "contact": "Contact",
@@ -84,10 +85,11 @@ UI = {
 
 HOME = {
     "meta": {
-        "title": "World Wide Commerce | Your Gateway to the World: Shop in the USA or China, Receive in Argentina",
-        "desc": "International logistics with no hidden fees and no surprises. Sign up free, get your Miami or China address, shop online and receive at your door in Argentina.",
-        "keywords": "miami mailbox, package forwarding miami, shop in the usa ship to latin america, import from china, door to door shipping, miami courier",
+        "title": "World Wide Commerce | Shop in the USA, China & Asia. Receive in Latin America",
+        "desc": "International logistics with no hidden fees and no surprises. Sign up free, get your Miami or China address, shop online and receive at your door in Latin America.",
+        "keywords": "miami mailbox, package forwarding miami, shop in the usa ship to latin america, import from china, door to door shipping, miami courier, supplier payments china",
     },
+    "corridor": "Shop in China, Taiwan, Thailand, Bangladesh and the United States, and consolidate your goods in one place. Receive them in Argentina, the United States, Mexico, Colombia, Ecuador, Peru, Bolivia, Chile, Brazil and Paraguay.",
     "slides": [
         {
             "img": "l2.webp",

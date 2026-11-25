@@ -19,6 +19,12 @@ from services import SERVICES
 import content_en
 from i18n import LOCALES, get_locale, load_ui, load_home, t, asset, abs_url, page_href
 from layouts import render, svc_url, svc_name, wa_link
+from widgets import (
+    route_quote_widget, world_map_svg, pago_teaser, pago_proveedores_section,
+    destination_cards, asia_entity_block, rates_estimate_section,
+    asia_extended_section, store_split_blocks,
+)
+from routes_data import DESTINATIONS
 
 
 def ph(filename, locale="es"):
@@ -338,6 +344,7 @@ def service_schema(s, locale="es"):
 
 # ══════════════════════════════════════════════════════════════ HOME
 def build_home(locale="es"):
+    _ = tr(locale)
     ui = load_ui(locale)
     h = load_home(locale)
     c = content(locale)
@@ -359,6 +366,7 @@ def build_home(locale="es"):
                                                     <h1 class="text-uppercase anim-order-1">{html.escape(sl['title'])}</h1>
                                                     <div class="anim-order-2">
                                                         <p>{html.escape(sl['text'])}</p>
+                                                        {"<p class=\"wwc-corridor anim-order-2\">%s</p>" % html.escape(h.get("corridor", "")) if i == 0 and h.get("corridor") else ""}
                                                         <div class="spacer-half"></div>
                                                         <a class="btn-main fx-slide" href="{SITE['register_url']}" data-hover="{register}"><span>{register}</span></a>
                                                     </div>
@@ -491,6 +499,33 @@ def build_home(locale="es"):
 
             <section class="mx-3 p-0">
                 <div class="container-fluid"><div class="row g-3">{photo_html}</div></div>
+            </section>
+
+            <section class="wwc-route-section">
+                <div class="container">
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-lg-10 text-center">
+                            <div class="subtitle wow fadeInUp">{_("Cotizá tu ruta", "Quote your route")}</div>
+                            <h2 class="split">{_("Origen y destino", "Origin and destination")}</h2>
+                            <p class="wow fadeInUp" data-wow-delay=".15s">{html.escape(h.get('corridor', ''))}</p>
+                        </div>
+                        <div class="col-lg-8 wow fadeInUp" data-wow-delay=".2s">
+                            {route_quote_widget(locale)}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+{pago_teaser(locale)}
+
+            <section class="wwc-map-section">
+                <div class="container">
+                    <div class="section-head center">
+                        <span class="eyebrow wow fadeInUp">{_("Red global", "Global network")}</span>
+                        <h2 class="split">{_("De Asia y USA a Latinoamérica, vía Miami", "From Asia & USA to Latin America via Miami")}</h2>
+                    </div>
+                    {world_map_svg(locale)}
+                </div>
             </section>
 
             <section>
@@ -653,6 +688,8 @@ def build_services_index(locale="es"):
 {tiles}    </div>
   </div>
 </section>
+
+{destination_cards(locale)}
 
 <section class="section section--paper">
   <div class="container container-narrow">
@@ -939,6 +976,18 @@ def build_about(locale="es"):
   </div>
 </section>
 
+{asia_entity_block(locale)}
+
+<section class="wwc-map-section">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow wow fadeInUp">{_("Red global", "Global network")}</span>
+      <h2 class="split">{_("Rutas Asia → Miami → Latinoamérica", "Asia → Miami → Latin America lanes")}</h2>
+    </div>
+    {world_map_svg(locale)}
+  </div>
+</section>
+
 <section class="section section--paper">
   <div class="container">
     <div class="section-head center">
@@ -1127,12 +1176,9 @@ def build_presence(locale="es"):
 
 # ══════════════════════════════════════════════════════════════ DÓNDE COMPRAR / WHERE TO BUY
 STORE_CATS = [
- (("Generalistas y marketplaces", "Generalists and marketplaces"), "cart",
+ (("Generalistas y marketplaces USA", "US generalists and marketplaces"), "cart",
   [("Amazon","amazon.com"),("eBay","ebay.com"),("Walmart","walmart.com"),
    ("Target","target.com"),("Costco","costco.com"),("Best Buy","bestbuy.com")]),
- (("Proveedores en China", "Suppliers in China"), "china",
-  [("AliExpress","aliexpress.com"),("Alibaba","alibaba.com"),("1688","1688.com"),
-   ("Temu","temu.com"),("DHgate","dhgate.com"),("Made-in-China","made-in-china.com")]),
  (("Indumentaria y calzado", "Apparel and footwear"), "box",
   [("Zara","zara.com"),("Victoria's Secret","victoriassecret.com"),("Zappos","zappos.com"),
    ("Nike","nike.com"),("Carter's","carters.com"),("Old Navy","oldnavy.com")]),
@@ -1152,6 +1198,7 @@ def build_stores(locale="es"):
     _ = tr(locale)
     ui = load_ui(locale)
     trail = [(t(ui, "common.home_crumb"), "index.html"), (t(ui, "nav.stores"), None)]
+    split = store_split_blocks(locale, icon_fn=icon)
     blocks = ""
     for names, ic, stores in STORE_CATS:
         items = "".join(
@@ -1168,12 +1215,25 @@ def build_stores(locale="es"):
         <ul class="wwc-store-list">{items}</ul>
       </article>
 """
+    reg = html.escape(t(ui, "register_free"))
     body = page_hero(
         _("Dónde comprar con tu casillero WWC", "Where to shop with your WWC mailbox"),
         _("Usá tu dirección de Miami o de China como domicilio de entrega en cualquiera de estas tiendas. Y en miles más: la lista es orientativa, no un límite.",
           "Use your Miami or China address as the delivery address at any of these stores. And thousands more: the list is a guide, not a limit."),
         trail, locale
     ) + f"""
+<section class="wwc-route-section pt-40">
+  <div class="container">
+    <div class="section-head center">
+      <span class="eyebrow wow fadeInUp">{_("Cotizá tu ruta", "Quote your route")}</span>
+      <h2 class="split">{_("Origen y destino", "Origin and destination")}</h2>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8 wow fadeInUp">{route_quote_widget(locale)}</div>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
     <div class="callout mb-6 wow fadeInUp">
@@ -1181,33 +1241,46 @@ def build_stores(locale="es"):
       {_("Primero: usá siempre la dirección exacta del almacén <strong>junto con tu número de casillero</strong>, que recibís al registrarte. Sin ese número el paquete tarda mucho más en asociarse a tu cuenta. Segundo: si no estás seguro de que un producto se pueda transportar, preguntanos antes de pagarlo.",
          "First: always use the warehouse's exact address <strong>together with your mailbox number</strong>, which you receive when you sign up. Without that number, the package takes much longer to be matched to your account. Second: if you're not sure a product can be shipped, ask us before you pay for it.")}
     </div>
+    <div class="section-head center">
+      <span class="eyebrow wow fadeInUp">{_("China y USA", "China and USA")}</span>
+      <h2 class="split">{_("Minoristas vs. mayoristas / fábricas", "Retail vs wholesale / factories")}</h2>
+    </div>
+    <div class="wwc-grid wwc-g2 mb-5" data-stagger>
+{split}    </div>
     <div class="wwc-grid wwc-g3" data-stagger>
 {blocks}    </div>
   </div>
 </section>
 
+{asia_extended_section(locale)}
+
+{rates_estimate_section(locale)}
+
 <section class="section section--paper">
-  <div class="container container-narrow">
-    <div class="section-head center wow fadeInUp">
-      <span class="eyebrow">{_("Si la tienda no te deja", "If the store won't let you")}</span>
-      <h2 class="balance">{_("¿Te rechazaron la tarjeta o no envían al exterior?", "Card declined or no shipping abroad?")}</h2>
-      <p class="lead">{_("Es más común de lo que parece, y tiene solución: compramos nosotros a tu nombre con medios de pago locales y el producto entra directo a tu casillero.",
-                         "It's more common than it seems, and it has a fix: we buy on your behalf with local payment methods and the item goes straight to your mailbox.")}</p>
-    </div>
-    <div class="text-center wow fadeInUp">
-      <a class="btn btn--primary btn--lg" href="{ph('servicio-realizamos-tus-compras.html', locale)}">{_("Ver el servicio de compras asistidas", "See the assisted shopping service")} {icon('arrow-right')}</a>
+  <div class="container">
+    <div class="text-center wow fadeInUp wwc-stores-cta">
+      <a class="btn-main fx-slide me-2 mb-2" href="{SITE['register_url']}" data-hover="{reg}"><span>{reg}</span></a>
+      <a class="btn-main btn-line fx-slide mb-2" href="{ph('contacto.html', locale)}" data-hover="{_("Cotizá tu carga", "Quote your cargo")}"><span>{_("Cotizá tu carga", "Quote your cargo")}</span></a>
     </div>
   </div>
 </section>
 
-{cta_band(locale)}
+{pago_proveedores_section(locale)}
+
+{cta_band(locale,
+          title=_("¿Listo para empezar?", "Ready to get started?"),
+          text=_("Registrate gratis o pedí una cotización de carga. Cualquier duda, estamos para ayudarte.",
+                 "Sign up free or request a cargo quote. Any questions, we're here to help."),
+          primary=(t(ui, "register_free"), SITE["register_url"]),
+          secondary=(_("Cotizá tu carga", "Quote your cargo"), "contacto.html"))}
 """
     return render(body, locale, "donde-comprar.html",
-        title=_("Dónde Comprar en USA y China | World Wide Commerce", "Where to Shop in the USA and China | World Wide Commerce"),
-        desc=_("Las mejores tiendas de Estados Unidos y China para comprar con tu casillero WWC: Amazon, eBay, Walmart, AliExpress, Alibaba y muchas más.",
-               "The best US and Chinese stores to shop with your WWC mailbox: Amazon, eBay, Walmart, AliExpress, Alibaba and many more."),
-        keywords=_("tiendas para comprar en usa, donde comprar en estados unidos, tiendas chinas online, comprar en amazon desde argentina",
-                   "stores to shop in the usa, where to buy in the united states, chinese online stores, buy from amazon and ship to latin america"),
+        title=_("Dónde Comprar en USA, China y Asia | World Wide Commerce",
+                "Where to Shop in the USA, China & Asia | World Wide Commerce"),
+        desc=_("Tiendas USA y China, mayoristas 1688/Alibaba con pago en RMB, Asia extendida, tarifas orientativas y pago a proveedores.",
+               "US and China stores, 1688/Alibaba wholesale with RMB payment, extended Asia, indicative rates and supplier payments."),
+        keywords=_("tiendas para comprar en usa, 1688 pago rmb, alibaba, donde comprar en china, pago a proveedores china",
+                   "stores to shop in the usa, 1688 rmb payment, alibaba, where to buy in china, supplier payments china"),
         schema=[breadcrumb_schema(trail, locale)])
 
 
@@ -1362,6 +1435,11 @@ def build_contact(locale="es"):
 """
     f = lambda k: html.escape(t(ui, "form." + k))
     required = html.escape(t(ui, "form.required")).replace("*", '<span style="color:var(--coral)">*</span>')
+    dest_opts = "".join(
+        '<option value="%s">%s</option>' % (
+            html.escape(d["id"]),
+            html.escape(d["en"] if is_en(locale) else d["es"]),
+        ) for d in DESTINATIONS)
     body = page_hero(
         _("Hablemos de lo que necesitás mover", "Let's talk about what you need to move"),
         _("Contanos qué querés enviar, desde dónde y hacia dónde. Con esos datos podemos darte una orientación concreta de costo y plazo.",
@@ -1399,7 +1477,10 @@ def build_contact(locale="es"):
             </div>
             <div class="field">
               <label for="pais">{f('country')}</label>
-              <input id="pais" name="pais" type="text" placeholder="{_("Argentina", "Argentina")}">
+              <select id="pais" name="pais" data-destino-select>
+                <option value="">{_("Seleccioná destino…", "Select destination…")}</option>
+                {dest_opts}
+              </select>
             </div>
           </div>
           <div class="field">

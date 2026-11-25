@@ -64,7 +64,7 @@
 <link rel="stylesheet" href="assets/lx/css/coloring.css">
 <link rel="stylesheet" href="assets/lx/css/scheme-01.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<link rel="stylesheet" href="assets/lx/css/wwc.css?v=16">
+<link rel="stylesheet" href="assets/lx/css/wwc.css?v=17">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Inicio","item":"https://worldwidecommerce.us/"},{"@type":"ListItem","position":2,"name":"Contacto"}]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://worldwidecommerce.us/#miami","name":"World Wide Commerce — Miami","image":"https://worldwidecommerce.us/assets/img/og-image.png","url":"https://worldwidecommerce.us/","telephone":"+1 (305) 497-6783","email":"clientes@worldwidecommerce.us","priceRange":"$$","address":{"@type":"PostalAddress","streetAddress":"2355 NW 70th Ave, Unit D-06","addressLocality":"Miami","addressRegion":"FL","postalCode":"33122","addressCountry":"US"},"parentOrganization":{"@id":"https://worldwidecommerce.us/#organization"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"ContactPage","url":"https://worldwidecommerce.us/contacto","about":{"@id":"https://worldwidecommerce.us/#organization"}}</script>
@@ -119,6 +119,7 @@
                                     <li><a class="menu-item" href="nosotros">Nosotros</a></li>
                                     <li><a class="menu-item" href="presencia">Presencia</a></li>
                                     <li><a class="menu-item" href="donde-comprar">Dónde comprar</a></li>
+                                    <li><a class="menu-item" href="donde-comprar#pago-proveedores">Pago a proveedores</a></li>
                                     <li><a class="menu-item" href="rastreo">Rastreo</a></li>
                                     <li><a class="menu-item" href="preguntas-frecuentes">Preguntas</a></li>
                                     <li><a class="menu-item" href="contacto">Contacto</a></li>
@@ -184,7 +185,10 @@
             </div>
             <div class="field">
               <label for="pais">País de destino</label>
-              <input id="pais" name="pais" type="text" placeholder="Argentina">
+              <select id="pais" name="pais" data-destino-select>
+                <option value="">Seleccioná destino…</option>
+                <option value="argentina">Argentina</option><option value="usa">Estados Unidos</option><option value="mexico">México</option><option value="colombia">Colombia</option><option value="ecuador">Ecuador</option><option value="peru">Perú</option><option value="bolivia">Bolivia</option><option value="chile">Chile</option><option value="brazil">Brasil</option><option value="paraguay">Paraguay</option>
+              </select>
             </div>
           </div>
           <div class="field">
@@ -299,6 +303,14 @@
                         </div>
                     </div>
                 </div>
+                
+            <div class="wwc-asia-footer">
+              <p><strong>Las operaciones en Asia se realizan bajo World Wide Commerce Group, Limited (Hong Kong).</strong></p>
+              <div class="wwc-asia-footer__cols">
+                <div><span class="op-5 fs-14">Oficina registrada en Hong Kong</span><div class="fs-14 mt-1">Unit 2–16, 3/F, Join-In Hang Sing Centre<br>71–75 Container Port Road, Kwai Chung<br>New Territories, Hong Kong</div></div>
+                <div><span class="op-5 fs-14">Almacén / oficina en China</span><div class="fs-14 mt-1">Warehouse operativo en Guangzhou (recepción de carga)<br>Hub Hong Kong para compras ecommerce (Shein, AliExpress, etc.)<br>Centros de consolidación: Shenzhen · Shanghái · Guangzhou</div></div>
+              </div>
+            </div>
             </div>
             <div class="subfooter">
                 <div class="container">
@@ -338,8 +350,8 @@
 <script src="assets/lx/js/plugins.js"></script>
 <script src="assets/lx/js/designesia.js"></script>
 <script src="assets/lx/js/swiper.js"></script>
-<script src="assets/lx/js/custom-swiper-1.js?v=16"></script>
-<script src="assets/lx/js/custom-marquee.js?v=16"></script>
-<script src="assets/js/wwc.js?v=16"></script>
+<script src="assets/lx/js/custom-swiper-1.js?v=17"></script>
+<script src="assets/lx/js/custom-marquee.js?v=17"></script>
+<script src="assets/js/wwc.js?v=17"></script>
 </body>
 </html>

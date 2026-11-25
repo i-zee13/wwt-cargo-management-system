@@ -70,6 +70,7 @@ NAV = [
     {"label": "Nosotros", "href": "nosotros.html"},
     {"label": "Presencia", "href": "presencia.html"},
     {"label": "Dónde comprar", "href": "donde-comprar.html"},
+    {"label": "Pago a proveedores", "href": "donde-comprar.html#pago-proveedores", "nav_key": "pago"},
     {"label": "Rastreo", "href": "rastreo.html"},
     {"label": "Preguntas", "href": "preguntas-frecuentes.html"},
     {"label": "Contacto", "href": "contacto.html"},

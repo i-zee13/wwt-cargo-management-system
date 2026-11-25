@@ -26,6 +26,79 @@
   var y = new Date().getFullYear();
   document.querySelectorAll("[data-year]").forEach(function (el) { el.textContent = y; });
 
+  /* Origen / Destino quote widget */
+  document.querySelectorAll("[data-wwc-route-quote]").forEach(function (box) {
+    var dataEl = box.querySelector(".wwc-route-data");
+    var origin = box.querySelector("[data-route-origin]");
+    var dest = box.querySelector("[data-route-dest]");
+    var result = box.querySelector("[data-route-result]");
+    var modesEl = box.querySelector("[data-route-modes]");
+    var hint = box.querySelector("[data-route-hint]");
+    var cta = box.querySelector("[data-route-cta]");
+    var matrix = {};
+    try { matrix = JSON.parse(dataEl.textContent); } catch (e) { return; }
+
+    function syncDisabled() {
+      var o = origin.value;
+      var d = dest.value;
+      Array.prototype.forEach.call(origin.options, function (opt) {
+        if (!opt.value) return;
+        opt.disabled = !!d && opt.value === d;
+      });
+      Array.prototype.forEach.call(dest.options, function (opt) {
+        if (!opt.value) return;
+        opt.disabled = !!o && opt.value === o;
+      });
+    }
+
+    function render() {
+      syncDisabled();
+      var o = origin.value;
+      var d = dest.value;
+      if (o && d && o === d) {
+        if (hint) hint.hidden = false;
+        if (result) result.hidden = true;
+        return;
+      }
+      if (hint) hint.hidden = true;
+      if (!o || !d) {
+        if (result) result.hidden = true;
+        return;
+      }
+      var modes = matrix[o + "|" + d] || [];
+      if (!modes.length) {
+        if (result) result.hidden = true;
+        return;
+      }
+      modesEl.innerHTML = modes.map(function (m) {
+        var unit = m.unit === "kg" ? "/kg" : "/CBM";
+        return '<div class="wwc-route-mode"><div><b>' + m.label +
+          '</b><small>' + m.transit + '</small></div>' +
+          '<div class="wwc-route-mode__price">desde USD ' + m.from_usd + unit + "</div></div>";
+      }).join("");
+      if (cta) {
+        var base = cta.getAttribute("href").split("?")[0];
+        cta.setAttribute("href", base + "?destino=" + encodeURIComponent(d) + "&origen=" + encodeURIComponent(o));
+      }
+      result.hidden = false;
+    }
+
+    origin.addEventListener("change", render);
+    dest.addEventListener("change", render);
+  });
+
+  /* Contact: preselect destination from ?destino= */
+  (function () {
+    var sel = document.querySelector("[data-destino-select]");
+    if (!sel) return;
+    var params = new URLSearchParams(window.location.search);
+    var dest = params.get("destino");
+    if (dest) {
+      sel.value = dest;
+      try { sel.dispatchEvent(new Event("change", { bubbles: true })); } catch (e) {}
+    }
+  })();
+
   if (window.jQuery && jQuery.fn.owlCarousel) {
     var $q = jQuery("#wwc-quotes");
     if ($q.length) {
