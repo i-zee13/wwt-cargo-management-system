@@ -131,11 +131,27 @@
         .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
 
+    function splitFeat(text) {
+      var t = String(text || ""), title = t, desc = "";
+      if (t.indexOf(": ") > -1) {
+        var a = t.split(": "); title = a.shift(); desc = a.join(": ");
+      } else if (t.indexOf(" — ") > -1) {
+        var b = t.split(" — "); title = b.shift(); desc = b.join(" — ");
+      } else if (t.indexOf(". ") > -1 && t.length > 60) {
+        var c = t.split(". "); title = c.shift().replace(/\.$/, ""); desc = c.join(". ").replace(/\.$/, "");
+      }
+      return { title: title, desc: desc };
+    }
+
     function render(item, push) {
       if (!item) return;
       root.setAttribute("data-active", item.slug);
       root.querySelectorAll("[data-svc-slug]").forEach(function (a) {
-        a.classList.toggle("is-active", a.getAttribute("data-svc-slug") === item.slug);
+        var on = a.getAttribute("data-svc-slug") === item.slug;
+        a.classList.toggle("bg-color", on);
+        a.classList.toggle("text-light", on);
+        a.classList.toggle("bg-light", !on);
+        a.classList.toggle("relative", on);
       });
       var panel = root.querySelector("[data-svc-panel]");
       if (panel) {
@@ -154,8 +170,14 @@
       if (blurb) blurb.textContent = item.blurb;
       if (img) img.src = (data.assetPrefix || "") + item.img;
       if (feats) {
-        feats.innerHTML = (item.benefits || []).map(function (b) {
-          return '<div class="wwc-svc-feat"><i class="fa-solid fa-check"></i><div><h4>' + esc(b) + "</h4></div></div>";
+        feats.innerHTML = (item.benefits || []).map(function (b, i) {
+          var f = splitFeat(b);
+          return '<div class="col-lg-6">' +
+            '<div class="relative">' +
+            '<i class="abs fs-40 p-4 bg-dark rounded-1 text-light fa-solid fa-check"></i>' +
+            '<div class="ps-100 ms-4"><h4>' + esc(f.title) + "</h4>" +
+            (f.desc ? "<p>" + esc(f.desc) + "</p>" : "") +
+            "</div></div></div>";
         }).join("");
       }
       if (wa) wa.href = data.waBase + encodeURIComponent(data.waPrefix + item.nav);

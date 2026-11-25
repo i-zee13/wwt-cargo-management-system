@@ -388,53 +388,18 @@ a.btn.btn--ghost,button.btn.btn--ghost{
   .wwc-hub-strip__line{width:18px}
 }
 
-/* Service detail — LogiXpress single */
-.wwc-svc-single{
-  display:grid;grid-template-columns:minmax(220px,.85fr) minmax(0,2.2fr);
-  gap:28px;align-items:start
+/* Service detail — LogiXpress single (theme classes + sticky nav) */
+[data-svc-nav]{position:sticky;top:110px}
+[data-svc-nav] a{text-decoration:none;transition:background .2s ease,color .2s ease}
+[data-svc-nav] a.bg-light:hover{background:#e9e9e9!important;color:#111}
+[data-svc-panel] i.fa-check{
+  width:auto;height:auto;line-height:1;display:inline-flex;align-items:center;justify-content:center;
+  font-size:1.1rem
 }
-.wwc-svc-nav{display:flex;flex-direction:column;gap:10px;position:sticky;top:110px}
-.wwc-svc-nav__item{
-  display:block;padding:14px 18px;border-radius:10px;background:#f3f3f3;
-  color:#111;font-weight:700;font-size:14px;text-decoration:none;line-height:1.3;
-  transition:background .2s ease,color .2s ease
-}
-.wwc-svc-nav__item:hover{background:#e9e9e9;color:#111}
-.wwc-svc-nav__item.is-active,
-.wwc-svc-nav__item[aria-current="page"]{
-  background:var(--primary-color);color:#fff
-}
-.wwc-svc-panel__top{
-  display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start;margin-bottom:34px
-}
-.wwc-svc-panel__copy h2{margin:0 0 14px;font-size:clamp(26px,3vw,40px);line-height:1.15}
-.wwc-svc-panel__copy p{margin:0;color:#555;font-size:16px;line-height:1.65}
-.wwc-svc-panel__media{position:relative;border-radius:16px;overflow:hidden;min-height:260px;background:#111}
-.wwc-svc-panel__media img{width:100%;height:100%;object-fit:cover;display:block;min-height:260px}
-.wwc-svc-panel__card{
-  position:absolute;left:14px;right:14px;bottom:14px;z-index:2;
-  background:var(--primary-color);color:#fff;border-radius:12px;
-  padding:16px 18px;font-size:14px;font-weight:600;line-height:1.45
-}
-.wwc-svc-panel__features-title{margin:0 0 18px;font-size:clamp(24px,2.5vw,34px)}
-.wwc-svc-feats{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 22px;margin-bottom:28px
-}
-.wwc-svc-feat{display:flex;gap:14px;align-items:flex-start}
-.wwc-svc-feat i{
-  width:42px;height:42px;flex:none;border-radius:10px;background:#111;color:#fff;
-  display:inline-flex;align-items:center;justify-content:center
-}
-.wwc-svc-feat h4{margin:0;font-size:15px;line-height:1.4;font-weight:700}
-.wwc-svc-panel__actions{display:flex;flex-wrap:wrap;gap:12px}
-.wwc-svc-panel.is-swap{animation:wwcSvcIn .35s ease}
+[data-svc-panel].is-swap{animation:wwcSvcIn .35s ease}
 @keyframes wwcSvcIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (max-width:991px){
-  .wwc-svc-single{grid-template-columns:1fr;gap:20px}
-  .wwc-svc-nav{position:static;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .wwc-svc-nav__item{padding:12px 14px;font-size:13px}
-  .wwc-svc-panel__top{grid-template-columns:1fr}
-  .wwc-svc-feats{grid-template-columns:1fr}
+  [data-svc-nav]{position:static;display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
 }
 
 /* Services index — LogiXpress split tiles */

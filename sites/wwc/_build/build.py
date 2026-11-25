@@ -756,14 +756,34 @@ def build_service(s, locale="es"):
     idx = next(i for i, o in enumerate(SERVICES) if o["slug"] == s["slug"])
     payload = [_svc_payload(o, locale, i) for i, o in enumerate(SERVICES)]
     current = payload[idx]
-    feats = "".join(
-        '<div class="wwc-svc-feat"><i class="fa-solid fa-check"></i><div><h4>%s</h4></div></div>'
-        % html.escape(b) for b in current["benefits"])
+
+    def feat_html(text, delay="0"):
+        title, desc = text, ""
+        if ": " in text:
+            title, desc = text.split(": ", 1)
+        elif " — " in text:
+            title, desc = text.split(" — ", 1)
+        elif ". " in text and len(text) > 60:
+            title, desc = text.split(". ", 1)
+            desc = desc.rstrip(".")
+            title = title.rstrip(".")
+        desc_html = ("<p>%s</p>" % html.escape(desc)) if desc else ""
+        return (
+            '<div class="col-lg-6">'
+            '<div class="relative">'
+            '<i class="abs fs-40 p-4 bg-dark rounded-1 text-light fa-solid fa-check"></i>'
+            '<div class="ps-100 ms-4"><h4>%s</h4>%s</div>'
+            '</div></div>'
+        ) % (html.escape(title), desc_html)
+
+    feats = "".join(feat_html(b) for b in current["benefits"])
     side_nav = "".join(
-        '<a class="wwc-svc-nav__item%s" href="%s" data-svc-slug="%s">%s</a>' % (
-            " is-active" if o["slug"] == s["slug"] else "",
+        '<a href="%s" data-svc-slug="%s" class="%s d-block p-3 px-4 rounded-10px mb-3%s">'
+        '<h5 class="mb-0">%s</h5></a>\n' % (
             html.escape(page_href(svc_url(o), locale)),
             html.escape(o["slug"]),
+            "bg-color text-light" if o["slug"] == s["slug"] else "bg-light",
+            " relative" if o["slug"] == s["slug"] else "",
             html.escape(svc_name(o, locale)))
         for o in SERVICES)
     data_json = json.dumps({
@@ -784,30 +804,37 @@ def build_service(s, locale="es"):
         "",
         trail, locale,
         bg="assets/lx/img/hero-servicios.webp",
-        extra_class="wwc-hero-port m-3 rounded-1 sm-mt-90",
+        extra_class="wwc-hero-port m-3 rounded-1 sm-mt-90 text-light",
     ) + f"""
-<section class="pt-50 pb-50">
+<section>
   <div class="container">
-    <div class="wwc-svc-single" data-svc-single data-active="{html.escape(s['slug'])}">
-      <aside class="wwc-svc-nav" aria-label="{_("Servicios", "Services")}">
-{side_nav}      </aside>
-      <div class="wwc-svc-panel" data-svc-panel>
-        <div class="wwc-svc-panel__top">
-          <div class="wwc-svc-panel__copy">
+    <div class="row g-4 gx-5" data-svc-single data-active="{html.escape(s['slug'])}">
+      <div class="col-lg-3">
+        <div class="me-lg-3" data-svc-nav aria-label="{_("Servicios", "Services")}">
+{side_nav}        </div>
+      </div>
+      <div class="col-lg-9" data-svc-panel>
+        <div class="row g-4 gx-5">
+          <div class="col-lg-6">
             <h2 data-svc-title>{html.escape(current['h1'])}</h2>
             <p data-svc-intro>{html.escape(current['intro'])}</p>
           </div>
-          <div class="wwc-svc-panel__media">
-            <img data-svc-img src="{img(current['img'], locale)}" alt="" width="640" height="480" loading="eager">
-            <div class="wwc-svc-panel__card" data-svc-blurb>{html.escape(current['blurb'])}</div>
+          <div class="col-lg-6">
+            <div class="relative">
+              <img data-svc-img src="{img(current['img'], locale)}" class="img-fluid rounded-1" alt="" width="640" height="480" loading="eager">
+              <div class="bg-color text-light p-4 abs m-4 bottom-0 rounded-1 sm-hide">
+                <p class="no-bottom mb-0" data-svc-blurb>{html.escape(current['blurb'])}</p>
+              </div>
+            </div>
           </div>
         </div>
-        <h3 class="wwc-svc-panel__features-title">{_("Ventajas clave", "Key Features")}</h3>
-        <div class="wwc-svc-feats" data-svc-feats>{feats}</div>
-        <div class="wwc-svc-panel__actions">
-          <a class="btn-main fx-slide" data-svc-quote href="{ph('contacto.html', locale)}" data-hover="{_("Pedir cotización", "Request a quote")}"><span>{_("Pedir cotización", "Request a quote")}</span></a>
-          <a class="btn-main btn-line fx-slide" data-svc-wa href="{wa_link(locale, _('Hola, quiero consultar por: ', "Hello, I'd like to ask about: ") + name)}" target="_blank" rel="noopener" data-hover="WhatsApp"><span>WhatsApp</span></a>
-        </div>
+        <div class="spacer-double"></div>
+        <h2 data-svc-features-title>{_("Ventajas clave", "Key Features")}</h2>
+        <div class="row g-4" data-svc-feats>
+{feats}        </div>
+        <div class="spacer-single"></div>
+        <a class="btn-main fx-slide me-2 mb-2" data-svc-quote href="{ph('contacto.html', locale)}" data-hover="{_("Pedir cotización", "Request a quote")}"><span>{_("Pedir cotización", "Request a quote")}</span></a>
+        <a class="btn-main btn-line fx-slide mb-2" data-svc-wa href="{wa_link(locale, _('Hola, quiero consultar por: ', "Hello, I'd like to ask about: ") + name)}" target="_blank" rel="noopener" data-hover="WhatsApp"><span>WhatsApp</span></a>
       </div>
     </div>
   </div>
