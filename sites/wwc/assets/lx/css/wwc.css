@@ -361,7 +361,13 @@ a.btn.btn--ghost,button.btn.btn--ghost{
   background:var(--primary-color);font-size:11px;letter-spacing:.04em
 }
 .wwc-hub-strip__line{
-  width:36px;height:2px;background:var(--primary-color);opacity:.85;border-radius:2px
+  width:42px;height:2px;border-radius:2px;position:relative;
+  background:linear-gradient(90deg,transparent,var(--primary-color),transparent);
+  opacity:.95
+}
+.wwc-hub-strip__line:after{
+  content:"";position:absolute;right:-1px;top:50%;width:6px;height:6px;margin-top:-3px;
+  border-radius:50%;background:var(--primary-color);box-shadow:0 0 0 3px rgba(242,163,60,.25)
 }
 .wwc-hubs{display:flex;flex-direction:column;gap:28px;margin-top:28px}
 .wwc-hub{
@@ -543,33 +549,60 @@ a.btn.btn--ghost,button.btn.btn--ghost{
 @media (max-width:575px){.wwc-dest-grid{grid-template-columns:1fr}}
 
 /* SVG trade map */
-.wwc-map-section{padding:20px 0 48px}
+.wwc-map-section{padding:28px 0 56px}
 .wwc-map{margin:0}
-.wwc-map__svg{width:100%;height:auto;display:block;border-radius:18px}
-.wwc-map__land{fill:rgba(255,255,255,.06)}
-.wwc-map__lane{stroke-width:1.6;stroke-linecap:round;fill:none;
-  stroke-dasharray:6 8;animation:wwcLane 18s linear infinite}
-.wwc-map__lane--in{stroke:#f2a33c}
-.wwc-map__lane--out{stroke:rgba(255,255,255,.55);animation-duration:22s}
+.wwc-map__svg{
+  width:100%;height:auto;display:block;border-radius:20px;
+  box-shadow:0 18px 50px rgba(7,19,31,.28)
+}
+.wwc-map__land{fill:rgba(158,201,232,.08);stroke:rgba(158,201,232,.12);stroke-width:1}
+.wwc-map__lane-glow{
+  fill:none;stroke-linecap:round;stroke-width:6;opacity:.22;pointer-events:none
+}
+.wwc-map__lane-glow.wwc-map__lane--in{stroke:#f2a33c}
+.wwc-map__lane-glow.wwc-map__lane--out{stroke:#7dd3fc}
+.wwc-map__lane{
+  fill:none;stroke-linecap:round;stroke-width:1.8;
+  stroke-dasharray:5 10;animation:wwcLane 16s linear infinite
+}
+.wwc-map__lane--in{stroke:url(#wwcLaneIn)}
+.wwc-map__lane--out{stroke:url(#wwcLaneOut);animation-duration:20s;stroke-dasharray:3 9}
+.wwc-map__ring{fill:none;stroke:rgba(255,255,255,.35);stroke-width:1.2}
+.wwc-map__hub--origin .wwc-map__ring{stroke:rgba(242,163,60,.55)}
+.wwc-map__hub--dest .wwc-map__ring{stroke:rgba(125,211,252,.45)}
+.wwc-map__hub--miami .wwc-map__ring{stroke:rgba(255,255,255,.7);stroke-width:1.6}
 .wwc-map__dot{fill:#f2a33c}
 .wwc-map__hub--miami .wwc-map__dot{fill:#fff}
 .wwc-map__hub--dest .wwc-map__dot{fill:#7dd3fc}
 .wwc-map__pulse{
-  fill:none;stroke:#f2a33c;stroke-width:1.5;opacity:.55;
-  animation:wwcPulse 2.4s ease-out infinite
+  fill:none;stroke:#f2a33c;stroke-width:1.4;opacity:.5;
+  animation:wwcPulse 2.6s ease-out infinite
 }
-.wwc-map__hub text{
-  fill:rgba(255,255,255,.85);font-size:11px;font-family:var(--heading-font);font-weight:700
+.wwc-map__hub--miami .wwc-map__pulse{stroke:#fff}
+.wwc-map__label{
+  fill:rgba(255,255,255,.9);font-size:11px;font-family:var(--heading-font);font-weight:700;
+  paint-order:stroke;stroke:rgba(7,19,31,.65);stroke-width:3px;stroke-linejoin:round
 }
-.wwc-map__cap{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:14px}
-.wwc-map__leg{font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
-.wwc-map__leg:before{content:"";width:10px;height:10px;border-radius:50%;background:#f2a33c}
-.wwc-map__leg--hub:before{background:#fff;border:1px solid #333}
-.wwc-map__leg--dest:before{background:#7dd3fc}
-@keyframes wwcLane{to{stroke-dashoffset:-140}}
-@keyframes wwcPulse{0%{r:8;opacity:.55}100%{r:20;opacity:0}}
+.wwc-map__hub--miami .wwc-map__label{font-size:12px;fill:#fff}
+.wwc-map__cap{
+  display:flex;flex-wrap:wrap;gap:10px 18px;justify-content:center;margin-top:16px
+}
+.wwc-map__leg{
+  font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:7px;
+  padding:6px 12px;border-radius:999px;background:#f4f6f8;color:#333
+}
+.wwc-map__leg:before{content:"";width:9px;height:9px;border-radius:50%;background:#f2a33c}
+.wwc-map__leg--hub:before{background:#111;box-shadow:0 0 0 2px #fff,0 0 0 3px #111}
+.wwc-map__leg--dest:before{background:#38bdf8}
+@keyframes wwcLane{to{stroke-dashoffset:-160}}
+@keyframes wwcPulse{0%{r:10;opacity:.45}100%{r:24;opacity:0}}
 @media (prefers-reduced-motion:reduce){
   .wwc-map__lane,.wwc-map__pulse{animation:none}
+}
+@media (max-width:767px){
+  .wwc-map__label{font-size:9.5px}
+  .wwc-map__lane{stroke-width:1.4}
+  .wwc-map__lane-glow{stroke-width:4}
 }
 
 /* Asia entity */

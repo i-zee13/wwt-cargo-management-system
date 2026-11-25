@@ -73,77 +73,120 @@ def route_quote_widget(locale="es", compact=False):
 
 
 def world_map_svg(locale="es"):
-    """Lightweight SVG trade-lanes map: Asia origins → Miami → LatAm destinations."""
+    """Stylized trade-lanes map: Asia → Miami → LatAm, with soft arcs and hub glow."""
     _ = _tr(locale)
     en = get_locale(locale).code == "en"
     labels = {
         "china": ("China", "China"), "taiwan": ("Taiwán", "Taiwan"),
         "thailand": ("Tailandia", "Thailand"), "bangladesh": ("Bangladés", "Bangladesh"),
-        "miami": ("Miami", "Miami"),
+        "miami": ("Miami Hub", "Miami Hub"),
         "argentina": ("Argentina", "Argentina"), "usa": ("EE. UU.", "USA"),
         "mexico": ("México", "Mexico"), "colombia": ("Colombia", "Colombia"),
         "ecuador": ("Ecuador", "Ecuador"), "peru": ("Perú", "Peru"),
         "bolivia": ("Bolivia", "Bolivia"), "chile": ("Chile", "Chile"),
         "brazil": ("Brasil", "Brazil"), "paraguay": ("Paraguay", "Paraguay"),
     }
+    # Label offsets (dx, dy) so LatAm names don't stack
+    label_off = {
+        "china": (0, -16), "taiwan": (18, 4), "thailand": (0, 18), "bangladesh": (-8, -14),
+        "miami": (0, -20),
+        "usa": (-28, -4), "mexico": (-30, 6), "colombia": (22, -2), "ecuador": (-26, 4),
+        "peru": (22, 2), "bolivia": (-24, 8), "chile": (20, 10), "brazil": (26, 0),
+        "paraguay": (-8, 16), "argentina": (0, 18),
+    }
+    primary_dest = {"argentina", "brazil", "mexico", "usa", "colombia", "chile"}
 
     def lab(k):
         return labels[k][1] if en else labels[k][0]
 
+    def lane(x1, y1, x2, y2, bend, cls):
+        mx_ = (x1 + x2) / 2
+        my_ = (y1 + y2) / 2 + bend
+        c1x, c1y = x1 + (mx_ - x1) * 0.55, y1 + (my_ - y1) * 0.9
+        c2x, c2y = x2 - (x2 - mx_) * 0.55, y2 + (my_ - y2) * 0.9
+        d = "M%.1f %.1f C %.1f %.1f, %.1f %.1f, %.1f %.1f" % (x1, y1, c1x, c1y, c2x, c2y, x2, y2)
+        return (
+            '<path class="wwc-map__lane-glow %s" d="%s"/>'
+            '<path class="wwc-map__lane %s" d="%s"/>' % (cls, d, cls, d)
+        )
+
     mx, my = MAP_POINTS["miami"]
     paths = []
-    # Asia → Miami
-    for oid in ORIGIN_IDS:
+    for i, oid in enumerate(ORIGIN_IDS):
         ox, oy = MAP_POINTS[oid]
-        cx = (ox + mx) / 2
-        cy = min(ox, oy, mx, my) - 40
-        paths.append(
-            '<path class="wwc-map__lane wwc-map__lane--in" d="M%.1f %.1f Q %.1f %.1f %.1f %.1f" fill="none"/>'
-            % (ox, oy, cx, cy, mx, my))
-    # Miami → destinations
-    for did in DEST_IDS:
+        paths.append(lane(ox, oy, mx, my, -55 - i * 12, "wwc-map__lane--in"))
+    for i, did in enumerate(DEST_IDS):
         dx, dy = MAP_POINTS[did]
-        cx = (mx + dx) / 2 + 20
-        cy = (my + dy) / 2 - 30
-        paths.append(
-            '<path class="wwc-map__lane wwc-map__lane--out" d="M%.1f %.1f Q %.1f %.1f %.1f %.1f" fill="none"/>'
-            % (mx, my, cx, cy, dx, dy))
+        bend = 18 if dy < my else 35 + (i % 4) * 8
+        if dx < mx:
+            bend = -abs(bend) * 0.4
+        paths.append(lane(mx, my, dx, dy, bend if dy >= my else -28, "wwc-map__lane--out"))
 
-    dots = []
-    for oid in ORIGIN_IDS:
-        x, y = MAP_POINTS[oid]
-        dots.append(
-            '<g class="wwc-map__hub wwc-map__hub--origin" transform="translate(%.1f %.1f)">'
-            '<circle r="7" class="wwc-map__dot"/><circle r="12" class="wwc-map__pulse"/>'
-            '<text y="22" text-anchor="middle">%s</text></g>' % (x, y, html.escape(lab(oid))))
-    dots.append(
-        '<g class="wwc-map__hub wwc-map__hub--miami" transform="translate(%.1f %.1f)">'
-        '<circle r="8" class="wwc-map__dot"/><circle r="14" class="wwc-map__pulse"/>'
-        '<text y="24" text-anchor="middle">%s</text></g>' % (mx, my, html.escape(lab("miami"))))
-    for did in DEST_IDS:
-        x, y = MAP_POINTS[did]
-        dots.append(
-            '<g class="wwc-map__hub wwc-map__hub--dest" transform="translate(%.1f %.1f)">'
-            '<circle r="5" class="wwc-map__dot"/>'
-            '<text y="16" text-anchor="middle">%s</text></g>' % (x, y, html.escape(lab(did))))
+    def hub(kind, key, r=5):
+        x, y = MAP_POINTS[key]
+        ox, oy = label_off.get(key, (0, 14))
+        show = kind != "dest" or key in primary_dest
+        text = (
+            '<text class="wwc-map__label" x="%.1f" y="%.1f" text-anchor="middle">%s</text>'
+            % (ox, oy, html.escape(lab(key)))
+        ) if show else ""
+        return (
+            '<g class="wwc-map__hub wwc-map__hub--%s" transform="translate(%.1f %.1f)">'
+            '<circle r="%.1f" class="wwc-map__ring"/>'
+            '<circle r="%.1f" class="wwc-map__dot"/>'
+            '%s%s</g>'
+        ) % (
+            kind, x, y,
+            r + 6 if kind == "miami" else r + 3.5,
+            r + 2 if kind == "miami" else r,
+            '<circle r="16" class="wwc-map__pulse"/>' if kind in ("miami", "origin") else "",
+            text,
+        )
+
+    hubs = [hub("origin", oid, 5.5) for oid in ORIGIN_IDS]
+    hubs.append(hub("miami", "miami", 7))
+    hubs += [hub("dest", did, 4.2 if did in primary_dest else 3.2) for did in DEST_IDS]
 
     return f"""
 <figure class="wwc-map wow fadeInUp" aria-label="{_("Mapa de rutas WWC: Asia y USA hacia Latinoamérica vía Miami", "WWC route map: Asia and USA to Latin America via Miami")}">
   <svg class="wwc-map__svg" viewBox="0 0 1000 500" role="img" xmlns="http://www.w3.org/2000/svg">
     <title>{_("Rutas logísticas WWC", "WWC logistics lanes")}</title>
     <defs>
-      <linearGradient id="wwcMapOcean" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#0b1c2c"/><stop offset="100%" stop-color="#14324a"/>
+      <linearGradient id="wwcMapOcean" x1="0" y1="0" x2="0.9" y2="1">
+        <stop offset="0%" stop-color="#07131f"/>
+        <stop offset="55%" stop-color="#0e2438"/>
+        <stop offset="100%" stop-color="#163a52"/>
       </linearGradient>
+      <radialGradient id="wwcMapVignette" cx="50%" cy="45%" r="65%">
+        <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#000" stop-opacity=".35"/>
+      </radialGradient>
+      <linearGradient id="wwcLaneIn" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#f2a33c" stop-opacity=".15"/>
+        <stop offset="50%" stop-color="#f2a33c" stop-opacity="1"/>
+        <stop offset="100%" stop-color="#fff" stop-opacity=".9"/>
+      </linearGradient>
+      <linearGradient id="wwcLaneOut" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#fff" stop-opacity=".95"/>
+        <stop offset="100%" stop-color="#7dd3fc" stop-opacity=".85"/>
+      </linearGradient>
+      <filter id="wwcSoftGlow" x="-40%" y="-40%" width="180%" height="180%">
+        <feGaussianBlur stdDeviation="3.5" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
     </defs>
-    <rect width="1000" height="500" fill="url(#wwcMapOcean)" rx="18"/>
-    <!-- stylized continents (very light silhouettes) -->
-    <path class="wwc-map__land" d="M120 140c40-50 110-70 170-55 55 12 90 55 95 110 8 70-25 130-85 155-55 22-120 10-155-35-30-40-35-110-25-175z"/>
-    <path class="wwc-map__land" d="M250 300c25-10 55 5 70 40 18 42 10 95-20 125-28 28-70 35-100 10-35-28-40-85-20-125 12-25 40-42 70-50z"/>
-    <path class="wwc-map__land" d="M680 150c55-35 130-40 185-10 48 26 70 80 55 130-18 60-75 95-140 95-70 0-120-45-130-105-8-48 10-85 30-110z"/>
-    <path class="wwc-map__land" d="M720 280c35-5 70 20 85 55 18 42-5 85-45 100-42 15-90-5-105-45-18-48 15-100 65-110z"/>
-    {''.join(paths)}
-    {''.join(dots)}
+    <rect width="1000" height="500" fill="url(#wwcMapOcean)" rx="20"/>
+    <g class="wwc-map__grid" opacity=".18">
+      {''.join('<line x1="%d" y1="40" x2="%d" y2="460" stroke="#9ec9e8" stroke-width=".6"/>' % (x, x) for x in range(80, 960, 70))}
+      {''.join('<line x1="60" y1="%d" x2="940" y2="%d" stroke="#9ec9e8" stroke-width=".6"/>' % (y, y) for y in range(70, 460, 55))}
+    </g>
+    <path class="wwc-map__land" d="M95 155c48-62 145-88 220-58 62 25 98 78 92 138-8 78-62 128-138 138-72 10-148-28-178-92-28-58-22-92 4-126z"/>
+    <path class="wwc-map__land" d="M235 285c38-8 72 18 82 58 14 52-8 108-52 128-48 22-102-8-118-58-18-55 22-118 88-128z"/>
+    <path class="wwc-map__land" d="M700 145c72-42 168-38 228 12 52 42 58 108 22 162-42 62-128 82-198 52-78-34-108-108-78-168 12-24 32-42 56-58z"/>
+    <path class="wwc-map__land" d="M760 300c42 0 78 32 82 72 6 48-28 88-72 92-48 4-86-32-90-74-4-48 32-90 80-90z"/>
+    <g class="wwc-map__lanes" filter="url(#wwcSoftGlow)">{''.join(paths)}</g>
+    <g class="wwc-map__hubs">{''.join(hubs)}</g>
+    <rect width="1000" height="500" fill="url(#wwcMapVignette)" rx="20" pointer-events="none"/>
   </svg>
   <figcaption class="wwc-map__cap">
     <span class="wwc-map__leg wwc-map__leg--origin">{_("Orígenes Asia", "Asia origins")}</span>
