@@ -146,6 +146,13 @@ div#logo img{
   background:#101010!important;
   padding-top:0!important
 }
+/* Theme designesia.js adds .scroll-down (margin-top:-90px) and hides the nav on scroll — keep header visible */
+.wwc-header-stick>header.scroll-down,
+.wwc-header-stick>header.nav-up,
+.wwc-header-stick>header.scroll-down.smaller,
+.wwc-header-stick>header.nav-up.smaller{
+  margin-top:0!important;transform:none!important
+}
 .wwc-header-stick>header.header-mobile{
   position:fixed!important;
   top:var(--wwc-topbar-h)!important;
